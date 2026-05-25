@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitFlow — 6-Day Workout Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #f43f5e;
+    --rose-light: #fda4af;
+    --rose-pale: #fff1f2;
+    --violet: #8b5cf6;
+    --violet-light: #c4b5fd;
+    --violet-pale: #f5f3ff;
+    --amber: #f59e0b;
+    --teal: #14b8a6;
+    --teal-light: #99f6e4;
+    --glass-bg: rgba(255,255,255,0.18);
+    --glass-border: rgba(255,255,255,0.35);
+    --glass-shadow: rgba(139,92,246,0.12);
+    --text-dark: #1e1b4b;
+    --text-mid: #4c1d95;
+    --text-soft: #7c3aed;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, #fdf2f8 0%, #ede9fe 30%, #ecfdf5 60%, #fff1f2 100%);
+    min-height: 100vh;
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(244,63,94,0.15) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+    animation: float1 8s ease-in-out infinite;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+    animation: float2 10s ease-in-out infinite;
+  }
+
+  @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,30px)} }
+  @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,-20px)} }
+
+  /* NAVBAR */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 12px 24px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 4px 32px rgba(139,92,246,0.1);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 600;
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-tagline {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--violet); opacity: 0.7; display: none;
+  }
+  @media(min-width:600px){ .nav-tagline{ display:block; } }
+  .nav-badge {
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    color: white; font-size: 11px; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 100px 24px 40px;
+    text-align: center; position: relative; z-index: 1;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(244,63,94,0.1);
+    border: 1px solid rgba(244,63,94,0.2);
+    color: var(--rose); font-size: 11px; font-weight: 600;
+    letter-spacing: 2.5px; text-transform: uppercase;
+    padding: 6px 18px; border-radius: 20px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 7vw, 72px);
+    font-weight: 300; line-height: 1.1;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+  }
+  .hero h1 em { font-style: italic; color: var(--rose); }
+  .hero-sub {
+    font-size: 15px; color: #6b7280; max-width: 520px;
+    margin: 0 auto 32px; line-height: 1.6;
+  }
+
+  /* GOALS CARDS */
+  .goals-grid {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    justify-content: center; max-width: 700px;
+    margin: 0 auto 48px;
+  }
+  .goal-chip {
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 30px; padding: 8px 18px;
+    font-size: 13px; color: var(--text-dark);
+    box-shadow: 0 2px 12px rgba(139,92,246,0.08);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .goal-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* WEEK SELECTOR */
+  .week-nav {
+    position: sticky; top: 64px; z-index: 900;
+    padding: 14px 24px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  }
+  .week-btn {
+    padding: 8px 20px; border-radius: 30px;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1.5px solid rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(8px);
+    color: var(--text-dark); transition: all 0.3s ease;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .week-btn:hover { background: rgba(255,255,255,0.4); transform: translateY(-1px); }
+  .week-btn.active {
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    border-color: transparent; color: white;
+    box-shadow: 0 4px 20px rgba(244,63,94,0.35);
+    transform: translateY(-1px);
+  }
+
+  /* MAIN CONTENT */
+  .content { max-width: 900px; margin: 0 auto; padding: 32px 16px 80px; position: relative; z-index: 1; }
+
+  /* WEEK INFO BANNER */
+  .week-banner {
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 20px; padding: 20px 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 8px 32px rgba(139,92,246,0.08);
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .week-banner .badge {
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    color: white; font-size: 12px; font-weight: 600;
+    padding: 4px 14px; border-radius: 15px;
+    white-space: nowrap;
+  }
+  .week-banner p { font-size: 14px; color: #4b5563; line-height: 1.5; flex: 1; }
+
+  /* DAY CARDS */
+  .day-card {
+    background: rgba(255,255,255,0.28);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 24px; margin-bottom: 20px;
+    box-shadow: 0 8px 40px rgba(139,92,246,0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideUp 0.5s ease both;
+  }
+  .day-card:hover { transform: translateY(-3px); box-shadow: 0 16px 56px rgba(139,92,246,0.14); }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .day-card:nth-child(1){animation-delay:0.05s}
+  .day-card:nth-child(2){animation-delay:0.1s}
+  .day-card:nth-child(3){animation-delay:0.15s}
+  .day-card:nth-child(4){animation-delay:0.2s}
+  .day-card:nth-child(5){animation-delay:0.25s}
+  .day-card:nth-child(6){animation-delay:0.3s}
+
+  .day-header {
+    padding: 20px 24px; cursor: pointer;
+    display: flex; align-items: center; gap: 16px;
+    user-select: none;
+  }
+  .day-number {
+    width: 52px; height: 52px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 600; color: white;
+    flex-shrink: 0;
+  }
+  .day-info { flex: 1; }
+  .day-name { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #9ca3af; margin-bottom: 2px; }
+  .day-title { font-size: 18px; font-weight: 600; color: var(--text-dark); }
+  .day-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+  .meta-tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 10px;
+    font-weight: 500;
+  }
+  .chevron { font-size: 20px; color: #9ca3af; transition: transform 0.3s ease; }
+  .day-card.open .chevron { transform: rotate(180deg); }
+
+  .day-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .day-card.open .day-body { max-height: 2000px; }
+  .day-body-inner { padding: 0 24px 24px; }
+
+  /* SECTION WITHIN DAY */
+  .ex-section { margin-bottom: 20px; }
+  .ex-section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #9ca3af;
+    margin-bottom: 10px; padding-bottom: 6px;
+    border-bottom: 1px solid rgba(139,92,246,0.1);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .ex-section-title span { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+
+  /* EXERCISE ROW */
+  .ex-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 14px; border-radius: 14px;
+    margin-bottom: 6px;
+    background: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.5);
+    transition: background 0.2s;
+  }
+  .ex-row:hover { background: rgba(255,255,255,0.55); }
+  .ex-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .ex-details { flex: 1; }
+  .ex-name { font-size: 14px; font-weight: 500; color: var(--text-dark); margin-bottom: 2px; }
+  .ex-note { font-size: 12px; color: #6b7280; }
+  .ex-sets {
+    font-size: 13px; font-weight: 600; color: var(--violet);
+    white-space: nowrap; align-self: center;
+  }
+
+  /* YOGA SECTION */
+  .yoga-section {
+    background: linear-gradient(135deg, rgba(20,184,166,0.1), rgba(20,184,166,0.05));
+    border: 1px solid rgba(20,184,166,0.2);
+    border-radius: 16px; padding: 16px 20px; margin-top: 16px;
+  }
+  .yoga-title {
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .yoga-poses { display: flex; flex-wrap: wrap; gap: 6px; }
+  .yoga-pose {
+    background: rgba(20,184,166,0.12); border: 1px solid rgba(20,184,166,0.2);
+    color: #0f766e; font-size: 12px; padding: 4px 12px; border-radius: 10px;
+    font-weight: 500;
+  }
+
+  /* PROGRESS SECTION */
+  .progress-section {
+    background: rgba(255,255,255,0.28);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 20px; padding: 24px;
+    margin-top: 40px;
+    box-shadow: 0 8px 32px rgba(139,92,246,0.08);
+  }
+  .progress-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 300; margin-bottom: 20px;
+    color: var(--text-dark);
+  }
+  .progress-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .progress-card {
+    background: rgba(255,255,255,0.4);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 16px; padding: 16px;
+    text-align: center;
+  }
+  .progress-weeks { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #9ca3af; margin-bottom: 8px; }
+  .progress-card ul { list-style: none; }
+  .progress-card li { font-size: 13px; color: #4b5563; padding: 3px 0; display: flex; align-items: center; gap: 6px; justify-content: center; }
+  .progress-card li::before { content: '✦'; font-size: 8px; color: var(--rose); }
+
+  /* SUNDAY REST */
+  .rest-card {
+    background: rgba(255,255,255,0.2);
+    border: 1px dashed rgba(139,92,246,0.2);
+    border-radius: 24px; padding: 32px;
+    text-align: center; color: #9ca3af;
+    margin-bottom: 20px;
+  }
+  .rest-emoji { font-size: 40px; margin-bottom: 8px; }
+  .rest-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; margin-bottom: 4px; color: var(--text-dark); }
+
+  /* COLOR THEMES PER DAY */
+  .theme-rose { background: linear-gradient(135deg, #f43f5e, #fb7185); }
+  .theme-violet { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+  .theme-teal { background: linear-gradient(135deg, #14b8a6, #2dd4bf); }
+  .theme-amber { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+  .theme-pink { background: linear-gradient(135deg, #ec4899, #f472b6); }
+  .theme-indigo { background: linear-gradient(135deg, #6366f1, #818cf8); }
+
+  .tag-strength { background: rgba(139,92,246,0.12); color: #6d28d9; }
+  .tag-core { background: rgba(244,63,94,0.1); color: #be123c; }
+  .tag-yoga { background: rgba(20,184,166,0.12); color: #0f766e; }
+  .tag-legs { background: rgba(245,158,11,0.12); color: #92400e; }
+  .tag-cardio { background: rgba(236,72,153,0.12); color: #9d174d; }
+
+  .icon-warmup { background: rgba(245,158,11,0.15); }
+  .icon-strength { background: rgba(139,92,246,0.12); }
+  .icon-core { background: rgba(244,63,94,0.1); }
+  .icon-cardio { background: rgba(236,72,153,0.1); }
+  .icon-stretch { background: rgba(20,184,166,0.12); }
+
+  /* FOOTER */
+  footer {
+    text-align: center; padding: 24px;
+    font-size: 12px; color: #9ca3af;
+    border-top: 1px solid rgba(255,255,255,0.4);
+  }
+
+  @media(max-width:480px){
+    .day-header { padding: 16px; }
+    .day-body-inner { padding: 0 16px 20px; }
+    .day-number { width: 44px; height: 44px; font-size: 18px; }
+    .day-title { font-size: 16px; }
+    .week-nav { padding: 10px 12px; gap: 6px; }
+    .week-btn { padding: 6px 14px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">FitFlow ✦</div>
+  <div class="nav-tagline">Your 6-Day Transformation Plan</div>
+  <div class="nav-badge">6-Day Split</div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Home Workout Plan</div>
+  <h1>Shape. Strengthen.<br><em>Transform.</em></h1>
+  <p class="hero-sub">A structured 6-day home workout designed for a lean, toned body — flat belly, shaped hips, and real strength. No gym required.</p>
+  <div class="goals-grid">
+    <div class="goal-chip"><div class="goal-dot" style="background:var(--rose)"></div>Flat Belly</div>
+    <div class="goal-chip"><div class="goal-dot" style="background:var(--violet)"></div>Chest 32→34</div>
+    <div class="goal-chip"><div class="goal-dot" style="background:var(--teal)"></div>Hips 32→34</div>
+    <div class="goal-chip"><div class="goal-dot" style="background:var(--amber)"></div>Hip Symmetry</div>
+    <div class="goal-chip"><div class="goal-dot" style="background:#ec4899"></div>Lean Strength</div>
+    <div class="goal-chip"><div class="goal-dot" style="background:#6366f1"></div>Better Posture</div>
+  </div>
+</section>
+
+<div class="week-nav" id="weekNav">
+  <button class="week-btn active" onclick="switchWeek(1,this)">Week 1–2</button>
+  <button class="week-btn" onclick="switchWeek(2,this)">Week 3–4</button>
+  <button class="week-btn" onclick="switchWeek(3,this)">Week 5+</button>
+</div>
+
+<div class="content" id="mainContent"></div>
+
+<script>
+const WEEKS = {
+  1: {
+    label: "Week 1–2 — Foundation Phase",
+    info: "Follow the exact plan. Focus on form over speed. Rest 45–60 seconds between sets. Modified push-ups (knees) allowed.",
+    days: [
+      {
+        day:"Monday", theme:"theme-rose", focus:"Upper Body Strength + Core",
+        tags:["Strength","Core","Yoga"],
+        yoga:true,
+        warmup:["Arm Circles — 30 sec","Shoulder Rolls — 30 sec","Standing Twists — 30 sec","High Knees — 30 sec"],
+        sections:[
+          { title:"Upper Body Strength", icon:"💪", iconClass:"icon-strength", exes:[
+            {name:"Wall Push-ups", note:"Back straight, chest toward wall", sets:"3 × 10"},
+            {name:"Shoulder Taps (Plank position)", note:"Slow and controlled", sets:"3 × 10 each"},
+            {name:"Tricep Dips (Chair)", note:"Hands behind on chair edge", sets:"3 × 12"},
+            {name:"Superman Hold", note:"Back extension, hold 3 sec at top", sets:"3 × 10"},
+          ]},
+          { title:"Core & Belly Focus", icon:"🔥", iconClass:"icon-core", exes:[
+            {name:"Dead Bug", note:"Lower back stays flat on floor", sets:"3 × 8 each"},
+            {name:"Plank Hold", note:"Hold — build up each set", sets:"3 × 20 sec"},
+            {name:"Leg Raises", note:"Keep lower back pressed down", sets:"3 × 10"},
+            {name:"Bicycle Crunches", note:"Slow, elbow to opposite knee", sets:"2 × 15"},
+          ]},
+        ],
+        yogaPoses:["Child's Pose (1 min)","Cat-Cow Stretch (1 min)","Seated Forward Fold (1 min)","Supine Twist (1 min each side)","Savasana (2 min)"]
+      },
+      {
+        day:"Tuesday", theme:"theme-violet", focus:"Legs Strength + Thigh Toning",
+        tags:["Legs","Thighs","Strength"],
+        yoga:false,
+        warmup:["Jumping Jacks — 45 sec","Leg Swings front/back — 20 each","Hip Circles — 20 each direction","March in Place — 30 sec"],
+        sections:[
+          { title:"Leg Strength", icon:"🦵", iconClass:"icon-strength", exes:[
+            {name:"Bodyweight Squats", note:"Feet shoulder-width, sit back", sets:"3 × 15"},
+            {name:"Reverse Lunges", note:"Knee doesn't go past toe", sets:"3 × 10 each"},
+            {name:"Wall Sit", note:"90° angle hold", sets:"3 × 30 sec"},
+            {name:"Step-ups (Chair/Staircase)", note:"Drive through heel", sets:"3 × 10 each"},
+          ]},
+          { title:"Inner Thigh Toning", icon:"✨", iconClass:"icon-cardio", exes:[
+            {name:"Sumo Squat Pulse", note:"Feet wide, toes out, small pulses", sets:"3 × 20 pulses"},
+            {name:"Side-lying Leg Lift", note:"Lift and lower slowly", sets:"3 × 12 each side"},
+            {name:"Standing Inner Thigh Squeeze (pillow)", note:"Squeeze for 2 sec hold", sets:"3 × 15"},
+            {name:"Calf Raises", note:"Hold chair for balance", sets:"3 × 20"},
+          ]},
+        ],
+        yogaPoses:[]
+      },
+      {
+        day:"Wednesday", theme:"theme-teal", focus:"Core + Belly Reduction + Conditioning",
+        tags:["Core","Cardio","Yoga"],
+        yoga:true,
+        warmup:["High Knees — 30 sec","Standing Windmill Stretch","Hip Flexor Stretch — 20 sec each","Neck Rolls — 30 sec"],
+        sections:[
+          { title:"Core Blast", icon:"⚡", iconClass:"icon-core", exes:[
+            {name:"Mountain Climbers", note:"Keep hips level, core tight", sets:"3 × 20 sec"},
+            {name:"Hollow Body Hold", note:"Lower back flat on floor", sets:"3 × 15 sec"},
+            {name:"Russian Twists", note:"Feet raised if possible", sets:"3 × 16 (8 each)"},
+            {name:"Reverse Crunch", note:"Lift hips, not neck", sets:"3 × 12"},
+          ]},
+          { title:"Conditioning (Cardio Burn)", icon:"🏃", iconClass:"icon-cardio", exes:[
+            {name:"High Knees", note:"Drive knees up, arms pumping", sets:"3 × 30 sec"},
+            {name:"Jumping Jacks", note:"Full range, land softly", sets:"3 × 30 sec"},
+            {name:"Skater Jumps", note:"Side to side, touch floor", sets:"2 × 20 sec"},
+            {name:"Standing Oblique Crunches", note:"Elbow to knee, side to side", sets:"3 × 12 each"},
+          ]},
+        ],
+        yogaPoses:["Downward Dog (1 min)","Warrior I (45 sec each)","Boat Pose (30 sec)","Bridge Pose (45 sec)","Legs up the Wall (2 min)"]
+      },
+      {
+        day:"Thursday", theme:"theme-amber", focus:"Chest + Posture + Arms",
+        tags:["Chest","Posture","Arms"],
+        yoga:false,
+        warmup:["Chest Opener Stretch — 30 sec","Arm Swings — 30 sec","Wrist Rotations — 20 sec","Spinal Rotation — 30 sec"],
+        sections:[
+          { title:"Chest & Posture (1 chest exercise this week)", icon:"🎯", iconClass:"icon-strength", exes:[
+            {name:"Incline Push-ups (hands on wall/chair)", note:"ONLY chest exercise this week — 3 sets", sets:"3 × 10"},
+            {name:"Doorway Chest Stretch", note:"Hold 20 sec each arm", sets:"2 × 20 sec hold"},
+            {name:"Band/Resistance Pull-Apart (or towel)", note:"Arms straight, pull apart at shoulder height", sets:"3 × 15"},
+            {name:"Prone Y-T-W Raises", note:"Lie face down, lift arms in Y then T then W", sets:"2 × 8 each"},
+          ]},
+          { title:"Arms Toning", icon:"💎", iconClass:"icon-strength", exes:[
+            {name:"Tricep Kickbacks (water bottles)", note:"Elbow pinned, extend fully", sets:"3 × 12"},
+            {name:"Bicep Curls (water bottles)", note:"Control the lowering phase", sets:"3 × 12"},
+            {name:"Overhead Tricep Extension", note:"Keep elbows close to head", sets:"3 × 10"},
+            {name:"Plank Shoulder Taps", note:"Hips stay square, no rocking", sets:"3 × 8 each"},
+          ]},
+        ],
+        yogaPoses:[]
+      },
+      {
+        day:"Friday", theme:"theme-pink", focus:"Hip Shape + Glute Stability",
+        tags:["Hips","Stability","Yoga"],
+        yoga:true,
+        warmup:["Hip Circles — 20 each direction","Glute Bridge Hold — 20 sec","Standing Hip Flexor Stretch — 20 sec each","Lateral Leg Swings — 15 each"],
+        sections:[
+          { title:"Hip Shaping & Symmetry (1 glute exercise)", icon:"🌸", iconClass:"icon-strength", exes:[
+            {name:"Single-Leg Glute Bridge", note:"ONLY glute exercise this week — focus uneven side", sets:"3 × 10 each"},
+            {name:"Fire Hydrants", note:"Slow circles, feel the outer hip", sets:"3 × 15 each"},
+            {name:"Side-lying Hip Abduction", note:"Top leg lifts straight up", sets:"3 × 15 each"},
+            {name:"Clamshells (resistance band optional)", note:"Keep feet together, rotate at hip", sets:"3 × 15 each"},
+          ]},
+          { title:"Hip Stability & Balance", icon:"⚖️", iconClass:"icon-core", exes:[
+            {name:"Single-Leg Balance Hold", note:"30 sec each side — trains symmetry", sets:"3 × 30 sec each"},
+            {name:"Hip Thrusts (floor, no weight)", note:"Squeeze at top, slow release", sets:"3 × 12"},
+            {name:"Lateral Band Walk (or resistance)", note:"Keep resistance taut, small steps", sets:"3 × 15 each way"},
+          ]},
+        ],
+        yogaPoses:["Pigeon Pose (1 min each side)","Low Lunge Hip Stretch (45 sec)","Butterfly Pose (1 min)","Reclined Pigeon (1 min each)","Happy Baby (1 min)"]
+      },
+      {
+        day:"Saturday", theme:"theme-indigo", focus:"Full Body Strength + Stamina",
+        tags:["Full Body","Stamina","Strength"],
+        yoga:false,
+        warmup:["Full body shake-out — 30 sec","High Knees — 30 sec","Hip + Shoulder Circles","Light Jump Rope (or mimic) — 45 sec"],
+        sections:[
+          { title:"Full Body Power Circuit", icon:"⚡", iconClass:"icon-strength", exes:[
+            {name:"Squat to Overhead Press (bottles)", note:"Squat down, press up as you stand", sets:"3 × 12"},
+            {name:"Push-up to T Rotation", note:"Plank, push up, rotate to side plank", sets:"3 × 6 each"},
+            {name:"Reverse Lunge + Knee Drive", note:"Lunge back, drive knee forward", sets:"3 × 10 each"},
+            {name:"Renegade Rows (bottles)", note:"In plank, row one arm at a time", sets:"3 × 8 each"},
+          ]},
+          { title:"Stamina Finisher", icon:"🏁", iconClass:"icon-cardio", exes:[
+            {name:"Burpee Modified (no jump)", note:"Squat, plank, return, stand", sets:"2 × 8"},
+            {name:"Jump Squats", note:"Land softly, knees track toes", sets:"3 × 10"},
+            {name:"High Knees Sprint", note:"Maximum effort", sets:"3 × 20 sec"},
+            {name:"Plank + Knee to Chest", note:"Alternating, controlled", sets:"3 × 10 each"},
+          ]},
+        ],
+        yogaPoses:[]
+      }
+    ]
+  },
+  2: {
+    label: "Week 3–4 — Progressive Overload",
+    info: "Add +2 reps to each exercise. Increase plank holds by +10 sec. High knees +10 sec per set. Still modified push-ups — focus on perfect form.",
+    days: [
+      {
+        day:"Monday", theme:"theme-rose", focus:"Upper Body Strength + Core",
+        tags:["Strength","Core","Yoga"],
+        yoga:true,
+        warmup:["Arm Circles — 40 sec","Shoulder Rolls — 30 sec","Standing Twists — 30 sec","High Knees — 40 sec"],
+        sections:[
+          { title:"Upper Body Strength (+2 reps)", icon:"💪", iconClass:"icon-strength", exes:[
+            {name:"Incline Push-ups (hands on chair)", note:"Lower than wall — more challenge", sets:"3 × 12"},
+            {name:"Shoulder Taps", note:"Slow, zero hip sway", sets:"3 × 12 each"},
+            {name:"Tricep Dips + Pause at Bottom", note:"2 sec pause at 90°", sets:"3 × 14"},
+            {name:"Superman + Hold", note:"Hold 4 sec at top", sets:"3 × 12"},
+          ]},
+          { title:"Core Progression", icon:"🔥", iconClass:"icon-core", exes:[
+            {name:"Dead Bug + Extended Reach", note:"Reach arm + leg simultaneously", sets:"3 × 10 each"},
+            {name:"Plank Hold", note:"+10 sec from week 1", sets:"3 × 30 sec"},
+            {name:"Leg Raises + Hip Lift", note:"Add hip lift at top", sets:"3 × 12"},
+            {name:"Bicycle Crunches", note:"+2 reps, slow cadence", sets:"2 × 17"},
+          ]},
+        ],
+        yogaPoses:["Child's Pose (1 min)","Cat-Cow Flow (1 min)","Seated Spinal Twist (1 min each)","Supine Twist (1 min each)","Savasana (2 min)"]
+      },
+      {
+        day:"Tuesday", theme:"theme-violet", focus:"Legs — Added Intensity",
+        tags:["Legs","Thighs","Strength"],
+        yoga:false,
+        warmup:["Jumping Jacks — 50 sec","Leg Swings — 25 each","Hip Circles — 25","Deep Squat Hold — 20 sec"],
+        sections:[
+          { title:"Leg Strength +2 Reps", icon:"🦵", iconClass:"icon-strength", exes:[
+            {name:"Squats — Slower Tempo (3-1-1)", note:"3 sec down, 1 hold, 1 up", sets:"3 × 17"},
+            {name:"Walking Lunges", note:"Step forward, alternate legs", sets:"3 × 12 each"},
+            {name:"Wall Sit", note:"+10 sec from last week", sets:"3 × 40 sec"},
+            {name:"Single-Leg Step-ups", note:"Control the lowering — 3 sec down", sets:"3 × 12 each"},
+          ]},
+          { title:"Thigh Toning +2 Reps", icon:"✨", iconClass:"icon-cardio", exes:[
+            {name:"Sumo Squat + Calf Raise Combo", note:"Rise on toes at top of sumo squat", sets:"3 × 17"},
+            {name:"Side-lying Leg Lift + Circle", note:"Lift then make 5 small circles", sets:"3 × 12 each"},
+            {name:"Inner Thigh Lift (elevated foot)", note:"Foot on cushion, lift other leg", sets:"3 × 17"},
+            {name:"Seated Calf Raises", note:"Towel over knees for resistance", sets:"3 × 22"},
+          ]},
+        ],
+        yogaPoses:[]
+      },
+      {
+        day:"Wednesday", theme:"theme-teal", focus:"Core + Conditioning — Level Up",
+        tags:["Core","Cardio","Yoga"],
+        yoga:true,
+        warmup:["High Knees — 40 sec","Jumping Jacks — 30 sec","Hip Flexor Stretch 20 sec each","Torso Twists — 30 sec"],
+        sections:[
+          { title:"Core +2 Reps", icon:"⚡", iconClass:"icon-core", exes:[
+            {name:"Mountain Climbers", note:"+10 sec per set", sets:"3 × 30 sec"},
+            {name:"Hollow Body Hold", note:"+5 sec per set", sets:"3 × 20 sec"},
+            {name:"Russian Twists + Weight (bottle)", note:"Hold water bottle for resistance", sets:"3 × 18 each"},
+            {name:"Reverse Crunch + Toe Touch", note:"After reverse crunch, reach fingers to toes", sets:"3 × 14"},
+          ]},
+          { title:"Conditioning", icon:"🏃", iconClass:"icon-cardio", exes:[
+            {name:"High Knees", note:"+10 sec from week 1", sets:"3 × 40 sec"},
+            {name:"Jumping Jacks", note:"Faster tempo", sets:"3 × 40 sec"},
+            {name:"Box Shuffles (side to side)", note:"Wide stance, stay low", sets:"2 × 25 sec"},
+            {name:"Speed Bag Arms (punch up fast)", note:"Cardio for upper body", sets:"3 × 30 sec"},
+          ]},
+        ],
+        yogaPoses:["Downward Dog Hold (1 min)","Warrior II (1 min each)","Chair Pose (45 sec)","Bridge + Hip Circles (1 min)","Supine Butterfly (2 min)"]
+      },
+      {
+        day:"Thursday", theme:"theme-amber", focus:"Chest + Posture + Arms — Progressive",
+        tags:["Chest","Posture","Arms"],
+        yoga:false,
+        warmup:["Chest Opener 40 sec","Arm Swings 40 sec","Pike Push-up Prep 10 sec hold","Spinal Waves — 30 sec"],
+        sections:[
+          { title:"Chest & Posture (+2 reps)", icon:"🎯", iconClass:"icon-strength", exes:[
+            {name:"Incline Push-ups (lower surface)", note:"Hands on low stool/bench", sets:"3 × 12"},
+            {name:"Wall Angels", note:"Back and arms against wall, slide up/down", sets:"3 × 12"},
+            {name:"Band Pull-Apart (wider grip)", note:"More range of motion", sets:"3 × 17"},
+            {name:"Prone Y-T-W with Hold", note:"1 sec hold at each position", sets:"3 × 10 each"},
+          ]},
+          { title:"Arms Toning +2 Reps", icon:"💎", iconClass:"icon-strength", exes:[
+            {name:"Tricep Kickbacks (heavier bottle)", note:"Slow 3 sec lowering", sets:"3 × 14"},
+            {name:"Hammer Curls (bottles)", note:"Alternate arms, squeeze at top", sets:"3 × 14"},
+            {name:"Skull Crushers (lying, bottles)", note:"Keep elbows still", sets:"3 × 12"},
+            {name:"Plank Shoulder Taps + Reach Forward", note:"Tap + extend arm out front", sets:"3 × 10 each"},
+          ]},
+        ],
+        yogaPoses:[]
+      },
+      {
+        day:"Friday", theme:"theme-pink", focus:"Hip Shape + Symmetry Focus",
+        tags:["Hips","Stability","Yoga"],
+        yoga:true,
+        warmup:["Hip Circles — 25 each","Lateral Leg Swings 20 each","Single-Leg Balance 20 sec each","Glute Bridge Pulse — 20 pulses"],
+        sections:[
+          { title:"Hip Shaping (Focus: Symmetry)", icon:"🌸", iconClass:"icon-strength", exes:[
+            {name:"Single-Leg Glute Bridge — Weaker Side First", note:"Do weaker hip 1 extra set", sets:"4 × 12 weak / 3 × 12 strong"},
+            {name:"Fire Hydrants + Hold", note:"Hold at top for 2 sec", sets:"3 × 17 each"},
+            {name:"Side-lying Hip Abduction + Circles", note:"5 forward circles at top of each rep", sets:"3 × 17 each"},
+            {name:"Clamshells + Resistance", note:"Tie a loop of cloth for resistance", sets:"3 × 17 each"},
+          ]},
+          { title:"Stability & Balance", icon:"⚖️", iconClass:"icon-core", exes:[
+            {name:"Single-Leg RDL (Romanian Deadlift)", note:"Hinge at hip, back straight", sets:"3 × 10 each"},
+            {name:"Hip Thrusts — 2 sec hold", note:"Squeeze hard at top", sets:"3 × 14"},
+            {name:"Curtsy Lunge", note:"Cross foot behind, deeply tones hip", sets:"3 × 12 each"},
+          ]},
+        ],
+        yogaPoses:["Pigeon Pose Deep Hold (90 sec each)","Low Lunge + Twist (1 min each)","Bound Angle (1 min)","Fire Log Pose (1 min each)","Supine Hip Stretch (1 min each)"]
+      },
+      {
+        day:"Saturday", theme:"theme-indigo", focus:"Full Body — Power Circuit",
+        tags:["Full Body","Stamina","Power"],
+        yoga:false,
+        warmup:["Dynamic full body — 45 sec","Jumping Jacks — 40 sec","Hip Circles + Shoulder Rolls","Inchworm Walk-outs — 5 reps"],
+        sections:[
+          { title:"Full Body Circuit +2 Reps", icon:"⚡", iconClass:"icon-strength", exes:[
+            {name:"Squat + Press + Twist (bottles)", note:"Twist at top of press", sets:"3 × 14"},
+            {name:"Push-up to T (slower)", note:"3 sec down, hold T 2 sec", sets:"3 × 8 each"},
+            {name:"Lunge + Knee Drive + Hop", note:"Add small hop at knee drive", sets:"3 × 12 each"},
+            {name:"Renegade Row + Push-up Combo", note:"Row both sides, then 1 push-up", sets:"3 × 10 each"},
+          ]},
+          { title:"Stamina Finisher — Elevated", icon:"🏁", iconClass:"icon-cardio", exes:[
+            {name:"Burpee + Jump Squat", note:"Full burpee into jump squat", sets:"2 × 10"},
+            {name:"Squat Jumps — deeper", note:"Deeper squat, higher jump", sets:"3 × 12"},
+            {name:"High Knees Sprint", note:"+10 sec from week 1", sets:"3 × 30 sec"},
+            {name:"Plank Knee-to-Chest + Oblique", note:"Alternate: center, left, right", sets:"3 × 12 each"},
+          ]},
+        ],
+        yogaPoses:[]
+      }
+    ]
+  },
+  3: {
+    label: "Week 5+ — Strength Phase (Full Push-ups Begin)",
+    info: "Start proper push-ups gradually. Begin with 2–3 full push-ups, fill rest with modified. Increase by 1 full push-up every 3 days. All reps and times elevated from Week 3–4.",
+    days: [
+      {
+        day:"Monday", theme:"theme-rose", focus:"Upper Body Power + Core",
+        tags:["Power","Core","Yoga"],
+        yoga:true,
+        warmup:["Dynamic warm-up — 60 sec","High Knees — 45 sec","Shoulder mobility — 30 sec","Jumping Jacks — 30 sec"],
+        sections:[
+          { title:"Push-up Progression + Upper Body", icon:"💪", iconClass:"icon-strength", exes:[
+            {name:"Full Push-ups (2-3) + Modified (rest)", note:"Increase by 1 full push-up every 3 days", sets:"4 × 12 total"},
+            {name:"Pike Push-ups", note:"Downward dog position, lower head to floor", sets:"3 × 10"},
+            {name:"Tricep Dips + Leg Raised", note:"Extend one leg out for added challenge", sets:"3 × 15"},
+            {name:"Superman Swimmer", note:"Alternate opposite arm + leg raises", sets:"3 × 12 each"},
+          ]},
+          { title:"Advanced Core", icon:"🔥", iconClass:"icon-core", exes:[
+            {name:"Dead Bug + Resistance (bottle on chest)", note:"Full extension each side", sets:"3 × 12 each"},
+            {name:"Long Plank Hold", note:"Build toward 60 sec", sets:"3 × 45 sec"},
+            {name:"Dragon Fly Prep (slow leg raise + hold)", note:"Hold at 45° for 2 sec", sets:"3 × 10"},
+            {name:"Bicycle Crunches — Fast", note:"Increase speed, maintain form", sets:"3 × 20"},
+          ]},
+        ],
+        yogaPoses:["Sun Salutation A — 3 rounds","Warrior I + II Flow (1 min each)","Extended Triangle (45 sec each)","Camel Pose (30 sec)","Savasana (3 min)"]
+      },
+      {
+        day:"Tuesday", theme:"theme-violet", focus:"Legs — Full Strength",
+        tags:["Legs","Power","Strength"],
+        yoga:false,
+        warmup:["Jump Rope mimic — 60 sec","Leg swings — 30 each","Deep Hip Circles — 30","Squat pulse — 20"],
+        sections:[
+          { title:"Leg Power", icon:"🦵", iconClass:"icon-strength", exes:[
+            {name:"Jump Squats", note:"Deep squat, explosive jump", sets:"4 × 15"},
+            {name:"Bulgarian Split Squat (rear foot on chair)", note:"Front leg does the work", sets:"3 × 12 each"},
+            {name:"Wall Sit + Leg Extension", note:"Extend one leg, alternate", sets:"3 × 45 sec"},
+            {name:"Plyometric Lunges (Jump Lunges)", note:"Switch legs in air", sets:"3 × 10 each"},
+          ]},
+          { title:"Thigh & Inner Leg", icon:"✨", iconClass:"icon-cardio", exes:[
+            {name:"Sumo Jump Squat", note:"Wide stance, jump at top", sets:"3 × 15"},
+            {name:"Side Lunge + Pulse", note:"3 pulses in side lunge", sets:"3 × 12 each"},
+            {name:"Inner Thigh Press (pillow between knees)", note:"Squeeze and hold 3 sec", sets:"4 × 20"},
+            {name:"Single-Leg Calf Raise", note:"Balance — no support if possible", sets:"3 × 20 each"},
+          ]},
+        ],
+        yogaPoses:[]
+      },
+      {
+        day:"Wednesday", theme:"theme-teal", focus:"Core Mastery + HIIT",
+        tags:["Core","HIIT","Yoga"],
+        yoga:true,
+        warmup:["High Knees — 50 sec","Arm + Hip Combo — 30 sec","Jumping Jacks — 40 sec","Inchworm — 5 reps"],
+        sections:[
+          { title:"Core Mastery", icon:"⚡", iconClass:"icon-core", exes:[
+            {name:"V-Sit Hold", note:"Balance on tailbone, legs and torso in V", sets:"3 × 20 sec"},
+            {name:"Mountain Climbers — Fast", note:"Sprint tempo, tight core", sets:"3 × 40 sec"},
+            {name:"Russian Twists + Legs Raised", note:"Both feet off ground throughout", sets:"3 × 20 each"},
+            {name:"Hollow Body Rocks", note:"Rock forward and back in hollow hold", sets:"3 × 15 rocks"},
+          ]},
+          { title:"HIIT Circuit", icon:"🏃", iconClass:"icon-cardio", exes:[
+            {name:"High Knees 40 sec / Rest 15 sec", note:"3 rounds — maximum effort", sets:"3 rounds"},
+            {name:"Skater Jumps", note:"Wide lateral jumps, touch floor", sets:"3 × 30 sec"},
+            {name:"Speed Squats", note:"Fast squats, barely straighten between reps", sets:"3 × 20 sec"},
+            {name:"Plank + Jump Feet In/Out", note:"In plank, jump feet wide + narrow", sets:"3 × 20 sec"},
+          ]},
+        ],
+        yogaPoses:["Sun Salutation B — 2 rounds","Warrior III Balance (1 min each)","Twisted Chair Pose (30 sec each)","Seated Forward Fold + Twist","Legs-Up-Wall (3 min)"]
+      },
+      {
+        day:"Thursday", theme:"theme-amber", focus:"Chest + Posture + Arms Strength",
+        tags:["Chest","Arms","Posture"],
+        yoga:false,
+        warmup:["Chest Opener — 45 sec","Arm circles — 40 sec","Pike push-up prep 5 reps","Spinal flow — 45 sec"],
+        sections:[
+          { title:"Chest + Push-up Mastery", icon:"🎯", iconClass:"icon-strength", exes:[
+            {name:"Full Push-ups (max) + Modified (rest)", note:"Track full push-up count weekly", sets:"4 × 12 total"},
+            {name:"Wide Push-ups", note:"Hands wider than shoulder, targets chest", sets:"3 × 10"},
+            {name:"Diamond Push-ups (Modified OK)", note:"Hands form diamond, targets tricep + chest", sets:"3 × 8"},
+            {name:"Band Pull-Apart (faster tempo)", note:"Control and squeeze shoulder blades", sets:"3 × 20"},
+          ]},
+          { title:"Arms Strength", icon:"💎", iconClass:"icon-strength", exes:[
+            {name:"Tricep Push-up (narrow hands)", note:"Elbows brush sides going down", sets:"3 × 12"},
+            {name:"Bicep Curl 21s (bottles)", note:"7 low, 7 high, 7 full range", sets:"3 × 21"},
+            {name:"Overhead Press (both arms)", note:"Full extension overhead", sets:"3 × 15"},
+            {name:"Plank to Push-up (down-up-down-up)", note:"One full rep from elbow to hand plank", sets:"3 × 8 each"},
+          ]},
+        ],
+        yogaPoses:[]
+      },
+      {
+        day:"Friday", theme:"theme-pink", focus:"Hip Shape + Glute Sculpt",
+        tags:["Hips","Sculpt","Yoga"],
+        yoga:true,
+        warmup:["Hip Circles — 30 each","Lateral step + knee lift","Single-Leg Balance 30 sec each","Deep Glute Stretch — 30 sec"],
+        sections:[
+          { title:"Hip Sculpting", icon:"🌸", iconClass:"icon-strength", exes:[
+            {name:"Single-Leg Glute Bridge — Elevated (foot on chair)", note:"Elevated version = more range, more shape", sets:"4 × 15 each"},
+            {name:"Fire Hydrant + Full Circle + Extension", note:"Circle + extend straight back each rep", sets:"3 × 15 each"},
+            {name:"Standing Hip Abduction (pulsed)", note:"Lift, pulse 3x, return", sets:"3 × 15 each"},
+            {name:"Curtsy Lunge + Side Kick", note:"Deep curtsy + kick to side at top", sets:"3 × 12 each"},
+          ]},
+          { title:"Balance & Symmetry", icon:"⚖️", iconClass:"icon-core", exes:[
+            {name:"Single-Leg RDL + Row (bottle)", note:"Hinge + row at bottom", sets:"3 × 12 each"},
+            {name:"Hip Thrust — Elevated (shoulders on chair)", note:"Full hip extension — controlled squeeze", sets:"3 × 15"},
+            {name:"Lateral Band Walk — Lower Squat", note:"Stay lower throughout walk", sets:"3 × 20 each"},
+          ]},
+        ],
+        yogaPoses:["Pigeon Pose Advanced (2 min each)","King Pigeon Prep (1 min each)","Lizard Pose (1 min each)","Frog Pose (1 min)","Supine Spinal Twist (2 min each)"]
+      },
+      {
+        day:"Saturday", theme:"theme-indigo", focus:"Full Body Beast Mode",
+        tags:["Full Body","Power","Stamina"],
+        yoga:false,
+        warmup:["Full dynamic flow — 60 sec","Jump Rope mimic — 45 sec","Arm + leg combo circles","Inchworm to push-up — 5 reps"],
+        sections:[
+          { title:"Full Body Power", icon:"⚡", iconClass:"icon-strength", exes:[
+            {name:"Squat + Jump + Press (bottles)", note:"Squat, jump, land, press overhead", sets:"4 × 12"},
+            {name:"Full Push-up to T Rotation", note:"Full push-up then rotate to side plank", sets:"4 × 8 each"},
+            {name:"Jump Lunge + Overhead Reach", note:"Lunge, jump switch, reach up at top", sets:"3 × 10 each"},
+            {name:"Renegade Row + Push-up + Jack Feet", note:"Row x2, push-up, jump feet wide + close", sets:"3 × 8 each"},
+          ]},
+          { title:"Power Finisher", icon:"🏁", iconClass:"icon-cardio", exes:[
+            {name:"Full Burpee + Jump", note:"Plank, push-up, jump squat", sets:"3 × 10"},
+            {name:"Plyometric Box Jump (onto low step/stair)", note:"Land softly, step down", sets:"3 × 10"},
+            {name:"Sprint-in-Place 40 sec / Rest 15 sec", note:"Maximum effort sprint", sets:"4 rounds"},
+            {name:"Plank Complex (forward + side + down dog)", note:"10 sec each position, cycle through", sets:"3 cycles"},
+          ]},
+        ],
+        yogaPoses:[]
+      }
+    ]
+  }
+};
+
+function switchWeek(w, btn){
+  document.querySelectorAll('.week-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderWeek(w);
+  window.scrollTo({top:document.getElementById('mainContent').offsetTop - 120, behavior:'smooth'});
+}
+
+function renderWeek(w){
+  const data = WEEKS[w];
+  const cont = document.getElementById('mainContent');
+  
+  let html = `
+    <div class="week-banner">
+      <div class="badge">${data.label}</div>
+      <p>${data.info}</p>
+    </div>
+  `;
+
+  data.days.forEach((day, i) => {
+    const tags = day.tags.map(t => {
+      const cls = t==='Yoga'?'tag-yoga':t==='Core'?'tag-core':t.includes('Leg')||t.includes('Thigh')?'tag-legs':t==='Cardio'||t==='HIIT'?'tag-cardio':'tag-strength';
+      return `<span class="meta-tag ${cls}">${t}</span>`;
+    }).join('');
+
+    // Warmup rows
+    const warmupRows = day.warmup.map(ex => `
+      <div class="ex-row">
+        <div class="ex-icon icon-warmup">🌅</div>
+        <div class="ex-details">
+          <div class="ex-name">${ex.split('—')[0].trim()}</div>
+          <div class="ex-note">${ex.split('—')[1]?.trim() || ''}</div>
+        </div>
+      </div>
+    `).join('');
+
+    // Exercise sections
+    const sectionsHtml = day.sections.map(sec => {
+      const rows = sec.exes.map(ex => `
+        <div class="ex-row">
+          <div class="ex-icon ${sec.iconClass}">${sec.icon}</div>
+          <div class="ex-details">
+            <div class="ex-name">${ex.name}</div>
+            <div class="ex-note">${ex.note}</div>
+          </div>
+          <div class="ex-sets">${ex.sets}</div>
+        </div>
+      `).join('');
+      return `
+        <div class="ex-section">
+          <div class="ex-section-title"><span style="background:${sec.iconClass.includes('strength')?'#8b5cf6':sec.iconClass.includes('core')?'#f43f5e':sec.iconClass.includes('cardio')?'#ec4899':'#f59e0b'}"></span>${sec.title}</div>
+          ${rows}
+        </div>
+      `;
+    }).join('');
+
+    // Yoga section
+    const yogaHtml = day.yoga ? `
+      <div class="yoga-section">
+        <div class="yoga-title">🧘 10–15 Min Yoga</div>
+        <div class="yoga-poses">${day.yogaPoses.map(p=>`<span class="yoga-pose">${p}</span>`).join('')}</div>
+      </div>
+    ` : '';
+
+    html += `
+      <div class="day-card" id="card-${i}">
+        <div class="day-header" onclick="toggleCard(${i})">
+          <div class="day-number ${day.theme}">${['M','T','W','T','F','S'][i]}</div>
+          <div class="day-info">
+            <div class="day-name">${day.day}</div>
+            <div class="day-title">${day.focus}</div>
+            <div class="day-meta">${tags}${day.yoga?'<span class="meta-tag tag-yoga">🧘 Yoga</span>':''}</div>
+          </div>
+          <div class="chevron">⌄</div>
+        </div>
+        <div class="day-body">
+          <div class="day-body-inner">
+            <div class="ex-section">
+              <div class="ex-section-title"><span style="background:#f59e0b"></span>Warm-Up (5 min)</div>
+              ${warmupRows}
+            </div>
+            ${sectionsHtml}
+            ${yogaHtml}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  // Sunday rest
+  html += `
+    <div class="rest-card">
+      <div class="rest-emoji">🌿</div>
+      <h3>Sunday — Rest & Recovery</h3>
+      <p style="font-size:13px; margin-top:6px;">Light 20–30 min walk · Hydrate well · Foam roll if available · Sleep 7–8 hrs</p>
+    </div>
+  `;
+
+  // Progress section
+  html += `
+    <div class="progress-section">
+      <div class="progress-title">Expected Results</div>
+      <div class="progress-grid">
+        <div class="progress-card">
+          <div class="progress-weeks" style="color:var(--rose)">4–6 Weeks</div>
+          <ul>
+            <li>Stronger body</li>
+            <li>Better posture</li>
+            <li>Slightly flatter belly</li>
+            <li>Improved hip symmetry</li>
+            <li>Better push-ups & stamina</li>
+          </ul>
+        </div>
+        <div class="progress-card">
+          <div class="progress-weeks" style="color:var(--violet)">8–12 Weeks</div>
+          <ul>
+            <li>Lean toned body</li>
+            <li>Noticeable flat abdomen</li>
+            <li>Shaped, symmetric hips</li>
+            <li>Full push-ups achieved</li>
+            <li>Real strength & endurance</li>
+          </ul>
+        </div>
+        <div class="progress-card">
+          <div class="progress-weeks" style="color:var(--teal)">Nutrition Tips</div>
+          <ul>
+            <li>High protein: eggs, paneer, dal</li>
+            <li>Reduce sugar & maida</li>
+            <li>Eat within 1 hr after workout</li>
+            <li>3–4 litres water daily</li>
+            <li>Don't skip meals</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  `;
+
+  cont.innerHTML = html;
+  // Auto-open first card
+  setTimeout(()=>{
+    const first = document.getElementById('card-0');
+    if(first) first.classList.add('open');
+  }, 200);
+}
+
+function toggleCard(i){
+  const card = document.getElementById('card-'+i);
+  card.classList.toggle('open');
+}
+
+renderWeek(1);
+</script>
+
+<footer>
+  <p>FitFlow — 6-Day Home Workout Plan · Stay consistent. Stay strong. ✦</p>
+</footer>
+
+</body>
+</html>
