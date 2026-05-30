@@ -289,7 +289,7 @@
     flex: 1; 
   }
 
-  /* AUTO-TUNER ENERGY SELECTOR (EMPATHETIC DIAL) */
+  /* AUTO-TUNER ENERGY SELECTOR */
   .tuner-container {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -487,17 +487,6 @@
   }
   .day-card:hover { transform: translateY(-3px); box-shadow: 0 16px 56px var(--glass-shadow); }
 
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .day-card:nth-child(1){animation-delay:0.05s}
-  .day-card:nth-child(2){animation-delay:0.1s}
-  .day-card:nth-child(3){animation-delay:0.15s}
-  .day-card:nth-child(4){animation-delay:0.2s}
-  .day-card:nth-child(5){animation-delay:0.25s}
-  .day-card:nth-child(6){animation-delay:0.3s}
-
   .day-header {
     padding: 20px 24px; cursor: pointer;
     display: flex; align-items: center; gap: 16px;
@@ -694,20 +683,6 @@
   body.moonlight .tag-gentle { background: rgba(251,113,133,0.2); color: #fda4af; }
   body.moonlight .tag-recovery { background: rgba(20,184,166,0.2); color: #99f6e4; }
 
-  .icon-warmup { background: rgba(245,158,11,0.15); }
-  .icon-strength { background: rgba(139,92,246,0.12); }
-  .icon-core { background: rgba(244,63,94,0.1); }
-  .icon-cardio { background: rgba(236,72,153,0.1); }
-  .icon-stretch { background: rgba(20,184,166,0.12); }
-  .icon-period { background: rgba(244,114,182,0.15); }
-
-  /* FOOTER */
-  footer {
-    text-align: center; padding: 24px 24px 48px;
-    font-size: 12px; color: #9ca3af;
-    border-top: 1px solid rgba(255,255,255,0.4);
-  }
-
   /* VOICE STOPWATCH FLOATING WIDGET */
   .stopwatch-widget {
     position: fixed;
@@ -720,8 +695,20 @@
     border: 1px solid var(--glass-border);
     box-shadow: 0 12px 40px var(--glass-shadow);
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    user-select: none;
+    touch-action: none; /* Prevents default browser scrolling when dragging */
+    transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                border-radius 0.3s, background 0.3s, box-shadow 0.3s;
   }
+  
+  /* Disable transitions temporarily when dragging for 1:1 real-time lag-free tracking */
+  .stopwatch-widget.dragging {
+    transition: none !important;
+    cursor: grabbing;
+    opacity: 0.9;
+  }
+  
   .stopwatch-widget.collapsed {
     width: 64px;
     height: 64px;
@@ -739,7 +726,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    cursor: grab;
+  }
+  .stopwatch-widget.dragging .stopwatch-trigger {
+    cursor: grabbing;
   }
   .stopwatch-widget.expanded .stopwatch-trigger {
     display: none;
@@ -768,6 +758,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: move;
   }
   .panel-title {
     font-size: 11px;
@@ -783,6 +774,7 @@
     cursor: pointer;
     color: var(--text-dark);
     opacity: 0.5;
+    padding: 2px 8px;
   }
   .panel-close-btn:hover {
     opacity: 1;
@@ -992,15 +984,15 @@
   </div>
 </section>
 
-<!-- FLOATING VOICE STOPWATCH WIDGET -->
+<!-- FLOATING VOICE STOPWATCH WIDGET (DRAGGABLE & HIGH ACCURACY) -->
 <div class="stopwatch-widget collapsed" id="stopwatchWidget">
-  <div class="stopwatch-trigger" onclick="toggleStopwatchExpand(event)">
+  <div class="stopwatch-trigger" id="stopwatchTrigger">
     <span class="trigger-icon">⏱️</span>
     <span class="trigger-time" id="collapsedTimeDisplay">00:00</span>
   </div>
   <div class="stopwatch-panel">
-    <div class="panel-header">
-      <span class="panel-title">Smart Stopwatch</span>
+    <div class="panel-header" id="stopwatchHeader">
+      <span class="panel-title">🧠 Voice Stopwatch</span>
       <button class="panel-close-btn" onclick="toggleStopwatchExpand(event)" title="Minimize">✕</button>
     </div>
     <div class="time-display" id="stopwatchTime">00:00.00</div>
@@ -1895,7 +1887,7 @@ function togglePeriodCard(i){
   card.classList.toggle('open');
 }
 
-/* SMART STOPWATCH & HANDS-FREE VOICE LOGIC */
+/* SMART STOPWATCH & VOICE DRAG/VOICE COMMANDS ENGINE */
 let stopwatchStartTime = 0;
 let stopwatchElapsedTime = 0;
 let stopwatchInterval = null;
@@ -1905,12 +1897,147 @@ let recognition = null;
 let micActive = false;
 let heardTextTimeout = null;
 
+// Audio capture state control variables to prevent command stutters
+let lastCommandExecuted = "";
+let lastCommandTime = 0;
+
+// Interactive dragging states
+let isDragging = false;
+let startX = 0;
+let startY = 0;
+let travelDistance = 0; // Distinguishes between dragging and clicking
+
+const widget = document.getElementById('stopwatchWidget');
+
+// Restore Saved Widget Coordinates
+function restoreWidgetPosition() {
+  const savedPos = localStorage.getItem('fitflow_stopwatch_position_v2');
+  if (savedPos) {
+    const coords = JSON.parse(savedPos);
+    widget.style.bottom = 'auto';
+    widget.style.right = 'auto';
+    
+    // Ensure saved positions are within viewport boundaries (avoids clipping on resize)
+    const boundedLeft = Math.max(10, Math.min(coords.left, window.innerWidth - 80));
+    const boundedTop = Math.max(10, Math.min(coords.top, window.innerHeight - 80));
+    
+    widget.style.left = boundedLeft + 'px';
+    widget.style.top = boundedTop + 'px';
+  } else {
+    // Default initial coordinates on first load
+    widget.style.bottom = window.innerWidth <= 768 ? '96px' : '100px';
+    widget.style.right = window.innerWidth <= 768 ? '16px' : '24px';
+    widget.style.left = 'auto';
+    widget.style.top = 'auto';
+  }
+}
+
 function toggleStopwatchExpand(event) {
   if (event) event.stopPropagation();
-  const widget = document.getElementById('stopwatchWidget');
+  
+  // If we were dragging, reject expansion to prevent overlapping events
+  if (travelDistance > 8) {
+    return;
+  }
+  
+  const isCollapsed = widget.classList.contains('collapsed');
   widget.classList.toggle('collapsed');
   widget.classList.toggle('expanded');
+  
+  // Clean viewport edge alignments after dimensions expand
+  setTimeout(() => {
+    const rect = widget.getBoundingClientRect();
+    let nLeft = rect.left;
+    let nTop = rect.top;
+    
+    if (nLeft + rect.width > window.innerWidth) {
+      nLeft = window.innerWidth - rect.width - 16;
+    }
+    if (nTop + rect.height > window.innerHeight) {
+      nTop = window.innerHeight - rect.height - 16;
+    }
+    
+    nLeft = Math.max(16, nLeft);
+    nTop = Math.max(16, nTop);
+    
+    widget.style.bottom = 'auto';
+    widget.style.right = 'auto';
+    widget.style.left = nLeft + 'px';
+    widget.style.top = nTop + 'px';
+    
+    localStorage.setItem('fitflow_stopwatch_position_v2', JSON.stringify({ left: nLeft, top: nTop }));
+  }, 100);
 }
+
+// Draggable Engine for Touch (Mobile) and Mouse (Desktop)
+function dragStart(e) {
+  // Reject dragging on control buttons so clicks are properly captured
+  if (e.target.closest('button') || e.target.closest('.tuner-btn') || e.target.closest('.week-btn')) {
+    return;
+  }
+  
+  isDragging = true;
+  travelDistance = 0;
+  widget.classList.add('dragging');
+
+  const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+  const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
+
+  const rect = widget.getBoundingClientRect();
+  startX = clientX - rect.left;
+  startY = clientY - rect.top;
+}
+
+function dragMove(e) {
+  if (!isDragging) return;
+
+  const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+  const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
+
+  let nLeft = clientX - startX;
+  let nTop = clientY - startY;
+
+  const rect = widget.getBoundingClientRect();
+  const wWidth = rect.width;
+  const wHeight = rect.height;
+
+  // Viewport bounds checking
+  nLeft = Math.max(8, Math.min(nLeft, window.innerWidth - wWidth - 8));
+  nTop = Math.max(8, Math.min(nTop, window.innerHeight - wHeight - 8));
+
+  widget.style.bottom = 'auto';
+  widget.style.right = 'auto';
+  widget.style.left = nLeft + 'px';
+  widget.style.top = nTop + 'px';
+
+  travelDistance += 2.5; // Accumulate travel distance to confirm motion
+}
+
+function dragEnd() {
+  if (!isDragging) return;
+  isDragging = false;
+  widget.classList.remove('dragging');
+
+  const rect = widget.getBoundingClientRect();
+  localStorage.setItem('fitflow_stopwatch_position_v2', JSON.stringify({
+    left: rect.left,
+    top: rect.top
+  }));
+}
+
+// Bind drag events with passive touch safety
+widget.addEventListener('mousedown', dragStart);
+document.addEventListener('mousemove', dragMove);
+document.addEventListener('mouseup', dragEnd);
+
+widget.addEventListener('touchstart', dragStart, { passive: true });
+document.addEventListener('touchmove', dragMove, { passive: false });
+document.addEventListener('touchend', dragEnd);
+
+// Event delegation for collapsed state click
+document.getElementById('stopwatchTrigger').addEventListener('click', (e) => {
+  toggleStopwatchExpand(e);
+});
 
 function toggleTimer() {
   if (stopwatchRunning) {
@@ -1962,6 +2089,7 @@ function renderStopwatchTime(time) {
   document.getElementById('collapsedTimeDisplay').innerText = `${formattedMinutes}:${formattedSeconds}`;
 }
 
+// HIGH ACCURACY VOICE CONTROLLER MODULE (ULTRA-LOW LATENCY)
 function initSpeechRecognition() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
@@ -1972,7 +2100,9 @@ function initSpeechRecognition() {
   
   recognition = new SpeechRecognition();
   recognition.continuous = true;
-  recognition.interimResults = false;
+  
+  // KEY OPTIMIZATION: enabling interimResults lets us process syllables dynamically as they are spoken
+  recognition.interimResults = true;
   recognition.lang = 'en-US';
 
   recognition.onstart = () => {
@@ -1983,41 +2113,69 @@ function initSpeechRecognition() {
   };
 
   recognition.onresult = (event) => {
-    const resultIndex = event.resultIndex;
-    const transcript = event.results[resultIndex][0].transcript.trim().toLowerCase();
-    
-    showHeardCommand(transcript);
+    let combinedInterim = '';
+    let combinedFinal = '';
 
-    if (transcript.includes('start') || transcript.includes('begin') || transcript.includes('go')) {
-      startTimer();
-    } else if (transcript.includes('stop') || transcript.includes('pause') || transcript.includes('wait')) {
-      stopTimer();
-    } else if (transcript.includes('reset') || transcript.includes('restart') || transcript.includes('clear')) {
-      resetTimer();
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      const chunk = event.results[i][0].transcript.trim().toLowerCase();
+      if (event.results[i].isFinal) {
+        combinedFinal += chunk + ' ';
+      } else {
+        combinedInterim += chunk + ' ';
+      }
     }
+
+    // Match keywords continuously from current phonetic stream (no silence pause delay!)
+    const liveText = (combinedFinal + combinedInterim).trim().toLowerCase();
+    processInstantVoiceCommand(liveText);
   };
 
   recognition.onerror = (event) => {
-    console.warn("Speech recognition error error:", event.error);
+    console.warn("Voice controller message:", event.error);
     if (event.error === 'not-allowed') {
       micActive = false;
       deactivateVoiceUI();
-      updateVoiceStatus("Permission Denied ❌", "Enable microphone permissions in your browser.");
+      updateVoiceStatus("Permission Denied ❌", "Enable mic access in settings.");
     }
   };
 
   recognition.onend = () => {
-    // Keep micro active continuously if user didn't turn it off manually
+    // Loop back on immediately if continuous listening state is active
     if (micActive) {
       try {
         recognition.start();
       } catch (e) {
-        console.error("Speech loop error:", e);
+        console.error("Voice looping failure:", e);
       }
     } else {
       deactivateVoiceUI();
     }
   };
+}
+
+function processInstantVoiceCommand(text) {
+  const now = Date.now();
+  
+  // Guard cooldown window (650ms) prevents repetitive false triggers on same sentence
+  if (now - lastCommandTime < 650) return;
+
+  // Split matches onto rapid phonetic captures
+  if (text.includes('start') || text.includes('begin') || text.includes('go')) {
+    startTimer();
+    triggerCommandAck("start", now);
+  } else if (text.includes('stop') || text.includes('pause') || text.includes('wait') || text.includes('rest')) {
+    stopTimer();
+    triggerCommandAck("stop", now);
+  } else if (text.includes('reset') || text.includes('restart') || text.includes('clear')) {
+    resetTimer();
+    triggerCommandAck("reset", now);
+  }
+}
+
+function triggerCommandAck(command, timestamp) {
+  lastCommandExecuted = command;
+  lastCommandTime = timestamp;
+  showHeardCommand(command);
 }
 
 function toggleVoiceControl() {
@@ -2035,7 +2193,7 @@ function toggleVoiceControl() {
     try {
       recognition.start();
     } catch (e) {
-      console.error("Mic initialization failed:", e);
+      console.error("Mic restart failed:", e);
     }
   }
 }
@@ -2058,10 +2216,11 @@ function showHeardCommand(text) {
   clearTimeout(heardTextTimeout);
   heardTextTimeout = setTimeout(() => {
     el.innerText = 'Say "start", "stop" or "reset"';
-  }, 3000);
+  }, 2500);
 }
 
-// Initial Run
+// Initial Bootstrapping
+restoreWidgetPosition();
 renderWeek(1);
 </script>
 
