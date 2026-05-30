@@ -25,13 +25,39 @@
     --period-pink: #f472b6;
     --period-rose: #fb7185;
     --period-soft: #fdf2f8;
+    
+    /* Background gradients */
+    --bg-gradient: linear-gradient(135deg, #fdf2f8 0%, #ede9fe 30%, #ecfdf5 60%, #fff1f2 100%);
+    --bg-glow-1: rgba(244,63,94,0.15);
+    --bg-glow-2: rgba(139,92,246,0.15);
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* MOONLIGHT THEME OVERRIDES */
+  body.moonlight {
+    --rose-pale: #1e112a;
+    --violet-pale: #120b24;
+    --period-soft: #231225;
+    --glass-bg: rgba(30, 27, 75, 0.45);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-shadow: rgba(0, 0, 0, 0.3);
+    --text-dark: #f1f0fb;
+    --text-mid: #c4b5fd;
+    --text-soft: #a78bfa;
+    --bg-gradient: linear-gradient(135deg, #090514 0%, #110925 35%, #0d1e21 70%, #170719 100%);
+    --bg-glow-1: rgba(244,63,94,0.08);
+    --bg-glow-2: rgba(139,92,246,0.08);
+  }
+
+  * { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    transition: background 0.4s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: linear-gradient(135deg, #fdf2f8 0%, #ede9fe 30%, #ecfdf5 60%, #fff1f2 100%);
+    background: var(--bg-gradient);
     min-height: 100vh;
     color: var(--text-dark);
     overflow-x: hidden;
@@ -42,7 +68,7 @@
     position: fixed;
     top: -200px; left: -200px;
     width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(244,63,94,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--bg-glow-1) 0%, transparent 70%);
     pointer-events: none; z-index: 0;
     animation: float1 8s ease-in-out infinite;
   }
@@ -51,7 +77,7 @@
     position: fixed;
     bottom: -100px; right: -100px;
     width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--bg-glow-2) 0%, transparent 70%);
     pointer-events: none; z-index: 0;
     animation: float2 10s ease-in-out infinite;
   }
@@ -62,13 +88,16 @@
   /* NAVBAR */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    padding: 16px 24px;
-    background: rgba(255,255,255,0.20);
+    padding: 12px 24px;
+    background: rgba(255,255,255,0.15);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid rgba(255,255,255,0.4);
-    box-shadow: 0 4px 32px rgba(139,92,246,0.06);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 32px var(--glass-shadow);
     display: flex; align-items: center; justify-content: space-between;
+  }
+  body.moonlight nav {
+    background: rgba(13, 10, 30, 0.5);
   }
   .nav-logo {
     font-family: 'Cormorant Garamond', serif;
@@ -79,13 +108,39 @@
   }
   .nav-tagline {
     font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--violet); opacity: 0.7; display: none;
+    color: var(--text-soft); opacity: 0.8; display: none;
   }
-  @media(min-width:600px){ .nav-tagline{ display:block; } }
+  @media(min-width:768px){ .nav-tagline{ display:block; } }
+  
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* MOONLIGHT FLOATING TOGGLE */
+  .theme-toggle-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 12px var(--glass-shadow);
+  }
+  .theme-toggle-btn:hover {
+    transform: scale(1.05);
+    border-color: var(--text-soft);
+  }
+
   .nav-badge {
     background: linear-gradient(135deg, var(--rose), var(--violet));
     color: white; font-size: 11px; font-weight: 600;
-    padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;
+    padding: 6px 12px; border-radius: 20px; letter-spacing: 0.5px;
   }
 
   /* HERO */
@@ -112,8 +167,8 @@
   }
   .hero h1 em { font-style: italic; color: var(--rose); }
   .hero-sub {
-    font-size: 15px; color: #6b7280; max-width: 520px;
-    margin: 0 auto 32px; line-height: 1.6;
+    font-size: 15px; color: var(--text-mid); max-width: 520px;
+    margin: 0 auto 32px; opacity: 0.85; line-height: 1.6;
   }
 
   /* GOALS CARDS */
@@ -123,17 +178,17 @@
     margin: 0 auto 48px;
   }
   .goal-chip {
-    background: rgba(255,255,255,0.5);
+    background: var(--glass-bg);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.6);
+    border: 1px solid var(--glass-border);
     border-radius: 30px; padding: 8px 18px;
     font-size: 13px; color: var(--text-dark);
-    box-shadow: 0 2px 12px rgba(139,92,246,0.08);
+    box-shadow: 0 2px 12px var(--glass-shadow);
     display: flex; align-items: center; gap: 6px;
   }
   .goal-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-  /* NAVIGATION PILL (FLOATING BOTTOM CENTER - PERFECT ON DESKTOP, TABLET & MOBILE) */
+  /* NAVIGATION PILL */
   .week-nav {
     position: fixed;
     bottom: 24px;
@@ -141,11 +196,11 @@
     transform: translateX(-50%);
     z-index: 1100;
     padding: 6px 8px;
-    background: rgba(255, 255, 255, 0.45);
+    background: var(--glass-bg);
     backdrop-filter: blur(20px) saturate(190%);
     -webkit-backdrop-filter: blur(20px) saturate(190%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 12px 36px rgba(139, 92, 246, 0.16);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 12px 36px var(--glass-shadow);
     border-radius: 40px;
     display: inline-flex;
     align-items: center;
@@ -153,12 +208,9 @@
     max-width: calc(100vw - 32px);
     width: auto;
     white-space: nowrap;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .week-nav:hover {
-    transform: translateX(-50%) translateY(-2px);
-    box-shadow: 0 16px 44px rgba(139, 92, 246, 0.22);
-    background: rgba(255, 255, 255, 0.55);
+  body.moonlight .week-nav {
+    background: rgba(13, 10, 30, 0.7);
   }
   .week-btn {
     padding: 10px 22px;
@@ -169,14 +221,13 @@
     border: none;
     background: transparent;
     color: var(--text-dark);
-    transition: all 0.2s ease;
     font-family: 'DM Sans', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .week-btn:hover {
-    background: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.25);
   }
   .week-btn.active {
     background: linear-gradient(135deg, var(--rose), var(--violet));
@@ -184,11 +235,11 @@
     box-shadow: 0 4px 15px rgba(244, 63, 94, 0.25);
   }
   .week-btn.period-btn {
-    color: #9d174d;
+    color: var(--period-pink);
     background: transparent;
   }
   .week-btn.period-btn:hover {
-    background: rgba(253, 242, 248, 0.5);
+    background: rgba(253, 242, 248, 0.2);
   }
   .week-btn.period-btn.active {
     background: linear-gradient(135deg, #f472b6, #fb7185);
@@ -199,22 +250,22 @@
   /* MAIN CONTENT */
   .content { max-width: 900px; margin: 0 auto; padding: 24px 16px 140px; position: relative; z-index: 1; }
 
-  /* WEEK INFO BANNER (FULLY RESPONSIVE & UN-SQUISHED) */
+  /* WEEK INFO BANNER */
   .week-banner {
-    background: rgba(255,255,255,0.25);
+    background: var(--glass-bg);
     backdrop-filter: blur(16px);
-    border: 1px solid rgba(255,255,255,0.5);
+    border: 1px solid var(--glass-border);
     border-radius: 20px; padding: 20px 24px;
     margin-bottom: 28px;
-    box-shadow: 0 8px 32px rgba(139,92,246,0.08);
+    box-shadow: 0 8px 32px var(--glass-shadow);
     display: flex;
-    flex-direction: column; /* Stacks vertically by default on mobile for full horizontal width */
+    flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
   @media(min-width:640px) {
     .week-banner {
-      flex-direction: row; /* Returns to horizontal alignment on tablets/desktops */
+      flex-direction: row;
       align-items: center;
       gap: 16px;
     }
@@ -231,10 +282,74 @@
   }
   .week-banner p { 
     font-size: 14px; 
-    color: #4b5563; 
+    color: var(--text-dark); 
+    opacity: 0.9;
     line-height: 1.5; 
-    width: 100%; /* Spans full horizontal space cleanly */
+    width: 100%;
     flex: 1; 
+  }
+
+  /* AUTO-TUNER ENERGY SELECTOR (EMPAThetic DIAL) */
+  .tuner-container {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px var(--glass-shadow);
+    text-align: center;
+  }
+  .tuner-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--period-pink);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .tuner-selector {
+    display: flex;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 30px;
+    padding: 4px;
+    position: relative;
+    gap: 4px;
+  }
+  body.moonlight .tuner-selector {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  .tuner-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 4px;
+    border-radius: 25px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    z-index: 2;
+  }
+  .tuner-btn.active {
+    background: linear-gradient(135deg, var(--period-pink), var(--period-rose));
+    color: white;
+    box-shadow: 0 4px 12px rgba(244, 114, 182, 0.25);
+  }
+  .energy-info-note {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--text-mid);
+    margin-top: 10px;
+    opacity: 0.9;
   }
 
   /* PERIOD BANNER */
@@ -245,13 +360,17 @@
     margin-bottom: 28px;
     box-shadow: 0 8px 32px rgba(244,114,182,0.1);
   }
+  body.moonlight .period-intro-banner {
+    background: linear-gradient(135deg, rgba(244,114,182,0.08), rgba(251,113,133,0.04));
+    border-color: rgba(244,114,182,0.15);
+  }
   .period-intro-banner h2 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 28px; font-weight: 300; color: #9d174d;
+    font-size: 28px; font-weight: 300; color: var(--period-pink);
     margin-bottom: 8px;
   }
-  .period-intro-banner h2 em { font-style: italic; color: #f472b6; }
-  .period-intro-banner p { font-size: 14px; color: #6b7280; line-height: 1.6; }
+  .period-intro-banner h2 em { font-style: italic; color: var(--rose-light); }
+  .period-intro-banner p { font-size: 14px; color: var(--text-dark); opacity: 0.85; line-height: 1.6; }
 
   /* IMPORTANT TIPS */
   .period-tips {
@@ -262,26 +381,26 @@
   }
   .period-tips h3 {
     font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
-    text-transform: uppercase; color: #f472b6;
+    text-transform: uppercase; color: var(--period-pink);
     margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
   }
   .period-tips ul { list-style: none; }
   .period-tips ul li {
-    font-size: 13px; color: #4b5563; padding: 5px 0;
+    font-size: 13px; color: var(--text-dark); opacity: 0.9; padding: 5px 0;
     display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
   }
   .period-tips ul li::before { content: '🌸'; font-size: 12px; flex-shrink: 0; margin-top: 1px; }
 
   /* PERIOD DAY CARDS */
   .period-day-card {
-    background: rgba(255,255,255,0.28);
+    background: var(--glass-bg);
     backdrop-filter: blur(20px) saturate(150%);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
     border: 1px solid rgba(244,114,182,0.25);
     border-radius: 24px; margin-bottom: 20px;
     box-shadow: 0 8px 40px rgba(244,114,182,0.08);
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
     animation: slideUp 0.5s ease both;
   }
   .period-day-card:hover { transform: translateY(-3px); box-shadow: 0 16px 56px rgba(244,114,182,0.14); }
@@ -292,6 +411,12 @@
   .period-day-card:nth-child(6){animation-delay:0.25s}
   .period-day-card:nth-child(7){animation-delay:0.3s}
   .period-day-card:nth-child(8){animation-delay:0.35s}
+
+  /* HIGH-LIGHT STRETCHING CARD */
+  .period-day-card.highlighted-stretch {
+    border: 2px solid var(--period-pink);
+    box-shadow: 0 0 16px rgba(244, 114, 182, 0.4);
+  }
 
   .period-day-number {
     width: 52px; height: 52px; border-radius: 16px;
@@ -310,7 +435,13 @@
     border: 1px solid rgba(244,114,182,0.15);
     transition: background 0.2s;
   }
+  body.moonlight .period-ex-row {
+    background: rgba(35, 18, 37, 0.45);
+    border-color: rgba(244,114,182,0.1);
+  }
   .period-ex-row:hover { background: rgba(253,242,248,0.8); }
+  body.moonlight .period-ex-row:hover { background: rgba(35, 18, 37, 0.65); }
+  
   .period-ex-icon {
     width: 36px; height: 36px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
@@ -321,7 +452,7 @@
     font-size: 11px; font-weight: 600;
     background: rgba(244,114,182,0.12);
     border: 1px solid rgba(244,114,182,0.2);
-    color: #9d174d; padding: 3px 10px; border-radius: 10px;
+    color: var(--period-rose); padding: 3px 10px; border-radius: 10px;
     white-space: nowrap; align-self: center;
   }
   .period-goal-note {
@@ -329,7 +460,7 @@
     background: rgba(244,114,182,0.08);
     border-left: 3px solid #f472b6;
     border-radius: 0 10px 10px 0;
-    font-size: 12px; color: #9d174d; font-style: italic;
+    font-size: 12px; color: var(--period-rose); font-style: italic;
   }
 
   /* PELVIC HEALTH BADGE IN NORMAL WEEKS */
@@ -344,17 +475,17 @@
 
   /* DAY CARDS */
   .day-card {
-    background: rgba(255,255,255,0.28);
+    background: var(--glass-bg);
     backdrop-filter: blur(20px) saturate(150%);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
-    border: 1px solid rgba(255,255,255,0.55);
+    border: 1px solid var(--glass-border);
     border-radius: 24px; margin-bottom: 20px;
-    box-shadow: 0 8px 40px rgba(139,92,246,0.08);
+    box-shadow: 0 8px 40px var(--glass-shadow);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: slideUp 0.5s ease both;
   }
-  .day-card:hover { transform: translateY(-3px); box-shadow: 0 16px 56px rgba(139,92,246,0.14); }
+  .day-card:hover { transform: translateY(-3px); box-shadow: 0 16px 56px var(--glass-shadow); }
 
   @keyframes slideUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -416,6 +547,10 @@
     border: 1px solid rgba(244,114,182,0.2);
     border-radius: 16px; padding: 16px 20px; margin-top: 16px;
   }
+  body.moonlight .pelvic-section {
+    background: linear-gradient(135deg, rgba(244,114,182,0.04), rgba(251,113,133,0.02));
+    border-color: rgba(244,114,182,0.1);
+  }
   .pelvic-section-title {
     font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
     text-transform: uppercase; color: #f472b6;
@@ -427,6 +562,10 @@
     margin-bottom: 6px;
     background: rgba(253,242,248,0.5);
     border: 1px solid rgba(244,114,182,0.12);
+  }
+  body.moonlight .pelvic-ex-row {
+    background: rgba(35, 18, 37, 0.45);
+    border-color: rgba(244,114,182,0.1);
   }
   .pelvic-sets {
     font-size: 13px; font-weight: 600; color: #f472b6;
@@ -442,7 +581,13 @@
     border: 1px solid rgba(255,255,255,0.5);
     transition: background 0.2s;
   }
+  body.moonlight .ex-row {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
   .ex-row:hover { background: rgba(255,255,255,0.55); }
+  body.moonlight .ex-row:hover { background: rgba(255, 255, 255, 0.12); }
+  
   .ex-icon {
     width: 36px; height: 36px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
@@ -450,9 +595,9 @@
   }
   .ex-details { flex: 1; }
   .ex-name { font-size: 14px; font-weight: 500; color: var(--text-dark); margin-bottom: 2px; }
-  .ex-note { font-size: 12px; color: #6b7280; }
+  .ex-note { font-size: 12px; color: var(--text-dark); opacity: 0.7; }
   .ex-sets {
-    font-size: 13px; font-weight: 600; color: var(--violet);
+    font-size: 13px; font-weight: 600; color: var(--text-soft);
     white-space: nowrap; align-self: center;
   }
 
@@ -461,6 +606,10 @@
     background: linear-gradient(135deg, rgba(20,184,166,0.1), rgba(20,184,166,0.05));
     border: 1px solid rgba(20,184,166,0.2);
     border-radius: 16px; padding: 16px 20px; margin-top: 16px;
+  }
+  body.moonlight .yoga-section {
+    background: linear-gradient(135deg, rgba(20,184,166,0.04), rgba(20,184,166,0.02));
+    border-color: rgba(20,184,166,0.1);
   }
   .yoga-title {
     font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
@@ -473,15 +622,19 @@
     color: #0f766e; font-size: 12px; padding: 4px 12px; border-radius: 10px;
     font-weight: 500;
   }
+  body.moonlight .yoga-pose {
+    background: rgba(20,184,166,0.08);
+    color: var(--teal-light);
+  }
 
   /* PROGRESS SECTION */
   .progress-section {
-    background: rgba(255,255,255,0.28);
+    background: var(--glass-bg);
     backdrop-filter: blur(16px);
-    border: 1px solid rgba(255,255,255,0.5);
+    border: 1px solid var(--glass-border);
     border-radius: 20px; padding: 24px;
     margin-top: 40px;
-    box-shadow: 0 8px 32px rgba(139,92,246,0.08);
+    box-shadow: 0 8px 32px var(--glass-shadow);
   }
   .progress-title {
     font-family: 'Cormorant Garamond', serif;
@@ -495,9 +648,13 @@
     border-radius: 16px; padding: 16px;
     text-align: center;
   }
+  body.moonlight .progress-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.05);
+  }
   .progress-weeks { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #9ca3af; margin-bottom: 8px; }
   .progress-card ul { list-style: none; }
-  .progress-card li { font-size: 13px; color: #4b5563; padding: 3px 0; display: flex; align-items: center; gap: 6px; justify-content: center; }
+  .progress-card li { font-size: 13px; color: var(--text-dark); opacity: 0.85; padding: 3px 0; display: flex; align-items: center; gap: 6px; justify-content: center; }
   .progress-card li::before { content: '✦'; font-size: 8px; color: var(--rose); }
 
   /* SUNDAY REST */
@@ -528,6 +685,15 @@
   .tag-gentle { background: rgba(251,113,133,0.12); color: #9f1239; }
   .tag-recovery { background: rgba(20,184,166,0.12); color: #0f766e; }
 
+  body.moonlight .tag-strength { background: rgba(139,92,246,0.25); color: #c4b5fd; }
+  body.moonlight .tag-core { background: rgba(244,63,94,0.2); color: #fda4af; }
+  body.moonlight .tag-yoga { background: rgba(20,184,166,0.2); color: #99f6e4; }
+  body.moonlight .tag-legs { background: rgba(245,158,11,0.2); color: #fde047; }
+  body.moonlight .tag-cardio { background: rgba(236,72,153,0.2); color: #f472b6; }
+  body.moonlight .tag-period { background: rgba(244,114,182,0.25); color: #f472b6; }
+  body.moonlight .tag-gentle { background: rgba(251,113,133,0.2); color: #fda4af; }
+  body.moonlight .tag-recovery { background: rgba(20,184,166,0.2); color: #99f6e4; }
+
   .icon-warmup { background: rgba(245,158,11,0.15); }
   .icon-strength { background: rgba(139,92,246,0.12); }
   .icon-core { background: rgba(244,63,94,0.1); }
@@ -554,7 +720,7 @@
     body::before { width: 320px; height: 320px; top: -120px; left: -140px; }
     body::after { width: 300px; height: 300px; bottom: -120px; right: -120px; }
 
-    nav { flex-direction: column; align-items: flex-start; gap: 8px; }
+    nav { padding: 12px 16px; }
     .nav-logo { font-size: 22px; }
     .nav-badge { font-size: 10px; padding: 4px 10px; }
 
@@ -593,17 +759,6 @@
     .hero h1 { font-size: clamp(30px, 13vw, 40px); }
     .hero-sub { font-size: 0.94rem; line-height: 1.65; }
 
-    .day-name { font-size: 10px; letter-spacing: 1.5px; }
-    .day-title { font-size: 15px; }
-    .day-meta { gap: 6px; }
-    .meta-tag { font-size: 10px; padding: 3px 8px; }
-    .ex-name { font-size: 13px; }
-    .ex-note { font-size: 11px; }
-
-    .progress-title { font-size: 22px; }
-    .progress-grid { grid-template-columns: 1fr; }
-
-    /* Centered Pill Adjustments for Mobile Viewports */
     .week-nav {
       bottom: 16px;
       padding: 4px 6px;
@@ -622,7 +777,6 @@
     .nav-logo { font-size: 20px; }
     .goal-chip { width: 100%; justify-content: center; }
 
-    /* Centered Pill Adjustments for Small Mobile Displays */
     .week-nav {
       bottom: 12px;
       padding: 3px;
@@ -646,7 +800,10 @@
 <nav>
   <div class="nav-logo">FitFlow ✦</div>
   <div class="nav-tagline">Your 6-Day Transformation Plan</div>
-  <div class="nav-badge">6-Day Split</div>
+  <div class="nav-actions">
+    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleMoonlight()" title="Toggle Moonlight Theme">🌙</button>
+    <div class="nav-badge">6-Day Split</div>
+  </div>
 </nav>
 
 <section class="hero">
@@ -674,6 +831,10 @@
 <div class="content" id="mainContent"></div>
 
 <script>
+// Active App State
+let currentWeek = 1; // can be 1, 2, 3 or 'period'
+let currentEnergy = 'moderate'; // can be 'low', 'moderate', or 'active'
+
 const WEEKS = {
   1: {
     label: "Week 1–2 — Foundation Phase",
@@ -1034,7 +1195,7 @@ const WEEKS = {
         sections:[
           { title:"Core Mastery", icon:"⚡", iconClass:"icon-core", exes:[
             {name:"V-Sit Hold", note:"Balance on tailbone, legs and torso in V", sets:"3 × 20 sec"},
-            {name:"Mountain Climiders — Fast", note:"Sprint tempo, tight core", sets:"3 × 40 sec"},
+            {name:"Mountain Climbers — Fast", note:"Sprint tempo, tight core", sets:"3 × 40 sec"},
             {name:"Russian Twists + Legs Raised", note:"Both feet off ground throughout", sets:"3 × 20 each"},
             {name:"Hollow Body Rocks", note:"Rock forward and back in hollow hold", sets:"3 × 15 rocks"},
           ]},
@@ -1133,13 +1294,13 @@ const PERIOD_DAYS = [
     tags:["Gentle","Yoga","Recovery"],
     goal:"Relax body and reduce stiffness.",
     exercises:[
-      {name:"Slow walking inside house or light marching", sets:"5 min", icon:"🚶"},
-      {name:"Shoulder Rolls (forward + backward)", sets:"10 reps", icon:"🔄"},
-      {name:"Neck Stretch", sets:"30 sec", icon:"🧘"},
-      {name:"Cat-Cow Stretch", sets:"8 reps", icon:"🐱"},
-      {name:"Child's Pose", sets:"1 min", icon:"🌿"},
-      {name:"Butterfly Stretch", sets:"1 min", icon:"🦋"},
-      {name:"Deep Breathing", sets:"3 min", icon:"🌬️"},
+      {name:"Slow walking inside house or light marching", sets:"5 min", icon:"🚶", effort: "low"},
+      {name:"Shoulder Rolls (forward + backward)", sets:"10 reps", icon:"🔄", effort: "low"},
+      {name:"Neck Stretch", sets:"30 sec", icon:"🧘", effort: "low"},
+      {name:"Cat-Cow Stretch", sets:"8 reps", icon:"🐱", effort: "low"},
+      {name:"Child's Pose", sets:"1 min", icon:"🌿", effort: "low"},
+      {name:"Butterfly Stretch", sets:"1 min", icon:"🦋", effort: "low"},
+      {name:"Deep Breathing", sets:"3 min", icon:"🌬️", effort: "low"},
     ]
   },
   {
@@ -1147,12 +1308,12 @@ const PERIOD_DAYS = [
     tags:["Gentle","Strength","Slow Pace"],
     goal:"Keep pace slow.",
     exercises:[
-      {name:"Warm-up: slow march", sets:"3 min", icon:"🚶"},
-      {name:"Wall Push-ups", sets:"2 × 8 reps", icon:"💪"},
-      {name:"Chair Squats", sets:"2 × 10 reps", icon:"🪑"},
-      {name:"Standing Side Leg Raise", sets:"2 × 10 each leg", icon:"🦵"},
-      {name:"Glute Bridge", sets:"2 × 10 reps", icon:"🌸"},
-      {name:"Light Stretching", sets:"5 min", icon:"🧘"},
+      {name:"Warm-up: slow march", sets:"3 min", icon:"🚶", effort: "low"},
+      {name:"Wall Push-ups", sets:"2 × 8 reps", icon:"💪", effort: "high"},
+      {name:"Chair Squats", sets:"2 × 10 reps", icon:"🪑", effort: "high"},
+      {name:"Standing Side Leg Raise", sets:"2 × 10 each leg", icon:"🦵", effort: "high"},
+      {name:"Glute Bridge", sets:"2 × 10 reps", icon:"🌸", effort: "high"},
+      {name:"Light Stretching", sets:"5 min", icon:"🧘", effort: "low"},
     ]
   },
   {
@@ -1160,13 +1321,13 @@ const PERIOD_DAYS = [
     tags:["Yoga","Mobility","Recovery"],
     goal:"Reduce bloating and body tightness.",
     exercises:[
-      {name:"Cat-Cow", sets:"10 reps", icon:"🐱"},
-      {name:"Cobra Stretch", sets:"20 sec × 2", icon:"🐍"},
-      {name:"Child's Pose", sets:"1 min", icon:"🌿"},
-      {name:"Butterfly Pose", sets:"1 min", icon:"🦋"},
-      {name:"Seated Forward Stretch", sets:"30 sec", icon:"🧘"},
-      {name:"Hip Circles", sets:"10 each side", icon:"🔄"},
-      {name:"Deep Breathing / Meditation", sets:"5 min", icon:"🌬️"},
+      {name:"Cat-Cow", sets:"10 reps", icon:"🐱", effort: "low"},
+      {name:"Cobra Stretch", sets:"20 sec × 2", icon:"🐍", effort: "low"},
+      {name:"Child's Pose", sets:"1 min", icon:"🌿", effort: "low"},
+      {name:"Butterfly Pose", sets:"1 min", icon:"🦋", effort: "low"},
+      {name:"Seated Forward Stretch", sets:"30 sec", icon:"🧘", effort: "low"},
+      {name:"Hip Circles", sets:"10 each side", icon:"🔄", effort: "low"},
+      {name:"Deep Breathing / Meditation", sets:"5 min", icon:"🌬️", effort: "low"},
     ]
   },
   {
@@ -1174,12 +1335,12 @@ const PERIOD_DAYS = [
     tags:["Strength","Gentle","No Heavy Intensity"],
     goal:"No heavy intensity.",
     exercises:[
-      {name:"Marching in Place", sets:"3 min", icon:"🚶"},
-      {name:"Wall Push-ups", sets:"2 × 10", icon:"💪"},
-      {name:"Sit-to-Stand from Chair", sets:"2 × 12", icon:"🪑"},
-      {name:"Standing Calf Raises", sets:"2 × 15", icon:"🦵"},
-      {name:"Standing Arm Circles", sets:"2 × 20 sec", icon:"🔄"},
-      {name:"Light Stretching", sets:"5 min", icon:"🧘"},
+      {name:"Marching in Place", sets:"3 min", icon:"🚶", effort: "low"},
+      {name:"Wall Push-ups", sets:"2 × 10", icon:"💪", effort: "high"},
+      {name:"Sit-to-Stand from Chair", sets:"2 × 12", icon:"🪑", effort: "high"},
+      {name:"Standing Calf Raises", sets:"2 × 15", icon:"🦵", effort: "high"},
+      {name:"Standing Arm Circles", sets:"2 × 20 sec", icon:"🔄", effort: "low"},
+      {name:"Light Stretching", sets:"5 min", icon:"🧘", effort: "low"},
     ]
   },
   {
@@ -1187,8 +1348,8 @@ const PERIOD_DAYS = [
     tags:["Recovery","Cardio","Gentle"],
     goal:"Helps circulation and mood.",
     exercises:[
-      {name:"Slow Walking", sets:"10 min", icon:"🚶"},
-      {name:"Gentle Stretching", sets:"5 min", icon:"🧘"},
+      {name:"Slow Walking", sets:"10 min", icon:"🚶", effort: "low"},
+      {name:"Gentle Stretching", sets:"5 min", icon:"🧘", effort: "low"},
     ]
   },
   {
@@ -1196,12 +1357,12 @@ const PERIOD_DAYS = [
     tags:["Gentle","Strength","Full Body"],
     goal:"Keep intensity light and controlled.",
     exercises:[
-      {name:"Warm-up March", sets:"3 min", icon:"🚶"},
-      {name:"Chair Squats", sets:"2 × 10", icon:"🪑"},
-      {name:"Standing Knee Raises", sets:"2 × 12", icon:"🦵"},
-      {name:"Wall Push-ups", sets:"2 × 8", icon:"💪"},
-      {name:"Glute Bridge", sets:"2 × 12", icon:"🌸"},
-      {name:"Butterfly Stretch", sets:"1 min", icon:"🦋"},
+      {name:"Warm-up March", sets:"3 min", icon:"🚶", effort: "low"},
+      {name:"Chair Squats", sets:"2 × 10", icon:"🪑", effort: "high"},
+      {name:"Standing Knee Raises", sets:"2 × 12", icon:"🦵", effort: "high"},
+      {name:"Wall Push-ups", sets:"2 × 8", icon:"💪", effort: "high"},
+      {name:"Glute Bridge", sets:"2 × 12", icon:"🌸", effort: "high"},
+      {name:"Butterfly Stretch", sets:"1 min", icon:"🦋", effort: "low"},
     ]
   },
   {
@@ -1209,15 +1370,54 @@ const PERIOD_DAYS = [
     tags:["Yoga","Recovery","Rest"],
     goal:"Full rest — let your body recover.",
     exercises:[
-      {name:"Light Yoga Flow", sets:"5 min", icon:"🧘"},
-      {name:"Child's Pose", sets:"1–2 min", icon:"🌿"},
-      {name:"Deep Breathing", sets:"5 min", icon:"🌬️"},
-      {name:"Gentle Walking", sets:"5–10 min", icon:"🚶"},
+      {name:"Light Yoga Flow", sets:"5 min", icon:"🧘", effort: "low"},
+      {name:"Child's Pose", sets:"1–2 min", icon:"🌿", effort: "low"},
+      {name:"Deep Breathing", sets:"5 min", icon:"🌬️", effort: "low"},
+      {name:"Gentle Walking", sets:"5–10 min", icon:"🚶", effort: "low"},
     ]
   }
 ];
 
+function toggleMoonlight() {
+  const isMoonlight = document.body.classList.toggle('moonlight');
+  const btn = document.getElementById('themeToggleBtn');
+  btn.innerHTML = isMoonlight ? "☀️" : "🌙";
+  
+  // Persist dark mode settings across manual tab transitions
+  localStorage.setItem('fitflow_moonlight', isMoonlight ? 'true' : 'false');
+}
+
+// Initial theme check on window load
+if (localStorage.getItem('fitflow_moonlight') === 'true') {
+  document.body.classList.add('moonlight');
+  document.getElementById('themeToggleBtn').innerHTML = "☀️";
+}
+
+function selectEnergy(level) {
+  currentEnergy = level;
+  
+  // Re-render the tuner buttons & day-cards
+  document.querySelectorAll('.tuner-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  const activeBtn = document.getElementById(`energy-${level}`);
+  if (activeBtn) activeBtn.classList.add('active');
+  
+  // Update the detailed subtext
+  const notes = {
+    low: "🧘 Low Energy Mode: We highlighted relaxing yoga / deep breathing & collapsed heavy wall workouts.",
+    moderate: "🌸 Balanced Mode: Standard 7-day routine. Moderate stretching, core, and posture works.",
+    active: "⚡ Active Mode: All routines unlocked! Wall push-ups & light strength holds are fully responsive."
+  };
+  document.getElementById('energyNote').innerText = notes[level];
+  
+  // Re-render Period Tab Days list to apply the active tuner rule
+  renderPeriodWeek(true);
+}
+
 function switchWeek(w, btn){
+  currentWeek = w;
   document.querySelectorAll('.week-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   if(w === 'period'){
@@ -1229,22 +1429,76 @@ function switchWeek(w, btn){
   window.scrollTo({top: document.getElementById('mainContent').offsetTop - 100, behavior: 'smooth'});
 }
 
-function renderPeriodWeek(){
+function renderPeriodWeek(keepEnergy = false){
   const cont = document.getElementById('mainContent');
+  
   let html = `
     <div class="period-intro-banner">
       <h2>Period Days — <em>Gentle Movement Plan</em></h2>
       <p>A 7-day low-intensity program designed specifically for your menstrual cycle. Listen to your body — move gently, breathe deeply, and prioritize recovery.</p>
     </div>
+    
+    <!-- INTERACTIVE ENERGY LEVEL SELECTOR (AUTO-TUNER) -->
+    <div class="tuner-container">
+      <div class="tuner-title">🌸 Auto-Tuner: How are you feeling today?</div>
+      <div class="tuner-selector">
+        <button class="tuner-btn ${currentEnergy === 'low' ? 'active' : ''}" id="energy-low" onclick="selectEnergy('low')">🛌 Low Energy</button>
+        <button class="tuner-btn ${currentEnergy === 'moderate' ? 'active' : ''}" id="energy-moderate" onclick="selectEnergy('moderate')">🌸 Moderate</button>
+        <button class="tuner-btn ${currentEnergy === 'active' ? 'active' : ''}" id="energy-active" onclick="selectEnergy('active')">⚡ Active</button>
+      </div>
+      <div class="energy-info-note" id="energyNote">
+        ${
+          currentEnergy === 'low' 
+          ? "🧘 Low Energy Mode: We highlighted relaxing yoga / deep breathing & collapsed heavy wall workouts." 
+          : currentEnergy === 'active' 
+          ? "⚡ Active Mode: All routines unlocked! Wall push-ups & light strength holds are fully responsive." 
+          : "🌸 Balanced Mode: Standard 7-day routine. Moderate stretching, core, and posture works."
+        }
+      </div>
+    </div>
   `;
 
   PERIOD_DAYS.forEach((day, i) => {
+    // Process and filter/modify exercises inside active day card based on selected energy
+    let adaptedExercises = [];
+    let highlightStretch = false;
+    let autoOpenCard = false;
+
+    day.exercises.forEach(ex => {
+      if (currentEnergy === 'low') {
+        if (ex.effort === 'high') {
+          // Do not include or adapt the high-effort exercise
+        } else {
+          // Highlight deep stretching routines
+          adaptedExercises.push({
+            ...ex,
+            sets: ex.name.includes("Breathing") || ex.name.includes("Pose") || ex.name.includes("Stretch") ? "Deep Hold — " + ex.sets : ex.sets
+          });
+          highlightStretch = true;
+        }
+      } else if (currentEnergy === 'active') {
+        // Unlock all + upgrade slightly
+        adaptedExercises.push({
+          ...ex,
+          sets: ex.effort === 'high' ? ex.sets.replace("2 ×", "3 ×") + " (⚡ active bonus)" : ex.sets
+        });
+      } else {
+        // Moderate - default baseline
+        adaptedExercises.push(ex);
+      }
+    });
+
+    // If day has empty list (all filtered out on Low Energy), provide a restful breathing slot
+    if (adaptedExercises.length === 0) {
+      adaptedExercises.push({name: "Savasana Rest / Meditation", sets: "5 mins", icon: "🧘", effort: "low"});
+    }
+
     const tags = day.tags.map(t => {
       const cls = t==='Yoga'||t==='Mobility'?'tag-yoga':t==='Recovery'||t==='Rest'?'tag-recovery':t==='Gentle'||t==='No Heavy Intensity'||t==='Slow Pace'?'tag-gentle':t==='Strength'?'tag-strength':'tag-cardio';
       return `<span class="meta-tag ${cls}">${t}</span>`;
     }).join('');
 
-    const exRows = day.exercises.map(ex => `
+    const exRows = adaptedExercises.map(ex => `
       <div class="period-ex-row">
         <div class="period-ex-icon">${ex.icon}</div>
         <div class="ex-details">
@@ -1254,8 +1508,10 @@ function renderPeriodWeek(){
       </div>
     `).join('');
 
+    const cardHighlightClass = highlightStretch && currentEnergy === 'low' ? 'highlighted-stretch' : '';
+
     html += `
-      <div class="period-day-card" id="pcard-${i}">
+      <div class="period-day-card ${cardHighlightClass}" id="pcard-${i}">
         <div class="day-header" onclick="togglePeriodCard(${i})">
           <div class="period-day-number">D${day.dayNum}</div>
           <div class="day-info">
@@ -1293,7 +1549,6 @@ function renderPeriodWeek(){
   `;
 
   cont.innerHTML = html;
-  // Auto-opening setTimeout removed to keep all cards closed by default
 }
 
 function renderWeek(w){
@@ -1454,7 +1709,6 @@ function renderWeek(w){
   `;
 
   cont.innerHTML = html;
-  // Auto-opening setTimeout removed to keep all cards closed by default
 }
 
 function toggleCard(i){
@@ -1467,6 +1721,7 @@ function togglePeriodCard(i){
   card.classList.toggle('open');
 }
 
+// Initial Run
 renderWeek(1);
 </script>
 
