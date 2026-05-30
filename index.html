@@ -197,10 +197,9 @@
   }
 
   /* MAIN CONTENT */
-  /* Extra bottom padding to clear the floating bottom navigation bar */
   .content { max-width: 900px; margin: 0 auto; padding: 24px 16px 140px; position: relative; z-index: 1; }
 
-  /* WEEK INFO BANNER */
+  /* WEEK INFO BANNER (FULLY RESPONSIVE & UN-SQUISHED) */
   .week-banner {
     background: rgba(255,255,255,0.25);
     backdrop-filter: blur(16px);
@@ -208,18 +207,35 @@
     border-radius: 20px; padding: 20px 24px;
     margin-bottom: 28px;
     box-shadow: 0 8px 32px rgba(139,92,246,0.08);
-    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    display: flex;
+    flex-direction: column; /* Stacks vertically by default on mobile for full horizontal width */
+    align-items: flex-start;
+    gap: 12px;
+  }
+  @media(min-width:640px) {
+    .week-banner {
+      flex-direction: row; /* Returns to horizontal alignment on tablets/desktops */
+      align-items: center;
+      gap: 16px;
+    }
   }
   .week-banner .badge {
     background: linear-gradient(135deg, var(--rose), var(--violet));
     color: white; font-size: 12px; font-weight: 600;
-    padding: 4px 14px; border-radius: 15px;
+    padding: 6px 14px; border-radius: 15px;
     white-space: nowrap;
+    display: inline-block;
   }
   .week-banner .badge.period-badge {
     background: linear-gradient(135deg, #f472b6, #fb7185);
   }
-  .week-banner p { font-size: 14px; color: #4b5563; line-height: 1.5; flex: 1; }
+  .week-banner p { 
+    font-size: 14px; 
+    color: #4b5563; 
+    line-height: 1.5; 
+    width: 100%; /* Spans full horizontal space cleanly */
+    flex: 1; 
+  }
 
   /* PERIOD BANNER */
   .period-intro-banner {
@@ -534,7 +550,6 @@
     .progress-section { padding: 20px; }
   }
 
-  /* MEDIA BREAKPOINT ADJUSTMENTS FOR THE BOTTOM FLOATING BAR AND TEXT CLIPPING */
   @media (max-width: 768px) {
     body::before { width: 320px; height: 320px; top: -120px; left: -140px; }
     body::after { width: 300px; height: 300px; bottom: -120px; right: -120px; }
@@ -1211,7 +1226,7 @@ function switchWeek(w, btn){
     renderWeek(w);
   }
   // Smooth scroll target alignment optimized for bottom floating bar
-  window.scrollTo({top: document.getElementById('mainContent').offsetTop - 60, behavior: 'smooth'});
+  window.scrollTo({top: document.getElementById('mainContent').offsetTop - 100, behavior: 'smooth'});
 }
 
 function renderPeriodWeek(){
