@@ -717,7 +717,7 @@ const WEEKS = {
           ]},
           { title:"Inner Thigh Toning", icon:"✨", iconClass:"icon-cardio", exes:[
             {name:"Sumo Squat Pulse", note:"Feet wide, toes out, small pulses", sets:"3 × 20 pulses"},
-            {name:"Side-lying Leg Lift", note:"Lift and lower slowly", sets:"3 × 12 each side"},
+            {name:"Side-lying Leg Lift", note:"Keep control — slow movement", sets:"3 × 12 each side"},
             {name:"Standing Inner Thigh Squeeze (pillow)", note:"Squeeze for 2 sec hold", sets:"3 × 15"},
             {name:"Calf Raises", note:"Hold chair for balance", sets:"3 × 20"},
           ]},
@@ -1034,7 +1034,7 @@ const WEEKS = {
         sections:[
           { title:"Core Mastery", icon:"⚡", iconClass:"icon-core", exes:[
             {name:"V-Sit Hold", note:"Balance on tailbone, legs and torso in V", sets:"3 × 20 sec"},
-            {name:"Mountain Climbers — Fast", note:"Sprint tempo, tight core", sets:"3 × 40 sec"},
+            {name:"Mountain Climiders — Fast", note:"Sprint tempo, tight core", sets:"3 × 40 sec"},
             {name:"Russian Twists + Legs Raised", note:"Both feet off ground throughout", sets:"3 × 20 each"},
             {name:"Hollow Body Rocks", note:"Rock forward and back in hollow hold", sets:"3 × 15 rocks"},
           ]},
@@ -1293,10 +1293,7 @@ function renderPeriodWeek(){
   `;
 
   cont.innerHTML = html;
-  setTimeout(()=>{
-    const first = document.getElementById('pcard-0');
-    if(first) first.classList.add('open');
-  }, 200);
+  // Auto-opening setTimeout removed to keep all cards closed by default
 }
 
 function renderWeek(w){
@@ -1457,10 +1454,7 @@ function renderWeek(w){
   `;
 
   cont.innerHTML = html;
-  setTimeout(()=>{
-    const first = document.getElementById('card-0');
-    if(first) first.classList.add('open');
-  }, 200);
+  // Auto-opening setTimeout removed to keep all cards closed by default
 }
 
 function toggleCard(i){
