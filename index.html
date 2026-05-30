@@ -16,9 +16,9 @@
     --amber: #f59e0b;
     --teal: #14b8a6;
     --teal-light: #99f6e4;
-    --glass-bg: rgba(255,255,255,0.18);
-    --glass-border: rgba(255,255,255,0.35);
-    --glass-shadow: rgba(139,92,246,0.12);
+    --glass-bg: rgba(255, 255, 255, 0.45);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --glass-shadow: rgba(139, 92, 246, 0.08);
     --text-dark: #1e1b4b;
     --text-mid: #4c1d95;
     --text-soft: #7c3aed;
@@ -26,10 +26,9 @@
     --period-rose: #fb7185;
     --period-soft: #fdf2f8;
     
-    /* Background gradients */
-    --bg-gradient: linear-gradient(135deg, #fdf2f8 0%, #ede9fe 30%, #ecfdf5 60%, #fff1f2 100%);
-    --bg-glow-1: rgba(244,63,94,0.15);
-    --bg-glow-2: rgba(139,92,246,0.15);
+    /* Stopwatch dashboard gradients */
+    --stopwatch-bg: linear-gradient(180deg, #e0e7ff 0%, #ede9fe 100%);
+    --play-btn-glow: rgba(139, 92, 246, 0.3);
   }
 
   /* MOONLIGHT THEME OVERRIDES */
@@ -43,9 +42,8 @@
     --text-dark: #f1f0fb;
     --text-mid: #c4b5fd;
     --text-soft: #a78bfa;
-    --bg-gradient: linear-gradient(135deg, #090514 0%, #110925 35%, #0d1e21 70%, #170719 100%);
-    --bg-glow-1: rgba(244,63,94,0.08);
-    --bg-glow-2: rgba(139,92,246,0.08);
+    --stopwatch-bg: linear-gradient(180deg, #110925 0%, #090514 100%);
+    --play-btn-glow: rgba(167, 139, 250, 0.25);
   }
 
   * { 
@@ -53,64 +51,36 @@
     padding: 0; 
     box-sizing: border-box; 
     transition: background 0.4s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--bg-gradient);
+    background: linear-gradient(135deg, #fdf2f8 0%, #ede9fe 30%, #ecfdf5 60%, #fff1f2 100%);
     min-height: 100vh;
     color: var(--text-dark);
     overflow-x: hidden;
   }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: -200px; left: -200px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, var(--bg-glow-1) 0%, transparent 70%);
-    pointer-events: none; z-index: 0;
-    animation: float1 8s ease-in-out infinite;
-  }
-  body::after {
-    content: '';
-    position: fixed;
-    bottom: -100px; right: -100px;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, var(--bg-glow-2) 0%, transparent 70%);
-    pointer-events: none; z-index: 0;
-    animation: float2 10s ease-in-out infinite;
+  body.moonlight {
+    background: linear-gradient(135deg, #090514 0%, #110925 35%, #0d1e21 70%, #170719 100%);
   }
 
-  @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,30px)} }
-  @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,-20px)} }
-
-  /* NAVBAR */
+  /* OVERLAY NAVIGATION */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    padding: 12px 24px;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid var(--glass-border);
-    box-shadow: 0 4px 32px var(--glass-shadow);
+    position: absolute; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 24px;
     display: flex; align-items: center; justify-content: space-between;
-  }
-  body.moonlight nav {
-    background: rgba(13, 10, 30, 0.5);
   }
   .nav-logo {
     font-family: 'Cormorant Garamond', serif;
     font-size: 24px; font-weight: 600;
+    color: var(--text-dark);
+  }
+  .nav-logo span {
     background: linear-gradient(135deg, var(--rose), var(--violet));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .nav-tagline {
-    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--text-soft); opacity: 0.8; display: none;
-  }
-  @media(min-width:768px){ .nav-tagline{ display:block; } }
   
   .nav-actions {
     display: flex;
@@ -118,7 +88,6 @@
     gap: 12px;
   }
 
-  /* MOONLIGHT FLOATING TOGGLE */
   .theme-toggle-btn {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -134,83 +103,164 @@
   }
   .theme-toggle-btn:hover {
     transform: scale(1.05);
-    border-color: var(--text-soft);
   }
 
-  .nav-badge {
-    background: linear-gradient(135deg, var(--rose), var(--violet));
-    color: white; font-size: 11px; font-weight: 600;
-    padding: 6px 12px; border-radius: 20px; letter-spacing: 0.5px;
+  /* STOPWATCH DASHBOARD HEADER PANEL (MIMICS image_2222f8.png) */
+  .dashboard-hero {
+    background: var(--stopwatch-bg);
+    padding: 80px 24px 48px;
+    text-align: center;
+    position: relative;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   }
-
-  /* HERO */
-  .hero {
-    padding: 120px 24px 40px;
-    text-align: center; position: relative; z-index: 1;
+  .dashboard-title {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 24px;
+    opacity: 0.8;
   }
-  .hero-eyebrow {
-    display: inline-block;
-    background: rgba(244,63,94,0.1);
-    border: 1px solid rgba(244,63,94,0.2);
-    color: var(--rose); font-size: 11px; font-weight: 600;
-    letter-spacing: 2.5px; text-transform: uppercase;
-    padding: 6px 18px; border-radius: 20px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(10px);
-  }
-  .hero h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(36px, 7vw, 72px);
-    font-weight: 300; line-height: 1.1;
+  .dashboard-timer {
+    font-family: monospace;
+    font-size: clamp(48px, 12vw, 68px);
+    font-weight: 600;
     color: var(--text-dark);
-    margin-bottom: 12px;
-  }
-  .hero h1 em { font-style: italic; color: var(--rose); }
-  .hero-sub {
-    font-size: 15px; color: var(--text-mid); max-width: 520px;
-    margin: 0 auto 32px; opacity: 0.85; line-height: 1.6;
+    letter-spacing: -2px;
+    margin-bottom: 32px;
+    text-shadow: 0 4px 12px var(--glass-shadow);
   }
 
-  /* GOALS CARDS */
-  .goals-grid {
-    display: flex; flex-wrap: wrap; gap: 10px;
-    justify-content: center; max-width: 700px;
-    margin: 0 auto 48px;
+  /* CENTRAL PLAY BUTTON INTEGRATION */
+  .control-center {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .goal-chip {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 30px; padding: 8px 18px;
-    font-size: 13px; color: var(--text-dark);
-    box-shadow: 0 2px 12px var(--glass-shadow);
-    display: flex; align-items: center; gap: 6px;
+  .play-pulse-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid var(--text-soft);
+    opacity: 0;
+    pointer-events: none;
   }
-  .goal-dot { width: 8px; height: 8px; border-radius: 50%; }
+  
+  /* Concentric halos that animate when stopwatch is running */
+  .control-center.running .play-pulse-ring {
+    animation: pulse-wave 2s infinite cubic-bezier(0.25, 0, 0, 1);
+  }
+  .control-center.running .play-pulse-ring:nth-child(2) {
+    animation-delay: 0.6s;
+  }
+  .control-center.running .play-pulse-ring:nth-child(3) {
+    animation-delay: 1.2s;
+  }
 
-  /* NAVIGATION PILL */
-  .week-nav {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1100;
-    padding: 6px 8px;
+  @keyframes pulse-wave {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  .play-trigger-btn {
+    position: relative;
+    z-index: 5;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    background: linear-gradient(135deg, var(--rose) 0%, var(--violet) 100%);
+    box-shadow: 0 8px 24px var(--play-btn-glow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  body.moonlight .play-trigger-btn {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+  .play-trigger-btn:hover {
+    transform: scale(1.05);
+  }
+  .play-trigger-btn:active {
+    transform: scale(0.95);
+  }
+  .play-trigger-btn svg {
+    width: 32px;
+    height: 32px;
+    fill: #ffffff;
+    transition: transform 0.3s ease;
+  }
+
+  /* RESET BUTTON */
+  .reset-trigger-btn {
+    position: absolute;
+    right: -48px;
+    bottom: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
     background: var(--glass-bg);
-    backdrop-filter: blur(20px) saturate(190%);
-    -webkit-backdrop-filter: blur(20px) saturate(190%);
     border: 1px solid var(--glass-border);
-    box-shadow: 0 12px 36px var(--glass-shadow);
-    border-radius: 40px;
+    box-shadow: 0 4px 12px var(--glass-shadow);
+    color: var(--text-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    z-index: 10;
+  }
+  .reset-trigger-btn:active {
+    transform: scale(0.9);
+  }
+
+  /* STATUS BADGE */
+  .dashboard-status {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-mid);
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    max-width: calc(100vw - 32px);
-    width: auto;
-    white-space: nowrap;
+    margin: 0 auto;
+    opacity: 0.9;
   }
-  body.moonlight .week-nav {
-    background: rgba(13, 10, 30, 0.7);
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444; /* red when resting/clocked off */
+    transition: background 0.3s;
+  }
+  .status-dot.active {
+    background: #14b8a6; /* green when active/running */
+    box-shadow: 0 0 10px #14b8a6;
+  }
+
+  /* WORKOUT NAVIGATION PILL */
+  .week-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 32px auto 16px;
+    padding: 6px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 40px;
+    max-width: fit-content;
+    box-shadow: 0 8px 24px var(--glass-shadow);
   }
   .week-btn {
     padding: 10px 22px;
@@ -222,9 +272,6 @@
     background: transparent;
     color: var(--text-dark);
     font-family: 'DM Sans', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   .week-btn:hover {
     background: rgba(255, 255, 255, 0.25);
@@ -236,19 +283,14 @@
   }
   .week-btn.period-btn {
     color: var(--period-pink);
-    background: transparent;
-  }
-  .week-btn.period-btn:hover {
-    background: rgba(253, 242, 248, 0.2);
   }
   .week-btn.period-btn.active {
     background: linear-gradient(135deg, #f472b6, #fb7185);
-    color: white;
     box-shadow: 0 4px 15px rgba(244, 114, 182, 0.3);
   }
 
-  /* MAIN CONTENT */
-  .content { max-width: 900px; margin: 0 auto; padding: 24px 16px 140px; position: relative; z-index: 1; }
+  /* MAIN CONTENT DRAWER */
+  .content { max-width: 900px; margin: 0 auto; padding: 16px 16px 100px; position: relative; z-index: 1; }
 
   /* WEEK INFO BANNER */
   .week-banner {
@@ -275,17 +317,12 @@
     color: white; font-size: 12px; font-weight: 600;
     padding: 6px 14px; border-radius: 15px;
     white-space: nowrap;
-    display: inline-block;
-  }
-  .week-banner .badge.period-badge {
-    background: linear-gradient(135deg, #f472b6, #fb7185);
   }
   .week-banner p { 
     font-size: 14px; 
     color: var(--text-dark); 
     opacity: 0.9;
     line-height: 1.5; 
-    width: 100%;
     flex: 1; 
   }
 
@@ -316,7 +353,6 @@
     background: rgba(0, 0, 0, 0.06);
     border-radius: 30px;
     padding: 4px;
-    position: relative;
     gap: 4px;
   }
   body.moonlight .tuner-selector {
@@ -337,7 +373,6 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    z-index: 2;
   }
   .tuner-btn.active {
     background: linear-gradient(135deg, var(--period-pink), var(--period-rose));
@@ -391,90 +426,8 @@
   }
   .period-tips ul li::before { content: '🌸'; font-size: 12px; flex-shrink: 0; margin-top: 1px; }
 
-  /* PERIOD DAY CARDS */
-  .period-day-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-    border: 1px solid rgba(244,114,182,0.25);
-    border-radius: 24px; margin-bottom: 20px;
-    box-shadow: 0 8px 40px rgba(244,114,182,0.08);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
-    animation: slideUp 0.5s ease both;
-  }
-  .period-day-card:hover { transform: translateY(-3px); box-shadow: 0 16px 56px rgba(244,114,182,0.14); }
-  .period-day-card:nth-child(2){animation-delay:0.05s}
-  .period-day-card:nth-child(3){animation-delay:0.1s}
-  .period-day-card:nth-child(4){animation-delay:0.15s}
-  .period-day-card:nth-child(5){animation-delay:0.2s}
-  .period-day-card:nth-child(6){animation-delay:0.25s}
-  .period-day-card:nth-child(7){animation-delay:0.3s}
-  .period-day-card:nth-child(8){animation-delay:0.35s}
-
-  /* HIGH-LIGHT STRETCHING CARD */
-  .period-day-card.highlighted-stretch {
-    border: 2px solid var(--period-pink);
-    box-shadow: 0 0 16px rgba(244, 114, 182, 0.4);
-  }
-
-  .period-day-number {
-    width: 52px; height: 52px; border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px; font-weight: 600; color: white;
-    flex-shrink: 0;
-    background: linear-gradient(135deg, #f472b6, #fb7185);
-  }
-
-  .period-ex-row {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 10px 14px; border-radius: 14px;
-    margin-bottom: 6px;
-    background: rgba(253,242,248,0.5);
-    border: 1px solid rgba(244,114,182,0.15);
-    transition: background 0.2s;
-  }
-  body.moonlight .period-ex-row {
-    background: rgba(35, 18, 37, 0.45);
-    border-color: rgba(244,114,182,0.1);
-  }
-  .period-ex-row:hover { background: rgba(253,242,248,0.8); }
-  body.moonlight .period-ex-row:hover { background: rgba(35, 18, 37, 0.65); }
-  
-  .period-ex-icon {
-    width: 36px; height: 36px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-    background: rgba(244,114,182,0.12);
-  }
-  .period-time-badge {
-    font-size: 11px; font-weight: 600;
-    background: rgba(244,114,182,0.12);
-    border: 1px solid rgba(244,114,182,0.2);
-    color: var(--period-rose); padding: 3px 10px; border-radius: 10px;
-    white-space: nowrap; align-self: center;
-  }
-  .period-goal-note {
-    margin-top: 12px; padding: 10px 14px;
-    background: rgba(244,114,182,0.08);
-    border-left: 3px solid #f472b6;
-    border-radius: 0 10px 10px 0;
-    font-size: 12px; color: var(--period-rose); font-style: italic;
-  }
-
-  /* PELVIC HEALTH BADGE IN NORMAL WEEKS */
-  .pelvic-badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 10px; font-weight: 600;
-    background: rgba(244,114,182,0.12);
-    border: 1px solid rgba(244,114,182,0.2);
-    color: #be185d; padding: 2px 8px; border-radius: 8px;
-    margin-left: 6px; vertical-align: middle;
-  }
-
-  /* DAY CARDS */
-  .day-card {
+  /* CARDS */
+  .day-card, .period-day-card {
     background: var(--glass-bg);
     backdrop-filter: blur(20px) saturate(150%);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
@@ -485,19 +438,29 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: slideUp 0.5s ease both;
   }
-  .day-card:hover { transform: translateY(-3px); box-shadow: 0 16px 56px var(--glass-shadow); }
+  .day-card:hover, .period-day-card:hover { transform: translateY(-3px); box-shadow: 0 16px 56px var(--glass-shadow); }
+
+  /* HIGH-LIGHT STRETCHING CARD */
+  .period-day-card.highlighted-stretch {
+    border: 2px solid var(--period-pink);
+    box-shadow: 0 0 16px rgba(244, 114, 182, 0.4);
+  }
 
   .day-header {
     padding: 20px 24px; cursor: pointer;
     display: flex; align-items: center; gap: 16px;
     user-select: none;
   }
-  .day-number {
+  .day-number, .period-day-number {
     width: 52px; height: 52px; border-radius: 16px;
     display: flex; align-items: center; justify-content: center;
     font-family: 'Cormorant Garamond', serif;
     font-size: 22px; font-weight: 600; color: white;
     flex-shrink: 0;
+  }
+  .period-day-number {
+    font-size: 18px;
+    background: linear-gradient(135deg, #f472b6, #fb7185);
   }
   .day-info { flex: 1; }
   .day-name { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #9ca3af; margin-bottom: 2px; }
@@ -508,15 +471,13 @@
     font-weight: 500;
   }
   .chevron { font-size: 20px; color: #9ca3af; transition: transform 0.3s ease; }
-  .day-card.open .chevron { transform: rotate(180deg); }
-  .period-day-card.open .chevron { transform: rotate(180deg); }
+  .day-card.open .chevron, .period-day-card.open .chevron { transform: rotate(180deg); }
 
   .day-body {
     max-height: 0; overflow: hidden;
     transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);
   }
-  .day-card.open .day-body { max-height: 2000px; }
-  .period-day-card.open .day-body { max-height: 2000px; }
+  .day-card.open .day-body, .period-day-card.open .day-body { max-height: 2000px; }
   .day-body-inner { padding: 0 24px 24px; }
 
   /* SECTION WITHIN DAY */
@@ -562,7 +523,7 @@
   }
 
   /* EXERCISE ROW */
-  .ex-row {
+  .ex-row, .period-ex-row {
     display: flex; align-items: flex-start; gap: 12px;
     padding: 10px 14px; border-radius: 14px;
     margin-bottom: 6px;
@@ -574,10 +535,10 @@
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.08);
   }
-  .ex-row:hover { background: rgba(255,255,255,0.55); }
+  .ex-row:hover, .period-ex-row:hover { background: rgba(255,255,255,0.55); }
   body.moonlight .ex-row:hover { background: rgba(255, 255, 255, 0.12); }
   
-  .ex-icon {
+  .ex-icon, .period-ex-icon {
     width: 36px; height: 36px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
     font-size: 18px; flex-shrink: 0;
@@ -588,6 +549,15 @@
   .ex-sets {
     font-size: 13px; font-weight: 600; color: var(--text-soft);
     white-space: nowrap; align-self: center;
+  }
+
+  .period-ex-row {
+    background: rgba(253, 242, 248, 0.5);
+    border: 1px solid rgba(244, 114, 182, 0.15);
+  }
+  body.moonlight .period-ex-row {
+    background: rgba(35, 18, 37, 0.45);
+    border-color: rgba(244, 114, 182, 0.1);
   }
 
   /* YOGA SECTION */
@@ -657,7 +627,7 @@
   .rest-emoji { font-size: 40px; margin-bottom: 8px; }
   .rest-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; margin-bottom: 4px; color: var(--text-dark); }
 
-  /* COLOR THEMES PER DAY */
+  /* CONSTANT THEMES AND TAGS */
   .theme-rose { background: linear-gradient(135deg, #f43f5e, #fb7185); }
   .theme-violet { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
   .theme-teal { background: linear-gradient(135deg, #14b8a6, #2dd4bf); }
@@ -690,348 +660,82 @@
   .icon-stretch { background: rgba(20,184,166,0.12); }
   .icon-period { background: rgba(244,114,182,0.15); }
 
-  /* FOOTER */
-  footer {
-    text-align: center; padding: 24px 24px 48px;
-    font-size: 12px; color: #9ca3af;
-    border-top: 1px solid rgba(255,255,255,0.4);
-  }
-
-  /* VOICE STOPWATCH FLOATING WIDGET */
-  .stopwatch-widget {
-    position: fixed;
-    bottom: 100px;
-    right: 24px;
-    z-index: 1200;
-    background: var(--glass-bg);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 12px 40px var(--glass-shadow);
-    overflow: hidden;
-    user-select: none;
-    touch-action: none; /* Prevents default browser scrolling when dragging */
-    transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-                border-radius 0.3s, background 0.3s, box-shadow 0.3s;
-  }
-  
-  /* Disable transitions temporarily when dragging for 1:1 real-time lag-free tracking */
-  .stopwatch-widget.dragging {
-    transition: none !important;
-    cursor: grabbing;
-    opacity: 0.9;
-  }
-  
-  .stopwatch-widget.collapsed {
-    width: 64px;
-    height: 64px;
-    border-radius: 32px;
-  }
-  .stopwatch-widget.expanded {
-    width: 280px;
-    height: 250px;
-    border-radius: 24px;
-  }
-  .stopwatch-trigger {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: grab;
-  }
-  .stopwatch-widget.dragging .stopwatch-trigger {
-    cursor: grabbing;
-  }
-  .stopwatch-widget.expanded .stopwatch-trigger {
-    display: none;
-  }
-  .trigger-icon {
-    font-size: 20px;
-  }
-  .trigger-time {
-    font-size: 10px;
-    font-weight: 700;
-    font-family: monospace;
-    margin-top: 2px;
-    color: var(--text-dark);
-  }
-  .stopwatch-panel {
-    display: none;
-    padding: 16px;
-    height: 100%;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .stopwatch-widget.expanded .stopwatch-panel {
-    display: flex;
-  }
-  .panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: move;
-  }
-  .panel-title {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--text-soft);
-  }
-  .panel-close-btn {
-    background: transparent;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: var(--text-dark);
-    opacity: 0.5;
-    padding: 2px 8px;
-  }
-  .panel-close-btn:hover {
-    opacity: 1;
-  }
-  .time-display {
-    font-family: monospace;
-    font-size: 34px;
-    font-weight: 600;
-    text-align: center;
-    color: var(--text-dark);
-    letter-spacing: -1px;
-    margin: 8px 0;
-  }
-  .voice-status-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    margin-bottom: 2px;
-  }
-  .voice-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #ef4444;
-  }
-  .voice-indicator.active {
-    background: #22c55e;
-    animation: mic-pulse 1.5s infinite;
-  }
-  @keyframes mic-pulse {
-    0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-    70% { transform: scale(1.15); opacity: 0.8; box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.15); }
-    100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-  }
-  .voice-status-text {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-mid);
-  }
-  .voice-transcript {
-    font-size: 11px;
-    font-style: italic;
-    text-align: center;
-    color: var(--text-mid);
-    opacity: 0.8;
-    min-height: 16px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .stopwatch-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-top: 10px;
-  }
-  .sw-btn {
-    flex: 1;
-    border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    padding: 10px;
-    border-radius: 12px;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-  }
-  .sw-btn:hover {
-    background: rgba(255, 255, 255, 0.35);
-    transform: translateY(-1px);
-  }
-  body.moonlight .sw-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
-  .sw-btn.mic-btn.active {
-    background: rgba(34, 197, 94, 0.15);
-    border-color: rgba(34, 197, 94, 0.4);
-    box-shadow: inset 0 0 8px rgba(34, 197, 94, 0.1);
-  }
-
-  @media (max-width: 900px) {
-    nav { padding: 12px 16px; }
-    .hero { padding-top: 110px; }
-    .content { padding: 28px 14px 130px; }
-    .week-banner { padding: 18px 20px; }
-    .progress-section { padding: 20px; }
-  }
-
+  /* RESPONSIVE LAYOUT BREAKPOINTS */
   @media (max-width: 768px) {
     body::before { width: 320px; height: 320px; top: -120px; left: -140px; }
     body::after { width: 300px; height: 300px; bottom: -120px; right: -120px; }
-
-    nav { padding: 12px 16px; }
-    .nav-logo { font-size: 22px; }
-    .nav-badge { font-size: 10px; padding: 4px 10px; }
-
-    .hero { padding: 116px 16px 28px; }
-    .hero-sub { font-size: 0.98rem; }
-    .goals-grid { gap: 8px; }
-    .goal-chip { padding: 7px 14px; font-size: 12px; }
+    .dashboard-hero { padding: 90px 16px 36px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
+    .dashboard-timer { margin-bottom: 24px; }
+    .control-center { width: 110px; height: 110px; }
+    .play-trigger-btn { width: 90px; height: 90px; }
+    .play-trigger-btn svg { width: 26px; height: 26px; }
+    .reset-trigger-btn { right: -36px; bottom: 8px; width: 32px; height: 32px; font-size: 12px; }
 
     .day-header { padding: 18px; gap: 12px; align-items: flex-start; }
-    .day-number { width: 44px; height: 44px; font-size: 18px; }
-    .period-day-number { width: 44px; height: 44px; font-size: 16px; }
+    .day-number, .period-day-number { width: 44px; height: 44px; font-size: 18px; }
     .day-title { font-size: 16px; }
     .day-body-inner { padding: 0 18px 20px; }
-    .ex-row { flex-direction: column; align-items: flex-start; }
+    .ex-row, .period-ex-row { flex-direction: column; align-items: flex-start; }
     .ex-sets { align-self: flex-start; margin-top: 2px; }
-    .period-ex-row { flex-direction: column; align-items: flex-start; }
     .period-time-badge { align-self: flex-start; margin-top: 2px; }
-
-    .yoga-section, .rest-card, .progress-section { padding: 18px; }
-    .rest-card { padding: 24px 18px; }
-
-    /* Centered Pill Adjustments for Tablet views */
-    .week-nav {
-      bottom: 20px;
-      padding: 5px 6px;
-      gap: 4px;
-    }
-    .week-btn {
-      padding: 8px 16px;
-      font-size: 13px;
-    }
-    .content { padding-bottom: 130px; }
-
-    /* Floating Stopwatch Widget Mobile adjustment */
-    .stopwatch-widget {
-      bottom: 96px;
-      right: 16px;
-    }
-    .stopwatch-widget.expanded {
-      width: 250px;
-      height: 240px;
-    }
-    .time-display {
-      font-size: 30px;
-    }
   }
 
   @media (max-width: 480px) {
-    .hero h1 { font-size: clamp(30px, 13vw, 40px); }
-    .hero-sub { font-size: 0.94rem; line-height: 1.65; }
-
-    .week-nav {
-      bottom: 16px;
-      padding: 4px 6px;
-      gap: 3px;
-      max-width: calc(100vw - 24px);
-    }
-    .week-btn {
-      padding: 8px 14px;
-      font-size: 12px;
-    }
-    .content { padding-bottom: 120px; }
-  }
-
-  @media (max-width: 360px) {
-    .hero { padding-top: 126px; }
-    .nav-logo { font-size: 20px; }
-    .goal-chip { width: 100%; justify-content: center; }
-
-    .week-nav {
-      bottom: 12px;
-      padding: 3px;
-      gap: 2px;
-      max-width: calc(100vw - 16px);
-    }
-    .week-btn {
-      padding: 6px 10px;
-      font-size: 11px;
-    }
-    .content { padding-bottom: 110px; }
-  }
-
-  @media (min-width: 1024px) {
-    .content { max-width: 1080px; }
+    .day-name { font-size: 10px; letter-spacing: 1.5px; }
+    .day-title { font-size: 15px; }
+    .day-meta { gap: 6px; }
+    .meta-tag { font-size: 10px; padding: 3px 8px; }
+    .ex-name { font-size: 13px; }
+    .ex-note { font-size: 11px; }
+    .progress-title { font-size: 22px; }
+    .progress-grid { grid-template-columns: 1fr; }
+    .week-nav { width: calc(100vw - 32px); gap: 4px; }
+    .week-btn { padding: 8px 12px; font-size: 12px; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo">FitFlow ✦</div>
-  <div class="nav-tagline">Your 6-Day Transformation Plan</div>
+  <div class="nav-logo">FitFlow <span>✦</span></div>
   <div class="nav-actions">
     <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleMoonlight()" title="Toggle Moonlight Theme">🌙</button>
-    <div class="nav-badge">6-Day Split</div>
   </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-eyebrow">Home Workout Plan</div>
-  <h1>Shape. Strengthen.<br><em>Transform.</em></h1>
-  <p class="hero-sub">A structured 6-day home workout designed for a lean, toned body — flat belly, shaped hips, and real strength. No gym required.</p>
-  <div class="goals-grid">
-    <div class="goal-chip"><div class="goal-dot" style="background:var(--rose)"></div>Flat Belly</div>
-    <div class="goal-chip"><div class="goal-dot" style="background:var(--violet)"></div>Chest 32→34</div>
-    <div class="goal-chip"><div class="goal-dot" style="background:var(--teal)"></div>Hips 32→34</div>
-    <div class="goal-chip"><div class="goal-dot" style="background:var(--amber)"></div>Hip Symmetry</div>
-    <div class="goal-chip"><div class="goal-dot" style="background:#ec4899"></div>Lean Strength</div>
-    <div class="goal-chip"><div class="goal-dot" style="background:#6366f1"></div>Better Posture</div>
+<!-- INTEGRATED TOP HALF STOPWATCH DASHBOARD (MIMICS image_2222f8.png) -->
+<section class="dashboard-hero">
+  <div class="dashboard-title">Stopwatch</div>
+  <div class="dashboard-timer" id="stopwatchTime">00:00.00</div>
+  
+  <div class="control-center" id="playBtnContainer">
+    <!-- Pulsing expanding rings during stopwatch activity -->
+    <div class="play-pulse-ring"></div>
+    <div class="play-pulse-ring"></div>
+    <div class="play-pulse-ring"></div>
+    
+    <!-- Central Dynamic Trigger Button -->
+    <button class="play-trigger-btn" onclick="toggleTimer()" id="playTrigger" title="Play / Pause">
+      <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    
+    <!-- Manual Reset Action Button -->
+    <button class="reset-trigger-btn" onclick="resetTimer()" title="Reset Timer">🔁</button>
+  </div>
+
+  <div class="dashboard-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusLabel">Clocked Off</span>
+  </div>
+
+  <!-- FLOATING BOTTOM NAVIGATION PILL (UNIFIED INTEGRATION) -->
+  <div class="week-nav" id="weekNav">
+    <button class="week-btn active" onclick="switchWeek(1,this)">1–2</button>
+    <button class="week-btn" onclick="switchWeek(2,this)">3–4</button>
+    <button class="week-btn" onclick="switchWeek(3,this)">5+</button>
+    <button class="week-btn period-btn" onclick="switchWeek('period',this)">🌸 PD</button>
   </div>
 </section>
-
-<!-- FLOATING VOICE STOPWATCH WIDGET (DRAGGABLE & HIGH ACCURACY) -->
-<div class="stopwatch-widget collapsed" id="stopwatchWidget">
-  <div class="stopwatch-trigger" id="stopwatchTrigger">
-    <span class="trigger-icon">⏱️</span>
-    <span class="trigger-time" id="collapsedTimeDisplay">00:00</span>
-  </div>
-  <div class="stopwatch-panel">
-    <div class="panel-header" id="stopwatchHeader">
-      <span class="panel-title">🧠 Voice Stopwatch</span>
-      <button class="panel-close-btn" onclick="toggleStopwatchExpand(event)" title="Minimize">✕</button>
-    </div>
-    <div class="time-display" id="stopwatchTime">00:00.00</div>
-    
-    <div class="voice-status-container">
-      <div class="voice-indicator" id="voiceIndicator"></div>
-      <span class="voice-status-text" id="voiceStatusText">Voice control off</span>
-    </div>
-    <div class="voice-transcript" id="voiceTranscript">Say "start", "stop" or "reset"</div>
-
-    <div class="stopwatch-controls">
-      <button class="sw-btn reset-btn" onclick="resetTimer()" title="Reset">🔁</button>
-      <button class="sw-btn play-btn" id="swPlayBtn" onclick="toggleTimer()" title="Play/Pause">▶️</button>
-      <button class="sw-btn mic-btn" id="swMicBtn" onclick="toggleVoiceControl()" title="Toggle Voice Commands">🎤</button>
-    </div>
-  </div>
-</div>
-
-<!-- FLOATING BOTTOM NAVIGATION PILL -->
-<div class="week-nav" id="weekNav">
-  <button class="week-btn active" onclick="switchWeek(1,this)">1–2</button>
-  <button class="week-btn" onclick="switchWeek(2,this)">3–4</button>
-  <button class="week-btn" onclick="switchWeek(3,this)">5+</button>
-  <button class="week-btn period-btn" onclick="switchWeek('period',this)">🌸 PD</button>
-</div>
 
 <div class="content" id="mainContent"></div>
 
@@ -1232,7 +936,7 @@ const WEEKS = {
           ]},
           { title:"Thigh Toning +2 Reps", icon:"✨", iconClass:"icon-cardio", exes:[
             {name:"Sumo Squat + Calf Raise Combo", note:"Rise on toes at top of sumo squat", sets:"3 × 17"},
-            {name:"Side-lying Leg Lift + Circle", note:"Hold control — 5 slow reps", sets:"3 × 12 each"},
+            {name:"Side-lying Leg Lift + Circle", note:"Lift then make 5 small circles", sets:"3 × 12 each"},
             {name:"Inner Thigh Lift (elevated foot)", note:"Foot on cushion, lift other leg", sets:"3 × 17"},
             {name:"Seated Calf Raises", note:"Towel over knees for resistance", sets:"3 × 22"},
           ]},
@@ -1891,167 +1595,11 @@ function renderWeek(w){
   cont.innerHTML = html;
 }
 
-function toggleCard(i){
-  const card = document.getElementById('card-'+i);
-  card.classList.toggle('open');
-}
-
-function togglePeriodCard(i){
-  const card = document.getElementById('pcard-'+i);
-  card.classList.toggle('open');
-}
-
-/* SMART STOPWATCH & VOICE DRAG/VOICE COMMANDS ENGINE */
+/* COOPERATIVE ACCURATE MANUAL STOPWATCH */
 let stopwatchStartTime = 0;
 let stopwatchElapsedTime = 0;
 let stopwatchInterval = null;
 let stopwatchRunning = false;
-
-let recognition = null;
-let micActive = false;
-let heardTextTimeout = null;
-
-// Audio capture state control variables to prevent command stutters
-let lastCommandExecuted = "";
-let lastCommandTime = 0;
-
-// Interactive dragging states
-let isDragging = false;
-let startX = 0;
-let startY = 0;
-let travelDistance = 0; // Distinguishes between dragging and clicking
-
-const widget = document.getElementById('stopwatchWidget');
-
-// Restore Saved Widget Coordinates
-function restoreWidgetPosition() {
-  const savedPos = localStorage.getItem('fitflow_stopwatch_position_v2');
-  if (savedPos) {
-    const coords = JSON.parse(savedPos);
-    widget.style.bottom = 'auto';
-    widget.style.right = 'auto';
-    
-    // Ensure saved positions are within viewport boundaries (avoids clipping on resize)
-    const boundedLeft = Math.max(10, Math.min(coords.left, window.innerWidth - 80));
-    const boundedTop = Math.max(10, Math.min(coords.top, window.innerHeight - 80));
-    
-    widget.style.left = boundedLeft + 'px';
-    widget.style.top = boundedTop + 'px';
-  } else {
-    // Default initial coordinates on first load
-    widget.style.bottom = window.innerWidth <= 768 ? '96px' : '100px';
-    widget.style.right = window.innerWidth <= 768 ? '16px' : '24px';
-    widget.style.left = 'auto';
-    widget.style.top = 'auto';
-  }
-}
-
-function toggleStopwatchExpand(event) {
-  if (event) event.stopPropagation();
-  
-  // If we were dragging, reject expansion to prevent overlapping events
-  if (travelDistance > 8) {
-    return;
-  }
-  
-  const isCollapsed = widget.classList.contains('collapsed');
-  widget.classList.toggle('collapsed');
-  widget.classList.toggle('expanded');
-  
-  // Clean viewport edge alignments after dimensions expand
-  setTimeout(() => {
-    const rect = widget.getBoundingClientRect();
-    let nLeft = rect.left;
-    let nTop = rect.top;
-    
-    if (nLeft + rect.width > window.innerWidth) {
-      nLeft = window.innerWidth - rect.width - 16;
-    }
-    if (nTop + rect.height > window.innerHeight) {
-      nTop = window.innerHeight - rect.height - 16;
-    }
-    
-    nLeft = Math.max(16, nLeft);
-    nTop = Math.max(16, nTop);
-    
-    widget.style.bottom = 'auto';
-    widget.style.right = 'auto';
-    widget.style.left = nLeft + 'px';
-    widget.style.top = nTop + 'px';
-    
-    localStorage.setItem('fitflow_stopwatch_position_v2', JSON.stringify({ left: nLeft, top: nTop }));
-  }, 100);
-}
-
-// Draggable Engine for Touch (Mobile) and Mouse (Desktop)
-function dragStart(e) {
-  // Reject dragging on control buttons so clicks are properly captured
-  if (e.target.closest('button') || e.target.closest('.tuner-btn') || e.target.closest('.week-btn')) {
-    return;
-  }
-  
-  isDragging = true;
-  travelDistance = 0;
-  widget.classList.add('dragging');
-
-  const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
-  const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
-
-  const rect = widget.getBoundingClientRect();
-  startX = clientX - rect.left;
-  startY = clientY - rect.top;
-}
-
-function dragMove(e) {
-  if (!isDragging) return;
-
-  const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
-  const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
-
-  let nLeft = clientX - startX;
-  let nTop = clientY - startY;
-
-  const rect = widget.getBoundingClientRect();
-  const wWidth = rect.width;
-  const wHeight = rect.height;
-
-  // Viewport bounds checking
-  nLeft = Math.max(8, Math.min(nLeft, window.innerWidth - wWidth - 8));
-  nTop = Math.max(8, Math.min(nTop, window.innerHeight - wHeight - 8));
-
-  widget.style.bottom = 'auto';
-  widget.style.right = 'auto';
-  widget.style.left = nLeft + 'px';
-  widget.style.top = nTop + 'px';
-
-  travelDistance += 2.5; // Accumulate travel distance to confirm motion
-}
-
-function dragEnd() {
-  if (!isDragging) return;
-  isDragging = false;
-  widget.classList.remove('dragging');
-
-  const rect = widget.getBoundingClientRect();
-  localStorage.setItem('fitflow_stopwatch_position_v2', JSON.stringify({
-    left: rect.left,
-    top: rect.top
-  }));
-}
-
-// Bind drag events with passive touch safety
-widget.addEventListener('mousedown', dragStart);
-document.addEventListener('mousemove', dragMove);
-document.addEventListener('mouseup', dragEnd);
-
-widget.addEventListener('touchstart', dragStart, { passive: true });
-document.addEventListener('touchmove', dragMove, { passive: false });
-document.addEventListener('touchend', dragEnd);
-
-// Event delegation for collapsed state click
-document.getElementById('stopwatchTrigger').addEventListener('click', (e) => {
-  toggleStopwatchExpand(e);
-});
 
 function toggleTimer() {
   if (stopwatchRunning) {
@@ -2066,7 +1614,14 @@ function startTimer() {
     stopwatchRunning = true;
     stopwatchStartTime = Date.now() - stopwatchElapsedTime;
     stopwatchInterval = setInterval(updateStopwatch, 10);
-    document.getElementById('swPlayBtn').innerText = "⏸️";
+    
+    // Morph Play SVG into Pause SVG
+    document.getElementById('playIcon').innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
+    document.getElementById('playBtnContainer').classList.add('running');
+    
+    // Update status indicators mirroring image_2222f8.png
+    document.getElementById('statusDot').classList.add('active');
+    document.getElementById('statusLabel').innerText = "Clocked On";
   }
 }
 
@@ -2075,7 +1630,14 @@ function stopTimer() {
     stopwatchRunning = false;
     clearInterval(stopwatchInterval);
     stopwatchInterval = null;
-    document.getElementById('swPlayBtn').innerText = "▶️";
+    
+    // Morph Pause SVG back to Play SVG
+    document.getElementById('playIcon').innerHTML = `<path d="M8 5v14l11-7z"/>`;
+    document.getElementById('playBtnContainer').classList.remove('running');
+    
+    // Update status indicators mirroring image_2222f8.png
+    document.getElementById('statusDot').classList.remove('active');
+    document.getElementById('statusLabel').innerText = "Clocked Off";
   }
 }
 
@@ -2099,166 +1661,20 @@ function renderStopwatchTime(time) {
   let formattedSeconds = seconds.toString().padStart(2, '0');
   let formattedMinutes = minutes.toString().padStart(2, '0');
 
+  // Unified visual format
   document.getElementById('stopwatchTime').innerText = `${formattedMinutes}:${formattedSeconds}.${formattedCentiseconds}`;
-  document.getElementById('collapsedTimeDisplay').innerText = `${formattedMinutes}:${formattedSeconds}`;
-}
-
-// HIGH ACCURACY VOICE CONTROLLER (ULTRA-LOW LATENCY SPEECH LOOP)
-function initSpeechRecognition() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    updateVoiceStatus("Voice Unsupported 🚫", "Speech API is unsupported in this browser.");
-    document.getElementById('swMicBtn').style.opacity = '0.5';
-    return;
-  }
-  
-  recognition = new SpeechRecognition();
-  
-  // OPTIMIZATION: setting continuous to false allows the API to automatically flush and clear transcripts on silence, preventing old commands from stacking up
-  recognition.continuous = false;
-  recognition.interimResults = true;
-  recognition.lang = 'en-US';
-
-  recognition.onstart = () => {
-    micActive = true;
-    document.getElementById('voiceIndicator').classList.add('active');
-    document.getElementById('swMicBtn').classList.add('active');
-    updateVoiceStatus("Listening... 🔊", 'Say "start", "stop", or "reset"');
-  };
-
-  recognition.onresult = (event) => {
-    let combinedInterim = '';
-    let combinedFinal = '';
-
-    for (let i = event.resultIndex; i < event.results.length; ++i) {
-      const chunk = event.results[i][0].transcript.trim().toLowerCase();
-      if (event.results[i].isFinal) {
-        combinedFinal += chunk + ' ';
-      } else {
-        combinedInterim += chunk + ' ';
-      }
-    }
-
-    // Match keywords dynamically from current phonetic stream (no pause delays)
-    const liveText = (combinedFinal + combinedInterim).trim().toLowerCase();
-    processInstantVoiceCommand(liveText);
-  };
-
-  recognition.onerror = (event) => {
-    console.warn("Speech engine warning:", event.error);
-    if (event.error === 'not-allowed') {
-      micActive = false;
-      deactivateVoiceUI();
-      updateVoiceStatus("Permission Denied ❌", "Enable mic access in settings.");
-    }
-  };
-
-  recognition.onend = () => {
-    // Loop back on immediately if continuous listening state is active
-    if (micActive) {
-      try {
-        recognition.start();
-      } catch (e) {
-        // Fallback retry if browser is still in transition stopping state
-        setTimeout(() => {
-          if (micActive) {
-            try { recognition.start(); } catch(err) {}
-          }
-        }, 250);
-      }
-    } else {
-      deactivateVoiceUI();
-    }
-  };
-}
-
-function processInstantVoiceCommand(text) {
-  const now = Date.now();
-  
-  // Guard cooldown window (800ms) prevents repetitive false triggers on same phrase
-  if (now - lastCommandTime < 800) return;
-
-  let matched = false;
-  if (text.includes('start') || text.includes('begin') || text.includes('go')) {
-    startTimer();
-    triggerCommandAck("start", now);
-    matched = true;
-  } else if (text.includes('stop') || text.includes('pause') || text.includes('wait') || text.includes('rest')) {
-    stopTimer();
-    triggerCommandAck("stop", now);
-    matched = true;
-  } else if (text.includes('reset') || text.includes('restart') || text.includes('clear')) {
-    resetTimer();
-    triggerCommandAck("reset", now);
-    matched = true;
-  }
-
-  if (matched && recognition) {
-    // Force abort active recognition session to flush phonetic buffers and wipe transcript canvas clean
-    try {
-      recognition.stop();
-    } catch(e) {}
-  }
-}
-
-function triggerCommandAck(command, timestamp) {
-  lastCommandExecuted = command;
-  lastCommandTime = timestamp;
-  showHeardCommand(command);
-}
-
-function toggleVoiceControl() {
-  if (!recognition) {
-    initSpeechRecognition();
-  }
-
-  if (!recognition) return;
-
-  if (micActive) {
-    micActive = false;
-    try {
-      recognition.stop();
-    } catch(e) {}
-    deactivateVoiceUI();
-  } else {
-    updateVoiceStatus("Activating mic...", "Please allow mic permissions...");
-    try {
-      recognition.start();
-    } catch (e) {
-      console.error("Mic start failed:", e);
-      updateVoiceStatus("Hardware Error ❌", "Please allow mic permissions.");
-    }
-  }
-}
-
-function deactivateVoiceUI() {
-  document.getElementById('voiceIndicator').classList.remove('active');
-  document.getElementById('swMicBtn').classList.remove('active');
-  updateVoiceStatus("Voice control off", 'Say "start", "stop" or "reset"');
-}
-
-function updateVoiceStatus(status, subtitle) {
-  document.getElementById('voiceStatusText').innerText = status;
-  document.getElementById('voiceTranscript').innerText = subtitle;
-}
-
-function showHeardCommand(text) {
-  const el = document.getElementById('voiceTranscript');
-  el.innerHTML = `Heard: <strong style="color: var(--rose)">"${text}"</strong>`;
-  
-  clearTimeout(heardTextTimeout);
-  heardTextTimeout = setTimeout(() => {
-    el.innerText = 'Say "start", "stop" or "reset"';
-  }, 2500);
 }
 
 // Initial Bootstrapping
-restoreWidgetPosition();
 renderWeek(1);
 </script>
 
 <footer>
-  <p>FitFlow — 6-Day Home Workout Plan · Stay consistent. Stay strong. ✦</p>
+  <div style="max-width: 600px; margin: 0 auto 16px; opacity: 0.85; line-height: 1.6;">
+    <p style="font-size: 14px; font-weight: 500; margin-bottom: 6px;">FitFlow — Shape. Strengthen. Transform.</p>
+    <p style="font-size: 13px; color: #9ca3af;">A structured 6-day home workout designed for a lean, toned body — flat belly, shaped hips, and real strength. No gym required.</p>
+  </div>
+  <p style="opacity: 0.5; font-size: 11px;">FitFlow — 6-Day Home Workout Plan · Stay consistent. Stay strong. ✦</p>
 </footer>
 
 </body>
