@@ -683,6 +683,20 @@
   body.moonlight .tag-gentle { background: rgba(251,113,133,0.2); color: #fda4af; }
   body.moonlight .tag-recovery { background: rgba(20,184,166,0.2); color: #99f6e4; }
 
+  .icon-warmup { background: rgba(245,158,11,0.15); }
+  .icon-strength { background: rgba(139,92,246,0.12); }
+  .icon-core { background: rgba(244,63,94,0.1); }
+  .icon-cardio { background: rgba(236,72,153,0.1); }
+  .icon-stretch { background: rgba(20,184,166,0.12); }
+  .icon-period { background: rgba(244,114,182,0.15); }
+
+  /* FOOTER */
+  footer {
+    text-align: center; padding: 24px 24px 48px;
+    font-size: 12px; color: #9ca3af;
+    border-top: 1px solid rgba(255,255,255,0.4);
+  }
+
   /* VOICE STOPWATCH FLOATING WIDGET */
   .stopwatch-widget {
     position: fixed;
@@ -1907,9 +1921,6 @@ let startX = 0;
 let startY = 0;
 let travelDistance = 0; // Distinguishes between dragging and clicking
 
-// Hardware Voice capturing pipeline streams
-let hardwareAudioStream = null;
-
 const widget = document.getElementById('stopwatchWidget');
 
 // Restore Saved Widget Coordinates
@@ -2092,60 +2103,19 @@ function renderStopwatchTime(time) {
   document.getElementById('collapsedTimeDisplay').innerText = `${formattedMinutes}:${formattedSeconds}`;
 }
 
-// ADVANCED VOICE CONTROLLER (ULTRA-LOW LATENCY MULTI-MIC COOPERATIVE INPUT)
-async function bootUpAllMicsWithDSP() {
-  try {
-    // Release any previous hardware channels
-    releaseAllMics();
-
-    // Requests every physical micro channel with aggressive spatial DSP properties
-    const constraints = {
-      audio: {
-        echoCancellation: { ideal: true },
-        noiseSuppression: { ideal: true },
-        autoGainControl: { ideal: true },
-        channelCount: { ideal: 2 }, // Stereo configuration captures multiple physical phone microphones simultaneously (primary + secondary background canceling arrays)
-        latency: { ideal: 0.005 }, // Prioritize instant capture with minimal buffer delays
-        audioGain: { ideal: 2.0 } // Requests hardware amplification parameters if accessible
-      }
-    };
-    
-    // Warm up the media devices structure. This triggers the global hardware DSP on iOS/Android
-    // to unify voice-isolation matrices on all built-in phone microphones.
-    hardwareAudioStream = await navigator.mediaDevices.getUserMedia(constraints);
-    console.log("Cooperative multi-microphone DSP array activated successfully.");
-  } catch (error) {
-    console.warn("Advanced hardware mic mixing not fully supported, falling back to basic audio capture:", error);
-    try {
-      // Basic fallback warmup
-      hardwareAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (fallbackError) {
-      console.error("Audio system access failed:", fallbackError);
-      throw fallbackError;
-    }
-  }
-}
-
-function releaseAllMics() {
-  if (hardwareAudioStream) {
-    hardwareAudioStream.getTracks().forEach(track => track.stop());
-    hardwareAudioStream = null;
-    console.log("Microphone array hardware released successfully.");
-  }
-}
-
+// HIGH ACCURACY VOICE CONTROLLER (ULTRA-LOW LATENCY SPEECH LOOP)
 function initSpeechRecognition() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
-    updateVoiceStatus("Voice Unsupported 🚫", "Web Speech API is not supported in this browser.");
+    updateVoiceStatus("Voice Unsupported 🚫", "Speech API is unsupported in this browser.");
     document.getElementById('swMicBtn').style.opacity = '0.5';
     return;
   }
   
   recognition = new SpeechRecognition();
-  recognition.continuous = true;
   
-  // KEY OPTIMIZATION: enabling interimResults lets us process syllables dynamically as they are spoken
+  // OPTIMIZATION: setting continuous to false allows the API to automatically flush and clear transcripts on silence, preventing old commands from stacking up
+  recognition.continuous = false;
   recognition.interimResults = true;
   recognition.lang = 'en-US';
 
@@ -2153,7 +2123,7 @@ function initSpeechRecognition() {
     micActive = true;
     document.getElementById('voiceIndicator').classList.add('active');
     document.getElementById('swMicBtn').classList.add('active');
-    updateVoiceStatus("Cooperative mics on 🔊", 'Say "start", "stop", or "reset"');
+    updateVoiceStatus("Listening... 🔊", 'Say "start", "stop", or "reset"');
   };
 
   recognition.onresult = (event) => {
@@ -2169,13 +2139,13 @@ function initSpeechRecognition() {
       }
     }
 
-    // Match keywords continuously from current phonetic stream (no silence pause delay!)
+    // Match keywords dynamically from current phonetic stream (no pause delays)
     const liveText = (combinedFinal + combinedInterim).trim().toLowerCase();
     processInstantVoiceCommand(liveText);
   };
 
   recognition.onerror = (event) => {
-    console.warn("Voice controller message:", event.error);
+    console.warn("Speech engine warning:", event.error);
     if (event.error === 'not-allowed') {
       micActive = false;
       deactivateVoiceUI();
@@ -2189,7 +2159,12 @@ function initSpeechRecognition() {
       try {
         recognition.start();
       } catch (e) {
-        console.error("Voice looping failure:", e);
+        // Fallback retry if browser is still in transition stopping state
+        setTimeout(() => {
+          if (micActive) {
+            try { recognition.start(); } catch(err) {}
+          }
+        }, 250);
       }
     } else {
       deactivateVoiceUI();
@@ -2200,19 +2175,29 @@ function initSpeechRecognition() {
 function processInstantVoiceCommand(text) {
   const now = Date.now();
   
-  // Guard cooldown window (650ms) prevents repetitive false triggers on same sentence
-  if (now - lastCommandTime < 650) return;
+  // Guard cooldown window (800ms) prevents repetitive false triggers on same phrase
+  if (now - lastCommandTime < 800) return;
 
-  // Split matches onto rapid phonetic captures
+  let matched = false;
   if (text.includes('start') || text.includes('begin') || text.includes('go')) {
     startTimer();
     triggerCommandAck("start", now);
+    matched = true;
   } else if (text.includes('stop') || text.includes('pause') || text.includes('wait') || text.includes('rest')) {
     stopTimer();
     triggerCommandAck("stop", now);
+    matched = true;
   } else if (text.includes('reset') || text.includes('restart') || text.includes('clear')) {
     resetTimer();
     triggerCommandAck("reset", now);
+    matched = true;
+  }
+
+  if (matched && recognition) {
+    // Force abort active recognition session to flush phonetic buffers and wipe transcript canvas clean
+    try {
+      recognition.stop();
+    } catch(e) {}
   }
 }
 
@@ -2222,29 +2207,25 @@ function triggerCommandAck(command, timestamp) {
   showHeardCommand(command);
 }
 
-async function toggleVoiceControl() {
+function toggleVoiceControl() {
+  if (!recognition) {
+    initSpeechRecognition();
+  }
+
+  if (!recognition) return;
+
   if (micActive) {
     micActive = false;
-    if (recognition) {
+    try {
       recognition.stop();
-    }
-    releaseAllMics();
+    } catch(e) {}
     deactivateVoiceUI();
   } else {
-    updateVoiceStatus("Aligning mic arrays...", "Activating cooperative filters...");
+    updateVoiceStatus("Activating mic...", "Please allow mic permissions...");
     try {
-      // Warmup and capture all microphone feeds
-      await bootUpAllMicsWithDSP();
-      
-      if (!recognition) {
-        initSpeechRecognition();
-      }
-      
-      if (recognition) {
-        recognition.start();
-      }
+      recognition.start();
     } catch (e) {
-      console.error("Mic restart failed:", e);
+      console.error("Mic start failed:", e);
       updateVoiceStatus("Hardware Error ❌", "Please allow mic permissions.");
     }
   }
