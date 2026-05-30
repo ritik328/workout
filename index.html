@@ -289,7 +289,7 @@
     flex: 1; 
   }
 
-  /* AUTO-TUNER ENERGY SELECTOR (EMPAThetic DIAL) */
+  /* AUTO-TUNER ENERGY SELECTOR (EMPATHETIC DIAL) */
   .tuner-container {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -708,6 +708,165 @@
     border-top: 1px solid rgba(255,255,255,0.4);
   }
 
+  /* VOICE STOPWATCH FLOATING WIDGET */
+  .stopwatch-widget {
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
+    z-index: 1200;
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 12px 40px var(--glass-shadow);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .stopwatch-widget.collapsed {
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+  }
+  .stopwatch-widget.expanded {
+    width: 280px;
+    height: 250px;
+    border-radius: 24px;
+  }
+  .stopwatch-trigger {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .stopwatch-widget.expanded .stopwatch-trigger {
+    display: none;
+  }
+  .trigger-icon {
+    font-size: 20px;
+  }
+  .trigger-time {
+    font-size: 10px;
+    font-weight: 700;
+    font-family: monospace;
+    margin-top: 2px;
+    color: var(--text-dark);
+  }
+  .stopwatch-panel {
+    display: none;
+    padding: 16px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .stopwatch-widget.expanded .stopwatch-panel {
+    display: flex;
+  }
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .panel-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-soft);
+  }
+  .panel-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--text-dark);
+    opacity: 0.5;
+  }
+  .panel-close-btn:hover {
+    opacity: 1;
+  }
+  .time-display {
+    font-family: monospace;
+    font-size: 34px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-dark);
+    letter-spacing: -1px;
+    margin: 8px 0;
+  }
+  .voice-status-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+  .voice-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+  }
+  .voice-indicator.active {
+    background: #22c55e;
+    animation: mic-pulse 1.5s infinite;
+  }
+  @keyframes mic-pulse {
+    0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+    70% { transform: scale(1.15); opacity: 0.8; box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.15); }
+    100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  }
+  .voice-status-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-mid);
+  }
+  .voice-transcript {
+    font-size: 11px;
+    font-style: italic;
+    text-align: center;
+    color: var(--text-mid);
+    opacity: 0.8;
+    min-height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .stopwatch-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .sw-btn {
+    flex: 1;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .sw-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-1px);
+  }
+  body.moonlight .sw-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  .sw-btn.mic-btn.active {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.4);
+    box-shadow: inset 0 0 8px rgba(34, 197, 94, 0.1);
+  }
+
   @media (max-width: 900px) {
     nav { padding: 12px 16px; }
     .hero { padding-top: 110px; }
@@ -753,6 +912,19 @@
       font-size: 13px;
     }
     .content { padding-bottom: 130px; }
+
+    /* Floating Stopwatch Widget Mobile adjustment */
+    .stopwatch-widget {
+      bottom: 96px;
+      right: 16px;
+    }
+    .stopwatch-widget.expanded {
+      width: 250px;
+      height: 240px;
+    }
+    .time-display {
+      font-size: 30px;
+    }
   }
 
   @media (max-width: 480px) {
@@ -820,7 +992,34 @@
   </div>
 </section>
 
-<!-- FLOATING BOTTOM NAVIGATION PILL (ADAPTIVE SIZE ACROSS ALL SCREENS) -->
+<!-- FLOATING VOICE STOPWATCH WIDGET -->
+<div class="stopwatch-widget collapsed" id="stopwatchWidget">
+  <div class="stopwatch-trigger" onclick="toggleStopwatchExpand(event)">
+    <span class="trigger-icon">⏱️</span>
+    <span class="trigger-time" id="collapsedTimeDisplay">00:00</span>
+  </div>
+  <div class="stopwatch-panel">
+    <div class="panel-header">
+      <span class="panel-title">Smart Stopwatch</span>
+      <button class="panel-close-btn" onclick="toggleStopwatchExpand(event)" title="Minimize">✕</button>
+    </div>
+    <div class="time-display" id="stopwatchTime">00:00.00</div>
+    
+    <div class="voice-status-container">
+      <div class="voice-indicator" id="voiceIndicator"></div>
+      <span class="voice-status-text" id="voiceStatusText">Voice control off</span>
+    </div>
+    <div class="voice-transcript" id="voiceTranscript">Say "start", "stop" or "reset"</div>
+
+    <div class="stopwatch-controls">
+      <button class="sw-btn reset-btn" onclick="resetTimer()" title="Reset">🔁</button>
+      <button class="sw-btn play-btn" id="swPlayBtn" onclick="toggleTimer()" title="Play/Pause">▶️</button>
+      <button class="sw-btn mic-btn" id="swMicBtn" onclick="toggleVoiceControl()" title="Toggle Voice Commands">🎤</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING BOTTOM NAVIGATION PILL -->
 <div class="week-nav" id="weekNav">
   <button class="week-btn active" onclick="switchWeek(1,this)">1–2</button>
   <button class="week-btn" onclick="switchWeek(2,this)">3–4</button>
@@ -832,8 +1031,8 @@
 
 <script>
 // Active App State
-let currentWeek = 1; // can be 1, 2, 3 or 'period'
-let currentEnergy = 'moderate'; // can be 'low', 'moderate', or 'active'
+let currentWeek = 1; 
+let currentEnergy = 'moderate'; 
 
 const WEEKS = {
   1: {
@@ -1086,7 +1285,7 @@ const WEEKS = {
         yogaPoses:[]
       },
       {
-        day:"Friday", theme:"theme-pink", focus:"Hip Shape + Symmetry Focus",
+        day:"Friday", theme:"theme-pink", focus:"Hip Shape + Glute Stability",
         tags:["Hips","Stability","Yoga"],
         yoga:true,
         warmup:["Hip Circles — 25 each","Lateral Leg Swings 20 each","Single-Leg Balance 20 sec each","Glute Bridge Pulse — 20 pulses"],
@@ -1382,12 +1581,9 @@ function toggleMoonlight() {
   const isMoonlight = document.body.classList.toggle('moonlight');
   const btn = document.getElementById('themeToggleBtn');
   btn.innerHTML = isMoonlight ? "☀️" : "🌙";
-  
-  // Persist dark mode settings across manual tab transitions
   localStorage.setItem('fitflow_moonlight', isMoonlight ? 'true' : 'false');
 }
 
-// Initial theme check on window load
 if (localStorage.getItem('fitflow_moonlight') === 'true') {
   document.body.classList.add('moonlight');
   document.getElementById('themeToggleBtn').innerHTML = "☀️";
@@ -1395,24 +1591,17 @@ if (localStorage.getItem('fitflow_moonlight') === 'true') {
 
 function selectEnergy(level) {
   currentEnergy = level;
-  
-  // Re-render the tuner buttons & day-cards
-  document.querySelectorAll('.tuner-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
+  document.querySelectorAll('.tuner-btn').forEach(btn => btn.classList.remove('active'));
   
   const activeBtn = document.getElementById(`energy-${level}`);
   if (activeBtn) activeBtn.classList.add('active');
   
-  // Update the detailed subtext
   const notes = {
     low: "🧘 Low Energy Mode: We highlighted relaxing yoga / deep breathing & collapsed heavy wall workouts.",
     moderate: "🌸 Balanced Mode: Standard 7-day routine. Moderate stretching, core, and posture works.",
     active: "⚡ Active Mode: All routines unlocked! Wall push-ups & light strength holds are fully responsive."
   };
   document.getElementById('energyNote').innerText = notes[level];
-  
-  // Re-render Period Tab Days list to apply the active tuner rule
   renderPeriodWeek(true);
 }
 
@@ -1425,7 +1614,6 @@ function switchWeek(w, btn){
   } else {
     renderWeek(w);
   }
-  // Smooth scroll target alignment optimized for bottom floating bar
   window.scrollTo({top: document.getElementById('mainContent').offsetTop - 100, behavior: 'smooth'});
 }
 
@@ -1438,7 +1626,6 @@ function renderPeriodWeek(keepEnergy = false){
       <p>A 7-day low-intensity program designed specifically for your menstrual cycle. Listen to your body — move gently, breathe deeply, and prioritize recovery.</p>
     </div>
     
-    <!-- INTERACTIVE ENERGY LEVEL SELECTOR (AUTO-TUNER) -->
     <div class="tuner-container">
       <div class="tuner-title">🌸 Auto-Tuner: How are you feeling today?</div>
       <div class="tuner-selector">
@@ -1459,17 +1646,14 @@ function renderPeriodWeek(keepEnergy = false){
   `;
 
   PERIOD_DAYS.forEach((day, i) => {
-    // Process and filter/modify exercises inside active day card based on selected energy
     let adaptedExercises = [];
     let highlightStretch = false;
-    let autoOpenCard = false;
 
     day.exercises.forEach(ex => {
       if (currentEnergy === 'low') {
         if (ex.effort === 'high') {
-          // Do not include or adapt the high-effort exercise
+          // Exclude high effort items
         } else {
-          // Highlight deep stretching routines
           adaptedExercises.push({
             ...ex,
             sets: ex.name.includes("Breathing") || ex.name.includes("Pose") || ex.name.includes("Stretch") ? "Deep Hold — " + ex.sets : ex.sets
@@ -1477,18 +1661,15 @@ function renderPeriodWeek(keepEnergy = false){
           highlightStretch = true;
         }
       } else if (currentEnergy === 'active') {
-        // Unlock all + upgrade slightly
         adaptedExercises.push({
           ...ex,
           sets: ex.effort === 'high' ? ex.sets.replace("2 ×", "3 ×") + " (⚡ active bonus)" : ex.sets
         });
       } else {
-        // Moderate - default baseline
         adaptedExercises.push(ex);
       }
     });
 
-    // If day has empty list (all filtered out on Low Energy), provide a restful breathing slot
     if (adaptedExercises.length === 0) {
       adaptedExercises.push({name: "Savasana Rest / Meditation", sets: "5 mins", icon: "🧘", effort: "low"});
     }
@@ -1534,7 +1715,6 @@ function renderPeriodWeek(keepEnergy = false){
     `;
   });
 
-  // Important tips
   html += `
     <div class="period-tips">
       <h3>🌸 Important Tips During Periods</h3>
@@ -1568,7 +1748,6 @@ function renderWeek(w){
       return `<span class="meta-tag ${cls}">${t}</span>`;
     }).join('');
 
-    // Warmup rows
     const warmupRows = day.warmup.map(ex => `
       <div class="ex-row">
         <div class="ex-icon icon-warmup">🌅</div>
@@ -1579,7 +1758,6 @@ function renderWeek(w){
       </div>
     `).join('');
 
-    // Exercise sections
     const sectionsHtml = day.sections.map(sec => {
       const rows = sec.exes.map(ex => `
         <div class="ex-row">
@@ -1599,7 +1777,6 @@ function renderWeek(w){
       `;
     }).join('');
 
-    // Yoga section
     const yogaHtml = day.yoga ? `
       <div class="yoga-section">
         <div class="yoga-title">🧘 10–15 Min Yoga</div>
@@ -1607,7 +1784,6 @@ function renderWeek(w){
       </div>
     ` : '';
 
-    // Pelvic health section
     const pelvicHtml = day.pelvicExes && day.pelvicExes.length ? `
       <div class="pelvic-section">
         <div class="pelvic-section-title">🌸 Pelvic Health Add-On</div>
@@ -1650,7 +1826,6 @@ function renderWeek(w){
     `;
   });
 
-  // Sunday rest
   html += `
     <div class="rest-card">
       <div class="rest-emoji">🌿</div>
@@ -1659,7 +1834,6 @@ function renderWeek(w){
     </div>
   `;
 
-  // Progress section
   html += `
     <div class="progress-section">
       <div class="progress-title">Expected Results</div>
@@ -1719,6 +1893,172 @@ function toggleCard(i){
 function togglePeriodCard(i){
   const card = document.getElementById('pcard-'+i);
   card.classList.toggle('open');
+}
+
+/* SMART STOPWATCH & HANDS-FREE VOICE LOGIC */
+let stopwatchStartTime = 0;
+let stopwatchElapsedTime = 0;
+let stopwatchInterval = null;
+let stopwatchRunning = false;
+
+let recognition = null;
+let micActive = false;
+let heardTextTimeout = null;
+
+function toggleStopwatchExpand(event) {
+  if (event) event.stopPropagation();
+  const widget = document.getElementById('stopwatchWidget');
+  widget.classList.toggle('collapsed');
+  widget.classList.toggle('expanded');
+}
+
+function toggleTimer() {
+  if (stopwatchRunning) {
+    stopTimer();
+  } else {
+    startTimer();
+  }
+}
+
+function startTimer() {
+  if (!stopwatchRunning) {
+    stopwatchRunning = true;
+    stopwatchStartTime = Date.now() - stopwatchElapsedTime;
+    stopwatchInterval = setInterval(updateStopwatch, 10);
+    document.getElementById('swPlayBtn').innerText = "⏸️";
+  }
+}
+
+function stopTimer() {
+  if (stopwatchRunning) {
+    stopwatchRunning = false;
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = null;
+    document.getElementById('swPlayBtn').innerText = "▶️";
+  }
+}
+
+function resetTimer() {
+  stopTimer();
+  stopwatchElapsedTime = 0;
+  renderStopwatchTime(0);
+}
+
+function updateStopwatch() {
+  stopwatchElapsedTime = Date.now() - stopwatchStartTime;
+  renderStopwatchTime(stopwatchElapsedTime);
+}
+
+function renderStopwatchTime(time) {
+  let centiseconds = Math.floor((time % 1000) / 10);
+  let seconds = Math.floor((time / 1000) % 60);
+  let minutes = Math.floor((time / 60000) % 60);
+
+  let formattedCentiseconds = centiseconds.toString().padStart(2, '0');
+  let formattedSeconds = seconds.toString().padStart(2, '0');
+  let formattedMinutes = minutes.toString().padStart(2, '0');
+
+  document.getElementById('stopwatchTime').innerText = `${formattedMinutes}:${formattedSeconds}.${formattedCentiseconds}`;
+  document.getElementById('collapsedTimeDisplay').innerText = `${formattedMinutes}:${formattedSeconds}`;
+}
+
+function initSpeechRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    updateVoiceStatus("Voice Unsupported 🚫", "Web Speech API is not supported in this browser.");
+    document.getElementById('swMicBtn').style.opacity = '0.5';
+    return;
+  }
+  
+  recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+
+  recognition.onstart = () => {
+    micActive = true;
+    document.getElementById('voiceIndicator').classList.add('active');
+    document.getElementById('swMicBtn').classList.add('active');
+    updateVoiceStatus("Listening...", 'Say "start", "stop", or "reset"');
+  };
+
+  recognition.onresult = (event) => {
+    const resultIndex = event.resultIndex;
+    const transcript = event.results[resultIndex][0].transcript.trim().toLowerCase();
+    
+    showHeardCommand(transcript);
+
+    if (transcript.includes('start') || transcript.includes('begin') || transcript.includes('go')) {
+      startTimer();
+    } else if (transcript.includes('stop') || transcript.includes('pause') || transcript.includes('wait')) {
+      stopTimer();
+    } else if (transcript.includes('reset') || transcript.includes('restart') || transcript.includes('clear')) {
+      resetTimer();
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.warn("Speech recognition error error:", event.error);
+    if (event.error === 'not-allowed') {
+      micActive = false;
+      deactivateVoiceUI();
+      updateVoiceStatus("Permission Denied ❌", "Enable microphone permissions in your browser.");
+    }
+  };
+
+  recognition.onend = () => {
+    // Keep micro active continuously if user didn't turn it off manually
+    if (micActive) {
+      try {
+        recognition.start();
+      } catch (e) {
+        console.error("Speech loop error:", e);
+      }
+    } else {
+      deactivateVoiceUI();
+    }
+  };
+}
+
+function toggleVoiceControl() {
+  if (!recognition) {
+    initSpeechRecognition();
+  }
+
+  if (!recognition) return;
+
+  if (micActive) {
+    micActive = false;
+    recognition.stop();
+    deactivateVoiceUI();
+  } else {
+    try {
+      recognition.start();
+    } catch (e) {
+      console.error("Mic initialization failed:", e);
+    }
+  }
+}
+
+function deactivateVoiceUI() {
+  document.getElementById('voiceIndicator').classList.remove('active');
+  document.getElementById('swMicBtn').classList.remove('active');
+  updateVoiceStatus("Voice control off", 'Say "start", "stop" or "reset"');
+}
+
+function updateVoiceStatus(status, subtitle) {
+  document.getElementById('voiceStatusText').innerText = status;
+  document.getElementById('voiceTranscript').innerText = subtitle;
+}
+
+function showHeardCommand(text) {
+  const el = document.getElementById('voiceTranscript');
+  el.innerHTML = `Heard: <strong style="color: var(--rose)">"${text}"</strong>`;
+  
+  clearTimeout(heardTextTimeout);
+  heardTextTimeout = setTimeout(() => {
+    el.innerText = 'Say "start", "stop" or "reset"';
+  }, 3000);
 }
 
 // Initial Run
