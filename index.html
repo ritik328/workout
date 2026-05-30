@@ -62,12 +62,12 @@
   /* NAVBAR */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    padding: 12px 24px;
-    background: rgba(255,255,255,0.2);
+    padding: 16px 24px;
+    background: rgba(255,255,255,0.20);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-bottom: 1px solid rgba(255,255,255,0.4);
-    box-shadow: 0 4px 32px rgba(139,92,246,0.1);
+    box-shadow: 0 4px 32px rgba(139,92,246,0.06);
     display: flex; align-items: center; justify-content: space-between;
   }
   .nav-logo {
@@ -90,7 +90,7 @@
 
   /* HERO */
   .hero {
-    padding: 100px 24px 40px;
+    padding: 120px 24px 40px;
     text-align: center; position: relative; z-index: 1;
   }
   .hero-eyebrow {
@@ -133,48 +133,72 @@
   }
   .goal-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-  /* WEEK SELECTOR */
+  /* NAVIGATION PILL (FLOATING BOTTOM CENTER - PERFECT ON DESKTOP, TABLET & MOBILE) */
   .week-nav {
-    position: sticky; top: 64px; z-index: 900;
-    padding: 14px 24px;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(255,255,255,0.3);
-    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1100;
+    padding: 6px 8px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(20px) saturate(190%);
+    -webkit-backdrop-filter: blur(20px) saturate(190%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 12px 36px rgba(139, 92, 246, 0.16);
+    border-radius: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: calc(100vw - 32px);
+    width: auto;
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .week-nav:hover {
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 16px 44px rgba(139, 92, 246, 0.22);
+    background: rgba(255, 255, 255, 0.55);
   }
   .week-btn {
-    padding: 8px 20px; border-radius: 30px;
-    font-size: 13px; font-weight: 500; cursor: pointer;
-    border: 1.5px solid rgba(255,255,255,0.5);
-    background: rgba(255,255,255,0.2);
-    backdrop-filter: blur(8px);
-    color: var(--text-dark); transition: all 0.3s ease;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--text-dark);
+    transition: all 0.2s ease;
     font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .week-btn:hover { background: rgba(255,255,255,0.4); transform: translateY(-1px); }
+  .week-btn:hover {
+    background: rgba(255, 255, 255, 0.45);
+  }
   .week-btn.active {
     background: linear-gradient(135deg, var(--rose), var(--violet));
-    border-color: transparent; color: white;
-    box-shadow: 0 4px 20px rgba(244,63,94,0.35);
-    transform: translateY(-1px);
+    color: white;
+    box-shadow: 0 4px 15px rgba(244, 63, 94, 0.25);
   }
   .week-btn.period-btn {
-    border: 1.5px solid rgba(244,114,182,0.4);
-    background: rgba(253,242,248,0.4);
     color: #9d174d;
+    background: transparent;
   }
   .week-btn.period-btn:hover {
-    background: rgba(253,242,248,0.7);
+    background: rgba(253, 242, 248, 0.5);
   }
   .week-btn.period-btn.active {
     background: linear-gradient(135deg, #f472b6, #fb7185);
-    border-color: transparent; color: white;
-    box-shadow: 0 4px 20px rgba(244,114,182,0.4);
+    color: white;
+    box-shadow: 0 4px 15px rgba(244, 114, 182, 0.3);
   }
 
   /* MAIN CONTENT */
-  .content { max-width: 900px; margin: 0 auto; padding: 32px 16px 80px; position: relative; z-index: 1; }
+  /* Extra bottom padding to clear the floating bottom navigation bar */
+  .content { max-width: 900px; margin: 0 auto; padding: 24px 16px 140px; position: relative; z-index: 1; }
 
   /* WEEK INFO BANNER */
   .week-banner {
@@ -497,7 +521,7 @@
 
   /* FOOTER */
   footer {
-    text-align: center; padding: 24px;
+    text-align: center; padding: 24px 24px 48px;
     font-size: 12px; color: #9ca3af;
     border-top: 1px solid rgba(255,255,255,0.4);
   }
@@ -505,11 +529,12 @@
   @media (max-width: 900px) {
     nav { padding: 12px 16px; }
     .hero { padding-top: 110px; }
-    .content { padding: 28px 14px 72px; }
+    .content { padding: 28px 14px 130px; }
     .week-banner { padding: 18px 20px; }
     .progress-section { padding: 20px; }
   }
 
+  /* MEDIA BREAKPOINT ADJUSTMENTS FOR THE BOTTOM FLOATING BAR AND TEXT CLIPPING */
   @media (max-width: 768px) {
     body::before { width: 320px; height: 320px; top: -120px; left: -140px; }
     body::after { width: 300px; height: 300px; bottom: -120px; right: -120px; }
@@ -523,9 +548,6 @@
     .goals-grid { gap: 8px; }
     .goal-chip { padding: 7px 14px; font-size: 12px; }
 
-    .week-nav { top: 114px; padding: 12px 14px; }
-    .week-banner { align-items: flex-start; }
-
     .day-header { padding: 18px; gap: 12px; align-items: flex-start; }
     .day-number { width: 44px; height: 44px; font-size: 18px; }
     .period-day-number { width: 44px; height: 44px; font-size: 16px; }
@@ -538,14 +560,23 @@
 
     .yoga-section, .rest-card, .progress-section { padding: 18px; }
     .rest-card { padding: 24px 18px; }
+
+    /* Centered Pill Adjustments for Tablet views */
+    .week-nav {
+      bottom: 20px;
+      padding: 5px 6px;
+      gap: 4px;
+    }
+    .week-btn {
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+    .content { padding-bottom: 130px; }
   }
 
   @media (max-width: 480px) {
     .hero h1 { font-size: clamp(30px, 13vw, 40px); }
     .hero-sub { font-size: 0.94rem; line-height: 1.65; }
-
-    .week-btn { padding: 7px 12px; font-size: 12px; }
-    .week-nav { justify-content: center; }
 
     .day-name { font-size: 10px; letter-spacing: 1.5px; }
     .day-title { font-size: 15px; }
@@ -556,13 +587,38 @@
 
     .progress-title { font-size: 22px; }
     .progress-grid { grid-template-columns: 1fr; }
+
+    /* Centered Pill Adjustments for Mobile Viewports */
+    .week-nav {
+      bottom: 16px;
+      padding: 4px 6px;
+      gap: 3px;
+      max-width: calc(100vw - 24px);
+    }
+    .week-btn {
+      padding: 8px 14px;
+      font-size: 12px;
+    }
+    .content { padding-bottom: 120px; }
   }
 
   @media (max-width: 360px) {
     .hero { padding-top: 126px; }
     .nav-logo { font-size: 20px; }
-    .week-nav { top: 128px; }
     .goal-chip { width: 100%; justify-content: center; }
+
+    /* Centered Pill Adjustments for Small Mobile Displays */
+    .week-nav {
+      bottom: 12px;
+      padding: 3px;
+      gap: 2px;
+      max-width: calc(100vw - 16px);
+    }
+    .week-btn {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+    .content { padding-bottom: 110px; }
   }
 
   @media (min-width: 1024px) {
@@ -592,11 +648,12 @@
   </div>
 </section>
 
+<!-- FLOATING BOTTOM NAVIGATION PILL (ADAPTIVE SIZE ACROSS ALL SCREENS) -->
 <div class="week-nav" id="weekNav">
-  <button class="week-btn active" onclick="switchWeek(1,this)">Week 1–2</button>
-  <button class="week-btn" onclick="switchWeek(2,this)">Week 3–4</button>
-  <button class="week-btn" onclick="switchWeek(3,this)">Week 5+</button>
-  <button class="week-btn period-btn" onclick="switchWeek('period',this)">🌸 Period Days</button>
+  <button class="week-btn active" onclick="switchWeek(1,this)">1–2</button>
+  <button class="week-btn" onclick="switchWeek(2,this)">3–4</button>
+  <button class="week-btn" onclick="switchWeek(3,this)">5+</button>
+  <button class="week-btn period-btn" onclick="switchWeek('period',this)">🌸 PD</button>
 </div>
 
 <div class="content" id="mainContent"></div>
@@ -1153,7 +1210,8 @@ function switchWeek(w, btn){
   } else {
     renderWeek(w);
   }
-  window.scrollTo({top:document.getElementById('mainContent').offsetTop - 120, behavior:'smooth'});
+  // Smooth scroll target alignment optimized for bottom floating bar
+  window.scrollTo({top: document.getElementById('mainContent').offsetTop - 60, behavior: 'smooth'});
 }
 
 function renderPeriodWeek(){
