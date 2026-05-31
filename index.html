@@ -73,12 +73,87 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
 /* ── PAGE STRUCTURE ── */
 .page{position:relative;min-height:100vh;}
 
+/* ── NAV ── */
+/* Fixed navbar so the compact stopwatch is always anchored */
+nav{
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  transition: background 0.3s, border-color 0.3s;
+}
+body.moonlight nav {
+  background: rgba(10, 6, 26, 0.4);
+  border-bottom-color: rgba(255,255,255,0.05);
+}
+
+.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text-primary);}
+.logo span{background:linear-gradient(135deg,var(--rose),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.theme-btn{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--card-bg);border:1px solid var(--card-border);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:17px;backdrop-filter:blur(14px);
+  transition:transform 0.2s,background 0.3s;
+}
+.theme-btn:hover{transform:scale(1.1);}
+
+/* ── COMPACT FLOATING STOPWATCH IN NAV ── */
+.compact-sw {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  padding: 6px 14px;
+  border-radius: 30px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+body.moonlight .compact-sw {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+body.scrolled .compact-sw {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.c-time {
+  font-family: monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--timer-text);
+}
+.c-btn {
+  background: transparent;
+  border: none;
+  color: var(--rose);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.c-btn:hover {
+  background: rgba(244, 63, 94, 0.1);
+}
+
 /* ── HERO ── */
 .hero{
   position:relative;
-  min-height:430px;
+  min-height:450px;
   display:flex;flex-direction:column;align-items:center;
   overflow:visible;z-index:1;
+  padding-top: 80px; /* Offset the fixed nav */
   padding-bottom:60px;
 }
 
@@ -104,23 +179,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
   0%,100%{transform:translateX(-50%) scale(1);opacity:1;}
   50%{transform:translateX(-50%) scale(1.05);opacity:0.88;}
 }
-
-/* ── NAV ── */
-nav{
-  position:relative;z-index:10;width:100%;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:22px 24px 0;
-}
-.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text-primary);}
-.logo span{background:linear-gradient(135deg,var(--rose),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.theme-btn{
-  width:38px;height:38px;border-radius:50%;
-  background:var(--card-bg);border:1px solid var(--card-border);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:17px;backdrop-filter:blur(14px);
-  transition:transform 0.2s,background 0.3s;
-}
-.theme-btn:hover{transform:scale(1.1);}
 
 /* ── STOPWATCH ── */
 .sw-area{
@@ -203,7 +261,7 @@ nav{
   backdrop-filter:blur(22px);
   box-shadow:0 8px 30px rgba(139,92,246,0.13);
 }
-.week-btn {
+.week-btn{
   padding:9px 18px;border-radius:28px;
   font-size:13px;font-weight:600;cursor:pointer;
   border:none;background:transparent;color:var(--text-primary);
@@ -246,19 +304,8 @@ nav{
 
 .content{max-width:860px;margin:0 auto;}
 
-/* ── WEEK BANNER ── */
-.wbanner {
-  background:var(--card-bg);border:1px solid var(--card-border);
-  border-radius:18px;padding:17px 20px;margin-bottom:22px;
-  display:flex;gap:12px;flex-wrap:wrap;align-items:center;
-  backdrop-filter:blur(12px);
-}
-.wbanner .badge{
-  background:linear-gradient(135deg,var(--rose),var(--violet));
-  color:white;font-size:11px;font-weight:700;
-  padding:5px 14px;border-radius:18px;white-space:nowrap;
-}
-.wbanner p{font-size:13px;color:var(--text-primary);opacity:0.78;line-height:1.5;flex:1;}
+/* ── WEEK BANNER (DEPRECATED - REMOVED PER REQ TO SOLVE SCREENSHOT CLIPPING) ── */
+.wbanner{ display:none; }
 
 /* ── DAY CARDS ── */
 .dcard,.pdcard{
@@ -457,6 +504,14 @@ footer{text-align:center;padding:20px;font-size:11px;color:var(--text-muted);bor
 
   <nav>
     <div class="logo">FitFlow <span>✦</span></div>
+    
+    <!-- COMPACT INLINE STOPWATCH IN NAV BAR -->
+    <div class="compact-sw" id="compactSw">
+      <span class="c-time" id="cTime">00:00.00</span>
+      <button class="c-btn" onclick="toggle()" id="cPlayBtn" title="Play / Pause">▶</button>
+      <button class="c-btn" onclick="resetSW()" title="Reset">🔁</button>
+    </div>
+    
     <button class="theme-btn" id="themeBtn" onclick="toggleMoon()">🌙</button>
   </nav>
 
@@ -511,7 +566,8 @@ function toggle(){run?pause():play();}
 function play(){
   if(run)return;run=true;
   t0=Date.now()-el;iv=setInterval(tick,10);
-  // icon → pause
+  
+  // Update Large Button UI
   document.getElementById('pIcon').innerHTML='<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
   const pb=document.getElementById('playBtn');
   pb.classList.add('glow','bounce');
@@ -522,10 +578,15 @@ function play(){
   document.getElementById('sLabel').textContent='Clocked On';
   document.getElementById('swTime').classList.add('lit');
   document.getElementById('swSub').textContent=laps>0?`Lap ${laps}`:'Running…';
+  
+  // Update Compact Nav Button UI
+  document.getElementById('cPlayBtn').textContent = '⏸';
 }
 
 function pause(){
   if(!run)return;run=false;clearInterval(iv);
+  
+  // Update Large Button UI
   document.getElementById('pIcon').innerHTML='<path d="M8 5v14l11-7z"/>';
   const pb=document.getElementById('playBtn');
   pb.classList.remove('glow');pb.classList.add('bounce');
@@ -536,6 +597,9 @@ function pause(){
   document.getElementById('sLabel').textContent='Paused';
   document.getElementById('swTime').classList.remove('lit');
   document.getElementById('swSub').textContent='Paused — tap to resume';
+  
+  // Update Compact Nav Button UI
+  document.getElementById('cPlayBtn').textContent = '▶';
 }
 
 function resetSW(){
@@ -543,10 +607,12 @@ function resetSW(){
   renderT(0);
   document.getElementById('sLabel').textContent='Clocked Off';
   document.getElementById('swSub').textContent='Ready to start';
+  
   // Spin reset btn
   const rb=document.getElementById('resetBtn');
   rb.classList.remove('spin');void rb.offsetWidth;rb.classList.add('spin');
   setTimeout(()=>rb.classList.remove('spin'),600);
+  
   // Flash overlay
   const f=document.createElement('div');f.className='rflash';
   document.body.appendChild(f);setTimeout(()=>f.remove(),700);
@@ -562,10 +628,21 @@ function tick(){el=Date.now()-t0;renderT(el);}
 
 function renderT(ms){
   const cs=Math.floor((ms%1000)/10),s=Math.floor((ms/1000)%60),m=Math.floor(ms/60000)%60;
-  document.getElementById('swTime').textContent=`${p2(m)}:${p2(s)}.${p2(cs)}`;
+  const timeStr = `${p2(m)}:${p2(s)}.${p2(cs)}`;
+  document.getElementById('swTime').textContent=timeStr;
+  document.getElementById('cTime').textContent=timeStr;
 }
 function fmt(ms){const cs=Math.floor((ms%1000)/10),s=Math.floor((ms/1000)%60),m=Math.floor(ms/60000)%60;return`${p2(m)}:${p2(s)}.${p2(cs)}`;}
 function p2(n){return n.toString().padStart(2,'0');}
+
+/* ── INTERACTIVE MORPHING DETECTOR (SCROLL HANDLER) ── */
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 220) {
+    document.body.classList.add('scrolled');
+  } else {
+    document.body.classList.remove('scrolled');
+  }
+});
 
 /* ── THEME ── */
 function toggleMoon(){
@@ -606,7 +683,7 @@ const W={
        wu:["Chest Opener Stretch — 30 sec","Arm Swings — 30 sec","Wrist Rotations — 20 sec","Spinal Rotation — 30 sec"],
        secs:[
          {t:"Chest & Posture",ic:"🎯",cl:"i-str",ex:[{n:"Incline Push-ups (wall/chair)",no:"ONLY chest exercise this week",s:"3 × 10"},{n:"Doorway Chest Stretch",no:"Hold 20 sec each arm",s:"2 × 20 sec"},{n:"Band Pull-Apart (or towel)",no:"Arms straight, pull apart",s:"3 × 15"},{n:"Prone Y-T-W Raises",no:"Face down, lift arms Y → T → W",s:"2 × 8 each"}]},
-         {t:"Arms Toning",ic:"💎",cl:"i-str",ex:[{n:"Tricep Kickbacks (bottles)",no:"Elbow pinned, extend fully",s:"3 × 12"},{n:"Bicep Curls (bottles)",no:"Control the lowering phase",s:"3 × 12"},{n:"Overhead Tricep Extension",no:"Elbows close to head",s:"3 × 10"},{n:"Plank Shoulder Taps",no:"Hips square, no rocking",s:"3 × 8 each"}]}
+         {t:"Arms Toning",ic:"💎",cl:"i-str",ex:[{n:"Tricep Kickbacks (bottles)",no:"Elbow pinned, extend fully",s:"3 × 12"},{n:"Bicep Curls (bottles)",no:"Control the lowering phase",s:"3 × 12"},{n:"Overhead Tricep Extension",no:"Keep elbows close to head",s:"3 × 10"},{n:"Plank Shoulder Taps",no:"Hips square, no rocking",s:"3 × 8 each"}]}
        ],
        pelv:[{n:"Cat-Cow Stretch",no:"Reduces lower back stiffness",s:"45 sec"}],yp:[]},
       {d:"Friday",c:"c-pink",f:"Hip Shape + Glute Stability",tags:["Hips","Stability","Yoga"],yoga:true,
@@ -654,10 +731,10 @@ const W={
        wu:["Chest Opener 40 sec","Arm Swings 40 sec","Pike Push-up Prep 10 sec hold","Spinal Waves — 30 sec"],
        secs:[
          {t:"Chest & Posture (+2 reps)",ic:"🎯",cl:"i-str",ex:[{n:"Incline Push-ups (lower surface)",no:"Hands on low stool/bench",s:"3 × 12"},{n:"Wall Angels",no:"Back against wall, slide up/down",s:"3 × 12"},{n:"Band Pull-Apart (wider grip)",no:"More range of motion",s:"3 × 17"},{n:"Prone Y-T-W with Hold",no:"1 sec hold at each position",s:"3 × 10 each"}]},
-         {t:"Arms Toning +2 Reps",ic:"💎",cl:"i-str",ex:[{n:"Tricep Kickbacks (heavier bottle)",no:"3 sec lowering",s:"3 × 14"},{n:"Hammer Curls (bottles)",no:"Alternate, squeeze at top",s:"3 × 14"},{n:"Skull Crushers (lying, bottles)",no:"Keep elbows still",s:"3 × 12"},{n:"Plank Taps + Reach Forward",no:"Tap + extend arm front",s:"3 × 10 each"}]}
+         {t:"Arms Toning +2 Reps",ic:"💎",cl:"i-str",ex:[{n:"Tricep Kickbacks (heavier bottle)",no:"Slow 3 sec lowering",s:"3 × 14"},{n:"Hammer Curls (bottles)",no:"Alternate, squeeze at top",s:"3 × 14"},{n:"Skull Crushers (lying, bottles)",no:"Keep elbows still",s:"3 × 12"},{n:"Plank Taps + Reach Forward",no:"Tap + extend arm front",s:"3 × 10 each"}]}
        ],
        pelv:[{n:"Cat-Cow Flow",no:"Longer flow — lower back stiffness relief",s:"60 sec"}],yp:[]},
-      {d:"Friday",c:"c-pink",f:"Hip Shape + Glute Stability",tags:["Hips","Stability","Yoga"],yoga:true,
+      {d:"Friday",c:"c-pink",f:"Hip Shape + Symmetry Focus",tags:["Hips","Stability","Yoga"],yoga:true,
        wu:["Hip Circles — 25 each","Lateral Leg Swings 20 each","Single-Leg Balance 20 sec each","Glute Bridge Pulse — 20 pulses"],
        secs:[
          {t:"Hip Shaping (Symmetry Focus)",ic:"🌸",cl:"i-str",ex:[{n:"Single-Leg Glute Bridge — Weaker First",no:"Weaker side 1 extra set",s:"4×12 weak / 3×12 strong"},{n:"Fire Hydrants + Hold",no:"Hold at top 2 sec",s:"3 × 17 each"},{n:"Side-lying Abduction + Circles",no:"5 circles at top each rep",s:"3 × 17 each"},{n:"Clamshells + Resistance",no:"Cloth loop for resistance",s:"3 × 17 each"}]},
@@ -708,7 +785,7 @@ const W={
       {d:"Friday",c:"c-pink",f:"Hip Shape + Glute Sculpt",tags:["Hips","Sculpt","Yoga"],yoga:true,
        wu:["Hip Circles — 30 each","Lateral step + knee lift","Single-Leg Balance 30 sec each","Deep Glute Stretch — 30 sec"],
        secs:[
-         {t:"Hip Sculpting",ic:"🌸",cl:"i-str",ex:[{n:"Single-Leg Glute Bridge — Elevated",no:"Elevated = more range + shape",s:"4 × 15 each"},{n:"Fire Hydrant + Circle + Extension",no:"Circle then extend straight back",s:"3 × 15 each"},{n:"Standing Hip Abduction (pulsed)",no:"Lift, pulse 3×, return",s:"3 × 15 each"},{n:"Curtsy Lunge + Side Kick",no:"Deep curtsy + kick to side",s:"3 × 12 each"}]},
+         {t:"Hip Sculpting",ic:"🌸",cl:"i-str",ex:[{n:"Single-Leg Glute Bridge — Elevated",no:"Elevated = more range + shape",s:"4 × 15 each"},{n:"Fire Hydrant + Full Circle + Extension",no:"Circle then extend straight back",s:"3 × 15 each"},{n:"Standing Hip Abduction (pulsed)",no:"Lift, pulse 3×, return",s:"3 × 15 each"},{n:"Curtsy Lunge + Side Kick",no:"Deep curtsy + kick to side",s:"3 × 12 each"}]},
          {t:"Balance & Symmetry",ic:"⚖️",cl:"i-core",ex:[{n:"Single-Leg RDL + Row (bottle)",no:"Hinge + row at bottom",s:"3 × 12 each"},{n:"Hip Thrust — Elevated (chair)",no:"Full extension, controlled squeeze",s:"3 × 15"},{n:"Lateral Band Walk — Lower Squat",no:"Stay lower throughout",s:"3 × 20 each"}]}
        ],
        pelv:[{n:"Butterfly Pose",no:"Hip + pelvic opening",s:"1 min"},{n:"Frog Stretch",no:"Deep pelvic floor stretch",s:"1 min"},{n:"Happy Baby Pose",no:"Hip flexor & pelvic tension release",s:"1 min"}],
