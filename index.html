@@ -6,1676 +6,823 @@
 <title>FitFlow — 6-Day Workout Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --rose: #f43f5e;
-    --rose-light: #fda4af;
-    --rose-pale: #fff1f2;
-    --violet: #8b5cf6;
-    --violet-light: #c4b5fd;
-    --violet-pale: #f5f3ff;
-    --amber: #f59e0b;
-    --teal: #14b8a6;
-    --teal-light: #99f6e4;
-    --glass-bg: rgba(255, 255, 255, 0.45);
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --glass-shadow: rgba(139, 92, 246, 0.08);
-    --text-dark: #1e1b4b;
-    --text-mid: #4c1d95;
-    --text-soft: #7c3aed;
-    --period-pink: #f472b6;
-    --period-rose: #fb7185;
-    --period-soft: #fdf2f8;
-    
-    /* Stopwatch dashboard gradients */
-    --stopwatch-bg: linear-gradient(180deg, #e0e7ff 0%, #ede9fe 100%);
-    --play-btn-glow: rgba(139, 92, 246, 0.3);
-  }
+:root {
+  --rose: #f43f5e;
+  --rose-light: #fda4af;
+  --violet: #8b5cf6;
+  --violet-light: #c4b5fd;
+  --amber: #f59e0b;
+  --teal: #14b8a6;
+  --teal-light: #99f6e4;
+  --period-pink: #f472b6;
+  --period-rose: #fb7185;
+  --bg: linear-gradient(160deg, #fdf2f8 0%, #ede9fe 40%, #ecfdf5 70%, #fff1f2 100%);
+  --hero-orb: radial-gradient(ellipse 85% 85% at 50% 8%, rgba(139,92,246,0.28) 0%, rgba(244,63,94,0.16) 45%, transparent 72%);
+  --hero-orb2: radial-gradient(ellipse 55% 45% at 50% 58%, rgba(244,63,94,0.15) 0%, transparent 70%);
+  --text-primary: #1e1b4b;
+  --text-secondary: #6366f1;
+  --text-muted: #9ca3af;
+  --card-bg: rgba(255,255,255,0.55);
+  --card-border: rgba(255,255,255,0.72);
+  --sheet-bg: rgba(255,255,255,0.93);
+  --sheet-border: rgba(255,255,255,0.72);
+  --row-bg: rgba(255,255,255,0.52);
+  --row-border: rgba(255,255,255,0.68);
+  --row-hover: rgba(255,255,255,0.82);
+  --section-divider: rgba(139,92,246,0.1);
+  --timer-text: #1e1b4b;
+  --timer-sub: #6366f1;
+  --status-track: rgba(139,92,246,0.1);
+  --pelvic-bg: rgba(244,114,182,0.07);
+  --pelvic-border: rgba(244,114,182,0.18);
+  --yoga-bg: rgba(20,184,166,0.07);
+  --yoga-border: rgba(20,184,166,0.18);
+  --rest-border: rgba(139,92,246,0.18);
+  --progress-card: rgba(255,255,255,0.5);
+  --handle: rgba(139,92,246,0.18);
+}
+body.moonlight {
+  --bg: linear-gradient(160deg, #090514 0%, #110925 40%, #0d1e21 70%, #170719 100%);
+  --hero-orb: radial-gradient(ellipse 85% 85% at 50% 8%, rgba(139,92,246,0.42) 0%, rgba(244,63,94,0.2) 45%, transparent 72%);
+  --hero-orb2: radial-gradient(ellipse 55% 45% at 50% 58%, rgba(244,63,94,0.14) 0%, transparent 70%);
+  --text-primary: #f1f0fb;
+  --text-secondary: #c4b5fd;
+  --text-muted: #6b7280;
+  --card-bg: rgba(255,255,255,0.04);
+  --card-border: rgba(255,255,255,0.09);
+  --sheet-bg: rgba(10,6,26,0.97);
+  --sheet-border: rgba(255,255,255,0.07);
+  --row-bg: rgba(255,255,255,0.04);
+  --row-border: rgba(255,255,255,0.07);
+  --row-hover: rgba(255,255,255,0.09);
+  --section-divider: rgba(139,92,246,0.14);
+  --timer-text: #f1f0fb;
+  --timer-sub: #a78bfa;
+  --status-track: rgba(139,92,246,0.18);
+  --pelvic-bg: rgba(244,114,182,0.05);
+  --pelvic-border: rgba(244,114,182,0.12);
+  --yoga-bg: rgba(20,184,166,0.04);
+  --yoga-border: rgba(20,184,166,0.1);
+  --rest-border: rgba(139,92,246,0.12);
+  --progress-card: rgba(255,255,255,0.03);
+  --handle: rgba(255,255,255,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;color:var(--text-primary);overflow-x:hidden;transition:background 0.5s;}
 
-  /* MOONLIGHT THEME OVERRIDES */
-  body.moonlight {
-    --rose-pale: #1e112a;
-    --violet-pale: #120b24;
-    --period-soft: #231225;
-    --glass-bg: rgba(30, 27, 75, 0.45);
-    --glass-border: rgba(255, 255, 255, 0.12);
-    --glass-shadow: rgba(0, 0, 0, 0.3);
-    --text-dark: #f1f0fb;
-    --text-mid: #c4b5fd;
-    --text-soft: #a78bfa;
-    --stopwatch-bg: linear-gradient(180deg, #110925 0%, #090514 100%);
-    --play-btn-glow: rgba(167, 139, 250, 0.25);
-  }
+/* ── PAGE STRUCTURE ── */
+.page{position:relative;min-height:100vh;}
 
-  * { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    transition: background 0.4s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
+/* ── HERO ── */
+.hero{
+  position:relative;
+  min-height:430px;
+  display:flex;flex-direction:column;align-items:center;
+  overflow:visible;z-index:1;
+  padding-bottom:60px;
+}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: linear-gradient(135deg, #fdf2f8 0%, #ede9fe 30%, #ecfdf5 60%, #fff1f2 100%);
-    min-height: 100vh;
-    color: var(--text-dark);
-    overflow-x: hidden;
-  }
-  body.moonlight {
-    background: linear-gradient(135deg, #090514 0%, #110925 35%, #0d1e21 70%, #170719 100%);
-  }
+/* Large glowing orb — the centrepiece like the reference image */
+.orb{
+  position:absolute;
+  top:-80px;left:50%;
+  transform:translateX(-50%);
+  width:min(560px,115vw);
+  height:min(560px,115vw);
+  border-radius:50%;
+  background:var(--hero-orb);
+  pointer-events:none;z-index:0;
+  transition:background 0.6s;
+}
+.orb::after{
+  content:'';position:absolute;inset:-30px;border-radius:50%;
+  background:var(--hero-orb2);
+}
+/* Orb breathes when stopwatch is running */
+.orb.active{animation:orbBreathe 2.6s ease-in-out infinite;}
+@keyframes orbBreathe{
+  0%,100%{transform:translateX(-50%) scale(1);opacity:1;}
+  50%{transform:translateX(-50%) scale(1.05);opacity:0.88;}
+}
 
-  /* OVERLAY NAVIGATION */
-  nav {
-    position: absolute; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 16px 24px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 24px; font-weight: 600;
-    color: var(--text-dark);
-  }
-  .nav-logo span {
-    background: linear-gradient(135deg, var(--rose), var(--violet));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+/* ── NAV ── */
+nav{
+  position:relative;z-index:10;width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 24px 0;
+}
+.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text-primary);}
+.logo span{background:linear-gradient(135deg,var(--rose),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.theme-btn{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--card-bg);border:1px solid var(--card-border);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:17px;backdrop-filter:blur(14px);
+  transition:transform 0.2s,background 0.3s;
+}
+.theme-btn:hover{transform:scale(1.1);}
 
-  .theme-toggle-btn {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    cursor: pointer;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    box-shadow: 0 4px 12px var(--glass-shadow);
-  }
-  .theme-toggle-btn:hover {
-    transform: scale(1.05);
-  }
+/* ── STOPWATCH ── */
+.sw-area{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;
+  padding:30px 24px 0;width:100%;
+}
+.sw-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--text-secondary);margin-bottom:12px;opacity:0.75;}
 
-  /* STOPWATCH DASHBOARD HEADER PANEL (MIMICS image_2222f8.png) */
-  .dashboard-hero {
-    background: var(--stopwatch-bg);
-    padding: 80px 24px 48px;
-    text-align: center;
-    position: relative;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  }
-  .dashboard-title {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-soft);
-    margin-bottom: 24px;
-    opacity: 0.8;
-  }
-  .dashboard-timer {
-    font-family: monospace;
-    font-size: clamp(48px, 12vw, 68px);
-    font-weight: 600;
-    color: var(--text-dark);
-    letter-spacing: -2px;
-    margin-bottom: 32px;
-    text-shadow: 0 4px 12px var(--glass-shadow);
-  }
+.sw-time{
+  font-family:monospace;
+  font-size:clamp(54px,13vw,78px);
+  font-weight:700;letter-spacing:-3px;line-height:1;
+  color:var(--timer-text);margin-bottom:6px;
+  transition:color 0.4s;
+}
+.sw-time.lit{color:var(--rose);}
 
-  /* CENTRAL PLAY BUTTON INTEGRATION */
-  .control-center {
-    position: relative;
-    width: 130px;
-    height: 130px;
-    margin: 0 auto 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .play-pulse-ring {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: transparent;
-    border: 2px solid var(--text-soft);
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  /* Concentric halos that animate when stopwatch is running */
-  .control-center.running .play-pulse-ring {
-    animation: pulse-wave 2s infinite cubic-bezier(0.25, 0, 0, 1);
-  }
-  .control-center.running .play-pulse-ring:nth-child(2) {
-    animation-delay: 0.6s;
-  }
-  .control-center.running .play-pulse-ring:nth-child(3) {
-    animation-delay: 1.2s;
-  }
+.sw-sub{font-size:13px;color:var(--timer-sub);opacity:0.8;margin-bottom:26px;height:18px;transition:opacity 0.3s;}
 
-  @keyframes pulse-wave {
-    0% { transform: scale(1); opacity: 0.7; }
-    100% { transform: scale(1.6); opacity: 0; }
-  }
+/* ── CONTROLS ── */
+.controls{display:flex;align-items:center;justify-content:center;gap:22px;margin-bottom:28px;}
 
-  .play-trigger-btn {
-    position: relative;
-    z-index: 5;
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    border: 4px solid #ffffff;
-    background: linear-gradient(135deg, var(--rose) 0%, var(--violet) 100%);
-    box-shadow: 0 8px 24px var(--play-btn-glow);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-  body.moonlight .play-trigger-btn {
-    border-color: rgba(255, 255, 255, 0.15);
-  }
-  .play-trigger-btn:hover {
-    transform: scale(1.05);
-  }
-  .play-trigger-btn:active {
-    transform: scale(0.95);
-  }
-  .play-trigger-btn svg {
-    width: 32px;
-    height: 32px;
-    fill: #ffffff;
-    transition: transform 0.3s ease;
-  }
+.side-btn{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--card-bg);border:1px solid var(--card-border);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:16px;backdrop-filter:blur(14px);color:var(--text-primary);
+  transition:transform 0.2s,background 0.2s;
+}
+.side-btn:hover{background:var(--row-hover);}
+.side-btn:active{transform:scale(0.88);}
+.side-btn.spin{animation:spinAnim 0.55s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes spinAnim{0%{transform:rotate(0)scale(1)}40%{transform:rotate(-210deg)scale(0.78)}100%{transform:rotate(0)scale(1)}}
 
-  /* RESET BUTTON */
-  .reset-trigger-btn {
-    position: absolute;
-    right: -48px;
-    bottom: 12px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 4px 12px var(--glass-shadow);
-    color: var(--text-dark);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    z-index: 10;
-  }
-  .reset-trigger-btn:active {
-    transform: scale(0.9);
-  }
+/* PLAY BUTTON */
+.play-wrap{position:relative;width:92px;height:92px;}
+.ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:2px solid var(--rose);opacity:0;pointer-events:none;
+}
+.play-wrap.running .ring:nth-child(1){animation:ringOut 2s 0s ease-out infinite;}
+.play-wrap.running .ring:nth-child(2){animation:ringOut 2s 0.68s ease-out infinite;}
+.play-wrap.running .ring:nth-child(3){animation:ringOut 2s 1.36s ease-out infinite;}
+@keyframes ringOut{0%{transform:scale(1);opacity:0.65;}100%{transform:scale(2.3);opacity:0;}}
 
-  /* STATUS BADGE */
-  .dashboard-status {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-mid);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin: 0 auto;
-    opacity: 0.9;
-  }
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #ef4444; /* red when resting/clocked off */
-    transition: background 0.3s;
-  }
-  .status-dot.active {
-    background: #14b8a6; /* green when active/running */
-    box-shadow: 0 0 10px #14b8a6;
-  }
+.play-btn{
+  position:relative;z-index:4;
+  width:92px;height:92px;border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),var(--violet));
+  border:3.5px solid rgba(255,255,255,0.28);
+  box-shadow:0 8px 30px rgba(244,63,94,0.42);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:transform 0.2s cubic-bezier(0.175,0.885,0.32,1.275),box-shadow 0.4s;
+}
+.play-btn:hover{transform:scale(1.07);}
+.play-btn:active{transform:scale(0.92);}
+.play-btn.glow{animation:btnPulse 1.9s ease-in-out infinite;}
+@keyframes btnPulse{
+  0%,100%{box-shadow:0 8px 30px rgba(244,63,94,0.42);}
+  50%{box-shadow:0 8px 48px rgba(244,63,94,0.72),0 0 0 10px rgba(244,63,94,0.1);}
+}
+.play-btn svg{width:30px;height:30px;fill:white;}
+.play-btn.bounce svg{animation:iconBounce 0.38s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes iconBounce{0%{transform:scale(0.3)rotate(-25deg);opacity:0;}100%{transform:scale(1)rotate(0);opacity:1;}}
 
-  /* WORKOUT NAVIGATION PILL */
-  .week-nav {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 32px auto 16px;
-    padding: 6px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 40px;
-    max-width: fit-content;
-    box-shadow: 0 8px 24px var(--glass-shadow);
-  }
-  .week-btn {
-    padding: 10px 22px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    color: var(--text-dark);
-    font-family: 'DM Sans', sans-serif;
-  }
-  .week-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
-  }
-  .week-btn.active {
-    background: linear-gradient(135deg, var(--rose), var(--violet));
-    color: white;
-    box-shadow: 0 4px 15px rgba(244, 63, 94, 0.25);
-  }
-  .week-btn.period-btn {
-    color: var(--period-pink);
-  }
-  .week-btn.period-btn.active {
-    background: linear-gradient(135deg, #f472b6, #fb7185);
-    box-shadow: 0 4px 15px rgba(244, 114, 182, 0.3);
-  }
+/* STATUS */
+.status-row{display:flex;align-items:center;gap:8px;margin-bottom:34px;}
+.s-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;transition:background 0.4s,box-shadow 0.4s;}
+.s-dot.on{background:var(--teal);box-shadow:0 0 10px var(--teal);animation:dotBeat 1.6s ease-in-out infinite;}
+@keyframes dotBeat{0%,100%{box-shadow:0 0 4px var(--teal);}50%{box-shadow:0 0 16px var(--teal),0 0 28px rgba(20,184,166,0.28);}}
+.s-label{font-size:13px;font-weight:500;color:var(--text-secondary);opacity:0.85;}
 
-  /* MAIN CONTENT DRAWER */
-  .content { max-width: 900px; margin: 0 auto; padding: 16px 16px 100px; position: relative; z-index: 1; }
+/* ── WEEK NAV — floats above sheet ── */
+.nav-float{position:relative;z-index:20;display:flex;justify-content:center;margin-bottom:-26px;}
+.week-nav{
+  display:flex;gap:4px;
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:40px;padding:5px;
+  backdrop-filter:blur(22px);
+  box-shadow:0 8px 30px rgba(139,92,246,0.13);
+}
+.week-btn {
+  padding:9px 18px;border-radius:28px;
+  font-size:13px;font-weight:600;cursor:pointer;
+  border:none;background:transparent;color:var(--text-primary);
+  font-family:'DM Sans',sans-serif;
+  transition:background 0.22s,color 0.22s,transform 0.18s;
+}
+.week-btn:hover{background:var(--row-hover);}
+.week-btn.active{
+  background:linear-gradient(135deg,var(--rose),var(--violet));
+  color:white;box-shadow:0 4px 16px rgba(244,63,94,0.32);
+  transform:translateY(-1px);
+}
+.week-btn.pd-btn{color:var(--period-pink);}
+.week-btn.pd-btn.active{background:linear-gradient(135deg,#f472b6,#fb7185);box-shadow:0 4px 16px rgba(244,114,182,0.38);}
 
-  /* WEEK INFO BANNER */
-  .week-banner {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px; padding: 20px 24px;
-    margin-bottom: 28px;
-    box-shadow: 0 8px 32px var(--glass-shadow);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  @media(min-width:640px) {
-    .week-banner {
-      flex-direction: row;
-      align-items: center;
-      gap: 16px;
-    }
-  }
-  .week-banner .badge {
-    background: linear-gradient(135deg, var(--rose), var(--violet));
-    color: white; font-size: 12px; font-weight: 600;
-    padding: 6px 14px; border-radius: 15px;
-    white-space: nowrap;
-  }
-  .week-banner p { 
-    font-size: 14px; 
-    color: var(--text-dark); 
-    opacity: 0.9;
-    line-height: 1.5; 
-    flex: 1; 
-  }
+/* ── CONTENT SHEET ── seamless overlap, no hard line */
+.sheet {
+  position:relative;z-index:10;
+  background:var(--sheet-bg);
+  backdrop-filter:blur(30px) saturate(180%);
+  border-top-left-radius:38px;border-top-right-radius:38px;
+  border:1px solid var(--sheet-border);border-bottom:none;
+  box-shadow:0 -6px 40px rgba(139,92,246,0.09);
+  padding:46px 20px 110px;
+  min-height:60vh;
+  transition:background 0.5s;
+}
+.sheet.animate{animation:sheetUp 0.52s cubic-bezier(0.22,1,0.36,1) both;}
+@keyframes sheetUp{from{transform:translateY(28px);opacity:0;}to{transform:translateY(0);opacity:1;}}
 
-  /* AUTO-TUNER ENERGY SELECTOR */
-  .tuner-container {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 16px;
-    margin-bottom: 24px;
-    box-shadow: 0 8px 32px var(--glass-shadow);
-    text-align: center;
-  }
-  .tuner-title {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--period-pink);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-  .tuner-selector {
-    display: flex;
-    background: rgba(0, 0, 0, 0.06);
-    border-radius: 30px;
-    padding: 4px;
-    gap: 4px;
-  }
-  body.moonlight .tuner-selector {
-    background: rgba(0, 0, 0, 0.2);
-  }
-  .tuner-btn {
-    flex: 1;
-    border: none;
-    background: transparent;
-    padding: 10px 4px;
-    border-radius: 25px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-dark);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-  .tuner-btn.active {
-    background: linear-gradient(135deg, var(--period-pink), var(--period-rose));
-    color: white;
-    box-shadow: 0 4px 12px rgba(244, 114, 182, 0.25);
-  }
-  .energy-info-note {
-    font-size: 12px;
-    font-style: italic;
-    color: var(--text-mid);
-    margin-top: 10px;
-    opacity: 0.9;
-  }
+.handle{width:44px;height:5px;background:var(--handle);border-radius:3px;margin:0 auto 28px;}
 
-  /* PERIOD BANNER */
-  .period-intro-banner {
-    background: linear-gradient(135deg, rgba(244,114,182,0.12), rgba(251,113,133,0.08));
-    border: 1px solid rgba(244,114,182,0.25);
-    border-radius: 20px; padding: 24px;
-    margin-bottom: 28px;
-    box-shadow: 0 8px 32px rgba(244,114,182,0.1);
-  }
-  body.moonlight .period-intro-banner {
-    background: linear-gradient(135deg, rgba(244,114,182,0.08), rgba(251,113,133,0.04));
-    border-color: rgba(244,114,182,0.15);
-  }
-  .period-intro-banner h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px; font-weight: 300; color: var(--period-pink);
-    margin-bottom: 8px;
-  }
-  .period-intro-banner h2 em { font-style: italic; color: var(--rose-light); }
-  .period-intro-banner p { font-size: 14px; color: var(--text-dark); opacity: 0.85; line-height: 1.6; }
+/* Reset flash */
+.rflash {
+  position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(244,63,94,0.13),transparent 68%);
+  animation:flashOut 0.65s ease-out;
+}
+@keyframes flashOut{0%{opacity:1;}100%{opacity:0;}}
 
-  /* IMPORTANT TIPS */
-  .period-tips {
-    background: linear-gradient(135deg, rgba(251,113,133,0.1), rgba(244,114,182,0.06));
-    border: 1px solid rgba(244,114,182,0.2);
-    border-radius: 16px; padding: 20px 24px;
-    margin-top: 28px;
-  }
-  .period-tips h3 {
-    font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
-    text-transform: uppercase; color: var(--period-pink);
-    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
-  }
-  .period-tips ul { list-style: none; }
-  .period-tips ul li {
-    font-size: 13px; color: var(--text-dark); opacity: 0.9; padding: 5px 0;
-    display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
-  }
-  .period-tips ul li::before { content: '🌸'; font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+.content{max-width:860px;margin:0 auto;}
 
-  /* CARDS */
-  .day-card, .period-day-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px; margin-bottom: 20px;
-    box-shadow: 0 8px 40px var(--glass-shadow);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    animation: slideUp 0.5s ease both;
-  }
-  .day-card:hover, .period-day-card:hover { transform: translateY(-3px); box-shadow: 0 16px 56px var(--glass-shadow); }
+/* ── WEEK BANNER ── */
+.wbanner {
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:18px;padding:17px 20px;margin-bottom:22px;
+  display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+  backdrop-filter:blur(12px);
+}
+.wbanner .badge{
+  background:linear-gradient(135deg,var(--rose),var(--violet));
+  color:white;font-size:11px;font-weight:700;
+  padding:5px 14px;border-radius:18px;white-space:nowrap;
+}
+.wbanner p{font-size:13px;color:var(--text-primary);opacity:0.78;line-height:1.5;flex:1;}
 
-  /* HIGH-LIGHT STRETCHING CARD */
-  .period-day-card.highlighted-stretch {
-    border: 2px solid var(--period-pink);
-    box-shadow: 0 0 16px rgba(244, 114, 182, 0.4);
-  }
+/* ── DAY CARDS ── */
+.dcard,.pdcard{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:22px;margin-bottom:14px;overflow:hidden;
+  backdrop-filter:blur(16px);
+  box-shadow:0 4px 22px rgba(139,92,246,0.055);
+  transition:transform 0.28s,box-shadow 0.28s;
+  animation:cardUp 0.42s ease both;
+}
+.dcard:nth-child(2){animation-delay:0.04s}
+.dcard:nth-child(3){animation-delay:0.08s}
+.dcard:nth-child(4){animation-delay:0.12s}
+.dcard:nth-child(5){animation-delay:0.16s}
+.dcard:nth-child(6){animation-delay:0.20s}
+.dcard:nth-child(7){animation-delay:0.24s}
+@keyframes cardUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.dcard:hover,.pdcard:hover{transform:translateY(-2px);box-shadow:0 10px 34px rgba(139,92,246,0.11);}
 
-  .day-header {
-    padding: 20px 24px; cursor: pointer;
-    display: flex; align-items: center; gap: 16px;
-    user-select: none;
-  }
-  .day-number, .period-day-number {
-    width: 52px; height: 52px; border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; font-weight: 600; color: white;
-    flex-shrink: 0;
-  }
-  .period-day-number {
-    font-size: 18px;
-    background: linear-gradient(135deg, #f472b6, #fb7185);
-  }
-  .day-info { flex: 1; }
-  .day-name { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #9ca3af; margin-bottom: 2px; }
-  .day-title { font-size: 18px; font-weight: 600; color: var(--text-dark); }
-  .day-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
-  .meta-tag {
-    font-size: 11px; padding: 3px 10px; border-radius: 10px;
-    font-weight: 500;
-  }
-  .chevron { font-size: 20px; color: #9ca3af; transition: transform 0.3s ease; }
-  .day-card.open .chevron, .period-day-card.open .chevron { transform: rotate(180deg); }
+.dhead{padding:17px 20px;cursor:pointer;display:flex;align-items:center;gap:13px;user-select:none;}
+.dnum,.pdnum{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;
+  color:white;flex-shrink:0;
+}
+.pdnum{font-size:17px;background:linear-gradient(135deg,#f472b6,#fb7185);}
+.dinfo{flex:1;}
+.dlabel{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:2px;}
+.dtitle{font-size:16px;font-weight:600;color:var(--text-primary);line-height:1.2;}
+.dmeta{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;}
+.mtag{font-size:10px;padding:3px 9px;border-radius:8px;font-weight:600;}
+.chev{font-size:18px;color:var(--text-muted);transition:transform 0.3s;}
+.dcard.open .chev,.pdcard.open .chev{transform:rotate(180deg);}
 
-  .day-body {
-    max-height: 0; overflow: hidden;
-    transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);
-  }
-  .day-card.open .day-body, .period-day-card.open .day-body { max-height: 2000px; }
-  .day-body-inner { padding: 0 24px 24px; }
+.dbody{max-height:0;overflow:hidden;transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1);}
+.dcard.open .dbody,.pdcard.open .dbody{max-height:2600px;}
+.dbinner{padding:0 20px 20px;}
 
-  /* SECTION WITHIN DAY */
-  .ex-section { margin-bottom: 20px; }
-  .ex-section-title {
-    font-size: 11px; font-weight: 700; letter-spacing: 2px;
-    text-transform: uppercase; color: #9ca3af;
-    margin-bottom: 10px; padding-bottom: 6px;
-    border-bottom: 1px solid rgba(139,92,246,0.1);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .ex-section-title span { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.exsec{margin-bottom:17px;}
+.sectitle{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:7px;padding-bottom:5px;
+  border-bottom:1px solid var(--section-divider);
+  display:flex;align-items:center;gap:6px;
+}
+.sdot{width:5px;height:5px;border-radius:50%;display:inline-block;}
 
-  /* PELVIC HEALTH SECTION */
-  .pelvic-section {
-    background: linear-gradient(135deg, rgba(244,114,182,0.08), rgba(251,113,133,0.05));
-    border: 1px solid rgba(244,114,182,0.2);
-    border-radius: 16px; padding: 16px 20px; margin-top: 16px;
-  }
-  body.moonlight .pelvic-section {
-    background: linear-gradient(135deg, rgba(244,114,182,0.04), rgba(251,113,133,0.02));
-    border-color: rgba(244,114,182,0.1);
-  }
-  .pelvic-section-title {
-    font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
-    text-transform: uppercase; color: #f472b6;
-    margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
-  }
-  .pelvic-ex-row {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 8px 12px; border-radius: 12px;
-    margin-bottom: 6px;
-    background: rgba(253,242,248,0.5);
-    border: 1px solid rgba(244,114,182,0.12);
-  }
-  body.moonlight .pelvic-ex-row {
-    background: rgba(35, 18, 37, 0.45);
-    border-color: rgba(244,114,182,0.1);
-  }
-  .pelvic-sets {
-    font-size: 13px; font-weight: 600; color: #f472b6;
-    white-space: nowrap; align-self: center;
-  }
+.exrow,.pexrow {
+  display:flex;align-items:flex-start;gap:10px;
+  padding:9px 12px;border-radius:11px;margin-bottom:5px;
+  background:var(--row-bg);border:1px solid var(--row-border);
+  transition:background 0.2s;
+}
+.exrow:hover{background:var(--row-hover);}
+.pexrow{background:rgba(253,242,248,0.42);border-color:rgba(244,114,182,0.15);}
+body.moonlight .pexrow{background:rgba(35,18,37,0.42);border-color:rgba(244,114,182,0.1);}
+.pexrow:hover{background:rgba(253,242,248,0.72);}
+.eicon,.peicon {
+  width:34px;height:34px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0;
+}
+.edet{flex:1;}
+.en{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:1px;}
+.enote{font-size:11px;color:var(--text-primary);opacity:0.6;}
+.es{font-size:12px;font-weight:700;color:var(--violet);white-space:nowrap;align-self:center;}
+body.moonlight .es{color:var(--violet-light);}
+.ptbadge{font-size:11px;font-weight:700;color:var(--period-pink);white-space:nowrap;align-self:center;}
 
-  /* EXERCISE ROW */
-  .ex-row, .period-ex-row {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 10px 14px; border-radius: 14px;
-    margin-bottom: 6px;
-    background: rgba(255,255,255,0.35);
-    border: 1px solid rgba(255,255,255,0.5);
-    transition: background 0.2s;
-  }
-  body.moonlight .ex-row {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.08);
-  }
-  .ex-row:hover, .period-ex-row:hover { background: rgba(255,255,255,0.55); }
-  body.moonlight .ex-row:hover { background: rgba(255, 255, 255, 0.12); }
-  
-  .ex-icon, .period-ex-icon {
-    width: 36px; height: 36px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
-  .ex-details { flex: 1; }
-  .ex-name { font-size: 14px; font-weight: 500; color: var(--text-dark); margin-bottom: 2px; }
-  .ex-note { font-size: 12px; color: var(--text-dark); opacity: 0.7; }
-  .ex-sets {
-    font-size: 13px; font-weight: 600; color: var(--text-soft);
-    white-space: nowrap; align-self: center;
-  }
+/* Pelvic section */
+.pelvsec {
+  background:var(--pelvic-bg);border:1px solid var(--pelvic-border);
+  border-radius:14px;padding:13px 15px;margin-top:13px;
+}
+.pelvtitle{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--period-pink);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.pelvrow{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:7px 10px;border-radius:10px;margin-bottom:4px;
+  background:rgba(253,242,248,0.42);border:1px solid rgba(244,114,182,0.1);
+}
+body.moonlight .pelvrow{background:rgba(35,18,37,0.42);}
+.ps{font-size:12px;font-weight:700;color:var(--period-pink);white-space:nowrap;align-self:center;}
 
-  .period-ex-row {
-    background: rgba(253, 242, 248, 0.5);
-    border: 1px solid rgba(244, 114, 182, 0.15);
-  }
-  body.moonlight .period-ex-row {
-    background: rgba(35, 18, 37, 0.45);
-    border-color: rgba(244, 114, 182, 0.1);
-  }
+/* Yoga section */
+.yogasec {
+  background:var(--yoga-bg);border:1px solid var(--yoga-border);
+  border-radius:14px;padding:13px 15px;margin-top:13px;
+}
+.yogatitle{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:7px;}
+.yogaposes{display:flex;flex-wrap:wrap;gap:5px;}
+.ypose{background:rgba(20,184,166,0.1);border:1px solid rgba(20,184,166,0.18);color:#0d9488;font-size:11px;padding:4px 10px;border-radius:8px;font-weight:500;}
+body.moonlight .ypose{color:var(--teal-light);}
 
-  /* YOGA SECTION */
-  .yoga-section {
-    background: linear-gradient(135deg, rgba(20,184,166,0.1), rgba(20,184,166,0.05));
-    border: 1px solid rgba(20,184,166,0.2);
-    border-radius: 16px; padding: 16px 20px; margin-top: 16px;
-  }
-  body.moonlight .yoga-section {
-    background: linear-gradient(135deg, rgba(20,184,166,0.04), rgba(20,184,166,0.02));
-    border-color: rgba(20,184,166,0.1);
-  }
-  .yoga-title {
-    font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
-    text-transform: uppercase; color: var(--teal); margin-bottom: 10px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .yoga-poses { display: flex; flex-wrap: wrap; gap: 6px; }
-  .yoga-pose {
-    background: rgba(20,184,166,0.12); border: 1px solid rgba(20,184,166,0.2);
-    color: #0f766e; font-size: 12px; padding: 4px 12px; border-radius: 10px;
-    font-weight: 500;
-  }
-  body.moonlight .yoga-pose {
-    background: rgba(20,184,166,0.08);
-    color: var(--teal-light);
-  }
+/* Rest */
+.restcard {
+  background:var(--card-bg);border:1px dashed var(--rest-border);
+  border-radius:22px;padding:26px;text-align:center;margin-bottom:14px;
+}
+.restcard h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--text-primary);margin-bottom:3px;}
+.restcard p{font-size:12px;color:var(--text-muted);}
 
-  /* PROGRESS SECTION */
-  .progress-section {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px; padding: 24px;
-    margin-top: 40px;
-    box-shadow: 0 8px 32px var(--glass-shadow);
-  }
-  .progress-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 26px; font-weight: 300; margin-bottom: 20px;
-    color: var(--text-dark);
-  }
-  .progress-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
-  .progress-card {
-    background: rgba(255,255,255,0.4);
-    border: 1px solid rgba(255,255,255,0.6);
-    border-radius: 16px; padding: 16px;
-    text-align: center;
-  }
-  body.moonlight .progress-card {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.05);
-  }
-  .progress-weeks { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #9ca3af; margin-bottom: 8px; }
-  .progress-card ul { list-style: none; }
-  .progress-card li { font-size: 13px; color: var(--text-dark); opacity: 0.85; padding: 3px 0; display: flex; align-items: center; gap: 6px; justify-content: center; }
-  .progress-card li::before { content: '✦'; font-size: 8px; color: var(--rose); }
+/* Progress */
+.progsec{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:22px;margin-top:30px;}
+.progtitle{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--text-primary);margin-bottom:15px;}
+.proggrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:11px;}
+.progcard{background:var(--progress-card);border:1px solid var(--card-border);border-radius:13px;padding:13px;text-align:center;}
+.pwk{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+.progcard ul{list-style:none;}
+.progcard li{font-size:12px;color:var(--text-primary);opacity:0.78;padding:2px 0;display:flex;align-items:center;gap:5px;justify-content:center;}
+.progcard li::before{content:'✦';font-size:7px;color:var(--rose);}
 
-  /* SUNDAY REST */
-  .rest-card {
-    background: rgba(255,255,255,0.2);
-    border: 1px dashed rgba(139,92,246,0.2);
-    border-radius: 24px; padding: 32px;
-    text-align: center; color: #9ca3af;
-    margin-bottom: 20px;
-  }
-  .rest-emoji { font-size: 40px; margin-bottom: 8px; }
-  .rest-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; margin-bottom: 4px; color: var(--text-dark); }
+/* Period intro */
+.pintro {
+  background:linear-gradient(135deg,rgba(244,114,182,0.1),rgba(251,113,133,0.06));
+  border:1px solid rgba(244,114,182,0.2);border-radius:17px;padding:19px;margin-bottom:20px;
+}
+.pintro h2{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:300;color:var(--period-pink);margin-bottom:5px;}
+.pintro h2 em{font-style:italic;color:var(--rose-light);}
+.pintro p{font-size:13px;color:var(--text-primary);opacity:0.78;line-height:1.5;}
 
-  /* CONSTANT THEMES AND TAGS */
-  .theme-rose { background: linear-gradient(135deg, #f43f5e, #fb7185); }
-  .theme-violet { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
-  .theme-teal { background: linear-gradient(135deg, #14b8a6, #2dd4bf); }
-  .theme-amber { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
-  .theme-pink { background: linear-gradient(135deg, #ec4899, #f472b6); }
-  .theme-indigo { background: linear-gradient(135deg, #6366f1, #818cf8); }
+/* Tuner */
+.tuner{background:var(--card-bg);border:1px solid var(--card-border);border-radius:17px;padding:14px 15px;margin-bottom:18px;text-align:center;}
+.tunertitle{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--period-pink);margin-bottom:9px;}
+.tunerpills{display:flex;background:var(--status-track);border-radius:24px;padding:4px;gap:3px;}
+.tbtn{flex:1;border:none;background:transparent;padding:9px 4px;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text-primary);cursor:pointer;transition:background 0.22s,color 0.22s;}
+.tbtn.active{background:linear-gradient(135deg,var(--period-pink),var(--period-rose));color:white;}
+.enote{font-size:11px;font-style:italic;color:var(--text-secondary);margin-top:8px;opacity:0.85;}
 
-  .tag-strength { background: rgba(139,92,246,0.12); color: #6d28d9; }
-  .tag-core { background: rgba(244,63,94,0.1); color: #be123c; }
-  .tag-yoga { background: rgba(20,184,166,0.12); color: #0f766e; }
-  .tag-legs { background: rgba(245,158,11,0.12); color: #92400e; }
-  .tag-cardio { background: rgba(236,72,153,0.12); color: #9d174d; }
-  .tag-period { background: rgba(244,114,182,0.15); color: #9d174d; }
-  .tag-gentle { background: rgba(251,113,133,0.12); color: #9f1239; }
-  .tag-recovery { background: rgba(20,184,166,0.12); color: #0f766e; }
+/* Period tips */
+.ptips{background:rgba(251,113,133,0.07);border:1px solid rgba(244,114,182,0.17);border-radius:13px;padding:17px;margin-top:20px;}
+.ptips h3{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--period-pink);margin-bottom:9px;}
+.ptips ul{list-style:none;}
+.ptips li{font-size:12px;color:var(--text-primary);opacity:0.83;padding:4px 0;display:flex;gap:8px;line-height:1.5;}
+.ptips li::before{content:'🌸';font-size:11px;flex-shrink:0;}
+.pgoal{margin-top:9px;padding:8px 12px;background:rgba(244,114,182,0.07);border-left:3px solid var(--period-pink);border-radius:0 8px 8px 0;font-size:11px;color:var(--period-pink);font-style:italic;}
 
-  body.moonlight .tag-strength { background: rgba(139,92,246,0.25); color: #c4b5fd; }
-  body.moonlight .tag-core { background: rgba(244,63,94,0.2); color: #fda4af; }
-  body.moonlight .tag-yoga { background: rgba(20,184,166,0.2); color: #99f6e4; }
-  body.moonlight .tag-legs { background: rgba(245,158,11,0.2); color: #fde047; }
-  body.moonlight .tag-cardio { background: rgba(236,72,153,0.2); color: #f472b6; }
-  body.moonlight .tag-period { background: rgba(244,114,182,0.25); color: #f472b6; }
-  body.moonlight .tag-gentle { background: rgba(251,113,133,0.2); color: #fda4af; }
-  body.moonlight .tag-recovery { background: rgba(20,184,166,0.2); color: #99f6e4; }
+/* colors */
+.c-rose{background:linear-gradient(135deg,#f43f5e,#fb7185);}
+.c-violet{background:linear-gradient(135deg,#8b5cf6,#a78bfa);}
+.c-teal{background:linear-gradient(135deg,#14b8a6,#2dd4bf);}
+.c-amber{background:linear-gradient(135deg,#f59e0b,#fbbf24);}
+.c-pink{background:linear-gradient(135deg,#ec4899,#f472b6);}
+.c-indigo{background:linear-gradient(135deg,#6366f1,#818cf8);}
+.t-str{background:rgba(139,92,246,0.12);color:#6d28d9;}
+.t-core{background:rgba(244,63,94,0.1);color:#be123c;}
+.t-yoga{background:rgba(20,184,166,0.12);color:#0f766e;}
+.t-legs{background:rgba(245,158,11,0.12);color:#92400e;}
+.t-cardio{background:rgba(236,72,153,0.12);color:#9d174d;}
+.t-period{background:rgba(244,114,182,0.15);color:#9d174d;}
+.t-gentle{background:rgba(251,113,133,0.12);color:#9f1239;}
+.t-recovery{background:rgba(20,184,166,0.12);color:#0f766e;}
+body.moonlight .t-str{background:rgba(139,92,246,0.22);color:#c4b5fd;}
+body.moonlight .t-core{background:rgba(244,63,94,0.18);color:#fda4af;}
+body.moonlight .t-yoga{background:rgba(20,184,166,0.18);color:#99f6e4;}
+body.moonlight .t-legs{background:rgba(245,158,11,0.18);color:#fde047;}
+body.moonlight .t-cardio{background:rgba(236,72,153,0.18);color:#f472b6;}
+body.moonlight .t-period{background:rgba(244,114,182,0.22);color:#f472b6;}
+body.moonlight .t-gentle{background:rgba(251,113,133,0.18);color:#fda4af;}
+body.moonlight .t-recovery{background:rgba(20,184,166,0.18);color:#99f6e4;}
+.i-warm{background:rgba(245,158,11,0.15);}
+.i-str{background:rgba(139,92,246,0.12);}
+.i-core{background:rgba(244,63,94,0.1);}
+.i-cardio{background:rgba(236,72,153,0.1);}
+.i-period{background:rgba(244,114,182,0.14);}
 
-  .icon-warmup { background: rgba(245,158,11,0.15); }
-  .icon-strength { background: rgba(139,92,246,0.12); }
-  .icon-core { background: rgba(244,63,94,0.1); }
-  .icon-cardio { background: rgba(236,72,153,0.1); }
-  .icon-stretch { background: rgba(20,184,166,0.12); }
-  .icon-period { background: rgba(244,114,182,0.15); }
+footer{text-align:center;padding:20px;font-size:11px;color:var(--text-muted);border-top:1px solid var(--card-border);}
 
-  /* RESPONSIVE LAYOUT BREAKPOINTS */
-  @media (max-width: 768px) {
-    body::before { width: 320px; height: 320px; top: -120px; left: -140px; }
-    body::after { width: 300px; height: 300px; bottom: -120px; right: -120px; }
-    .dashboard-hero { padding: 90px 16px 36px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
-    .dashboard-timer { margin-bottom: 24px; }
-    .control-center { width: 110px; height: 110px; }
-    .play-trigger-btn { width: 90px; height: 90px; }
-    .play-trigger-btn svg { width: 26px; height: 26px; }
-    .reset-trigger-btn { right: -36px; bottom: 8px; width: 32px; height: 32px; font-size: 12px; }
-
-    .day-header { padding: 18px; gap: 12px; align-items: flex-start; }
-    .day-number, .period-day-number { width: 44px; height: 44px; font-size: 18px; }
-    .day-title { font-size: 16px; }
-    .day-body-inner { padding: 0 18px 20px; }
-    .ex-row, .period-ex-row { flex-direction: column; align-items: flex-start; }
-    .ex-sets { align-self: flex-start; margin-top: 2px; }
-    .period-time-badge { align-self: flex-start; margin-top: 2px; }
-  }
-
-  @media (max-width: 480px) {
-    .day-name { font-size: 10px; letter-spacing: 1.5px; }
-    .day-title { font-size: 15px; }
-    .day-meta { gap: 6px; }
-    .meta-tag { font-size: 10px; padding: 3px 8px; }
-    .ex-name { font-size: 13px; }
-    .ex-note { font-size: 11px; }
-    .progress-title { font-size: 22px; }
-    .progress-grid { grid-template-columns: 1fr; }
-    .week-nav { width: calc(100vw - 32px); gap: 4px; }
-    .week-btn { padding: 8px 12px; font-size: 12px; }
-  }
+@media(max-width:640px){
+  .orb{width:110vw;height:110vw;top:-55px;}
+  .sw-time{font-size:clamp(46px,15vw,62px);}
+  .play-btn,.play-wrap{width:80px;height:80px;}
+  .play-btn svg{width:27px;height:27px;}
+  .week-btn{padding:8px 11px;font-size:12px;}
+  .sheet{padding:40px 14px 90px;border-top-left-radius:30px;border-top-right-radius:30px;}
+  .dhead{padding:14px;gap:11px;}
+  .dbinner{padding:0 14px 16px;}
+  .exrow,.pexrow{flex-direction:column;align-items:flex-start;}
+  .es,.ptbadge{align-self:flex-start;margin-top:2px;}
+  .proggrid{grid-template-columns:1fr;}
+  .controls{gap:16px;}
+  nav{padding:18px 16px 0;}
+}
+@media(max-width:380px){
+  .week-btn{padding:7px 9px;font-size:11px;}
+  .week-nav{gap:2px;}
+}
 </style>
 </head>
 <body>
+<div class="page">
 
-<nav>
-  <div class="nav-logo">FitFlow <span>✦</span></div>
-  <div class="nav-actions">
-    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleMoonlight()" title="Toggle Moonlight Theme">🌙</button>
+<!-- HERO -->
+<section class="hero">
+  <div class="orb" id="orb"></div>
+
+  <nav>
+    <div class="logo">FitFlow <span>✦</span></div>
+    <button class="theme-btn" id="themeBtn" onclick="toggleMoon()">🌙</button>
+  </nav>
+
+  <div class="sw-area">
+    <div class="sw-label">Stopwatch</div>
+    <div class="sw-time" id="swTime">00:00.00</div>
+    <div class="sw-sub" id="swSub">Ready to start</div>
+
+    <div class="controls">
+      <button class="side-btn" id="lapBtn" onclick="lap()" title="Lap">🏁</button>
+      <div class="play-wrap" id="playWrap">
+        <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+        <button class="play-btn" id="playBtn" onclick="toggle()">
+          <svg id="pIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+      <button class="side-btn" id="resetBtn" onclick="resetSW()" title="Reset">🔁</button>
+    </div>
+
+    <div class="status-row">
+      <div class="s-dot" id="sDot"></div>
+      <span class="s-label" id="sLabel">Clocked Off</span>
+    </div>
   </div>
-</nav>
 
-<!-- INTEGRATED TOP HALF STOPWATCH DASHBOARD (MIMICS image_2222f8.png) -->
-<section class="dashboard-hero">
-  <div class="dashboard-title">Stopwatch</div>
-  <div class="dashboard-timer" id="stopwatchTime">00:00.00</div>
-  
-  <div class="control-center" id="playBtnContainer">
-    <!-- Pulsing expanding rings during stopwatch activity -->
-    <div class="play-pulse-ring"></div>
-    <div class="play-pulse-ring"></div>
-    <div class="play-pulse-ring"></div>
-    
-    <!-- Central Dynamic Trigger Button -->
-    <button class="play-trigger-btn" onclick="toggleTimer()" id="playTrigger" title="Play / Pause">
-      <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    
-    <!-- Manual Reset Action Button -->
-    <button class="reset-trigger-btn" onclick="resetTimer()" title="Reset Timer">🔁</button>
-  </div>
-
-  <div class="dashboard-status">
-    <div class="status-dot" id="statusDot"></div>
-    <span id="statusLabel">Clocked Off</span>
-  </div>
-
-  <!-- FLOATING BOTTOM NAVIGATION PILL (UNIFIED INTEGRATION) -->
-  <div class="week-nav" id="weekNav">
-    <button class="week-btn active" onclick="switchWeek(1,this)">1–2</button>
-    <button class="week-btn" onclick="switchWeek(2,this)">3–4</button>
-    <button class="week-btn" onclick="switchWeek(3,this)">5+</button>
-    <button class="week-btn period-btn" onclick="switchWeek('period',this)">🌸 PD</button>
+  <!-- Week nav pill floats above the sheet edge -->
+  <div class="nav-float">
+    <div class="week-nav">
+      <button class="week-btn active" onclick="sw(1,this)">1–2</button>
+      <button class="week-btn" onclick="sw(2,this)">3–4</button>
+      <button class="week-btn" onclick="sw(3,this)">5+</button>
+      <button class="week-btn pd-btn" onclick="sw('p',this)">🌸 PD</button>
+    </div>
   </div>
 </section>
 
-<div class="content" id="mainContent"></div>
+<!-- SEAMLESS CONTENT SHEET -->
+<section class="sheet" id="sheet">
+  <div class="handle"></div>
+  <div class="content" id="mc"></div>
+</section>
+
+</div>
+<footer>FitFlow — 6-Day Home Workout Plan · Stay consistent. Stay strong. ✦</footer>
 
 <script>
-// Active App State
-let currentWeek = 1; 
-let currentEnergy = 'moderate'; 
+/* ── STOPWATCH ── */
+let t0=0,el=0,iv=null,run=false,laps=0,lastLap=0;
 
-const WEEKS = {
-  1: {
-    label: "Week 1–2 — Foundation Phase",
-    info: "Follow the exact plan. Focus on form over speed. Rest 45–60 seconds between sets. Modified push-ups (knees) allowed.",
-    days: [
-      {
-        day:"Monday", theme:"theme-rose", focus:"Upper Body Strength + Core",
-        tags:["Strength","Core","Yoga"],
-        yoga:true,
-        warmup:["Arm Circles — 30 sec","Shoulder Rolls — 30 sec","Standing Twists — 30 sec","High Knees — 30 sec"],
-        sections:[
-          { title:"Upper Body Strength", icon:"💪", iconClass:"icon-strength", exes:[
-            {name:"Wall Push-ups", note:"Back straight, chest toward wall", sets:"3 × 10"},
-            {name:"Shoulder Taps (Plank position)", note:"Slow and controlled", sets:"3 × 10 each"},
-            {name:"Tricep Dips (Chair)", note:"Hands behind on chair edge", sets:"3 × 12"},
-            {name:"Superman Hold", note:"Back extension, hold 3 sec at top", sets:"3 × 10"},
-          ]},
-          { title:"Core & Belly Focus", icon:"🔥", iconClass:"icon-core", exes:[
-            {name:"Dead Bug", note:"Lower back stays flat on floor", sets:"3 × 8 each"},
-            {name:"Plank Hold", note:"Hold — build up each set", sets:"3 × 20 sec"},
-            {name:"Leg Raises", note:"Keep lower back pressed down", sets:"3 × 10"},
-            {name:"Bicycle Crunches", note:"Slow, elbow to opposite knee", sets:"2 × 15"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Pelvic Tilts", note:"Strengthens lower abs & reduces cramps long-term", sets:"2 × 12"},
-        ],
-        yogaPoses:["Child's Pose (1 min)","Cat-Cow Stretch (1 min)","Seated Forward Fold (1 min)","Supine Twist (1 min each side)","Savasana (2 min)"]
-      },
-      {
-        day:"Tuesday", theme:"theme-violet", focus:"Legs Strength + Thigh Toning",
-        tags:["Legs","Thighs","Strength"],
-        yoga:false,
-        warmup:["Jumping Jacks — 45 sec","Leg Swings front/back — 20 each","Hip Circles — 20 each direction","March in Place — 30 sec"],
-        sections:[
-          { title:"Leg Strength", icon:"🦵", iconClass:"icon-strength", exes:[
-            {name:"Bodyweight Squats", note:"Feet shoulder-width, sit back", sets:"3 × 15"},
-            {name:"Reverse Lunges", note:"Knee doesn't go past toe", sets:"3 × 10 each"},
-            {name:"Wall Sit", note:"90° angle hold", sets:"3 × 30 sec"},
-            {name:"Step-ups (Chair/Staircase)", note:"Drive through heel", sets:"3 × 10 each"},
-          ]},
-          { title:"Inner Thigh Toning", icon:"✨", iconClass:"icon-cardio", exes:[
-            {name:"Sumo Squat Pulse", note:"Feet wide, toes out, small pulses", sets:"3 × 20 pulses"},
-            {name:"Side-lying Leg Lift", note:"Keep control — slow movement", sets:"3 × 12 each side"},
-            {name:"Standing Inner Thigh Squeeze (pillow)", note:"Squeeze for 2 sec hold", sets:"3 × 15"},
-            {name:"Calf Raises", note:"Hold chair for balance", sets:"3 × 20"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Butterfly Stretch", note:"Opens hips & pelvic muscles", sets:"60 sec"},
-        ],
-        yogaPoses:[]
-      },
-      {
-        day:"Wednesday", theme:"theme-teal", focus:"Core + Belly Reduction + Conditioning",
-        tags:["Core","Cardio","Yoga"],
-        yoga:true,
-        warmup:["High Knees — 30 sec","Standing Windmill Stretch","Hip Flexor Stretch — 20 sec each","Neck Rolls — 30 sec"],
-        sections:[
-          { title:"Core Blast", icon:"⚡", iconClass:"icon-core", exes:[
-            {name:"Mountain Climbers", note:"Keep hips level, core tight", sets:"3 × 20 sec"},
-            {name:"Hollow Body Hold", note:"Lower back flat on floor", sets:"3 × 15 sec"},
-            {name:"Russian Twists", note:"Feet raised if possible", sets:"3 × 16 (8 each)"},
-            {name:"Reverse Crunch", note:"Lift hips, not neck", sets:"3 × 12"},
-          ]},
-          { title:"Conditioning (Cardio Burn)", icon:"🏃", iconClass:"icon-cardio", exes:[
-            {name:"High Knees", note:"Drive knees up, arms pumping", sets:"3 × 30 sec"},
-            {name:"Jumping Jacks", note:"Full range, land softly", sets:"3 × 30 sec"},
-            {name:"Skater Jumps", note:"Side to side, touch floor", sets:"2 × 20 sec"},
-            {name:"Standing Oblique Crunches", note:"Elbow to knee, side to side", sets:"3 × 12 each"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Glute Bridge", note:"Improves pelvic blood flow + lower back support", sets:"2 × 12"},
-        ],
-        yogaPoses:["Downward Dog (1 min)","Warrior I (45 sec each)","Boat Pose (30 sec)","Bridge Pose (45 sec)","Legs up the Wall (2 min)"]
-      },
-      {
-        day:"Thursday", theme:"theme-amber", focus:"Chest + Posture + Arms",
-        tags:["Chest","Posture","Arms"],
-        yoga:false,
-        warmup:["Chest Opener Stretch — 30 sec","Arm Swings — 30 sec","Wrist Rotations — 20 sec","Spinal Rotation — 30 sec"],
-        sections:[
-          { title:"Chest & Posture (1 chest exercise this week)", icon:"🎯", iconClass:"icon-strength", exes:[
-            {name:"Incline Push-ups (hands on wall/chair)", note:"ONLY chest exercise this week — 3 sets", sets:"3 × 10"},
-            {name:"Doorway Chest Stretch", note:"Hold 20 sec each arm", sets:"2 × 20 sec hold"},
-            {name:"Band/Resistance Pull-Apart (or towel)", note:"Arms straight, pull apart at shoulder height", sets:"3 × 15"},
-            {name:"Prone Y-T-W Raises", note:"Lie face down, lift arms in Y then T then W", sets:"2 × 8 each"},
-          ]},
-          { title:"Arms Toning", icon:"💎", iconClass:"icon-strength", exes:[
-            {name:"Tricep Kickbacks (water bottles)", note:"Elbow pinned, extend fully", sets:"3 × 12"},
-            {name:"Bicep Curls (water bottles)", note:"Control the lowering phase", sets:"3 × 12"},
-            {name:"Overhead Tricep Extension", note:"Keep elbows close to head", sets:"3 × 10"},
-            {name:"Plank Shoulder Taps", note:"Hips stay square, no rocking", sets:"3 × 8 each"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Cat-Cow Stretch", note:"Reduces lower back stiffness", sets:"45 sec"},
-        ],
-        yogaPoses:[]
-      },
-      {
-        day:"Friday", theme:"theme-pink", focus:"Hip Shape + Glute Stability",
-        tags:["Hips","Stability","Yoga"],
-        yoga:true,
-        warmup:["Hip Circles — 20 each direction","Glute Bridge Hold — 20 sec","Standing Hip Flexor Stretch — 20 sec each","Lateral Leg Swings — 15 each"],
-        sections:[
-          { title:"Hip Shaping & Symmetry (1 glute exercise)", icon:"🌸", iconClass:"icon-strength", exes:[
-            {name:"Single-Leg Glute Bridge", note:"ONLY glute exercise this week — focus uneven side", sets:"3 × 10 each"},
-            {name:"Fire Hydrants", note:"Slow circles, feel the outer hip", sets:"3 × 15 each"},
-            {name:"Side-lying Hip Abduction", note:"Top leg lifts straight up", sets:"3 × 15 each"},
-            {name:"Clamshells (resistance band optional)", note:"Keep feet together, rotate at hip", sets:"3 × 15 each"},
-          ]},
-          { title:"Hip Stability & Balance", icon:"⚖️", iconClass:"icon-core", exes:[
-            {name:"Single-Leg Balance Hold", note:"30 sec each side — trains symmetry", sets:"3 × 30 sec each"},
-            {name:"Hip Thrusts (floor, no weight)", note:"Squeeze at top, slow release", sets:"3 × 12"},
-            {name:"Lateral Band Walk (or resistance)", note:"Keep resistance taut, small steps", sets:"3 × 15 each way"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Frog Stretch", note:"Pelvic opening + hip flexibility", sets:"45 sec"},
-        ],
-        yogaPoses:["Pigeon Pose (1 min each side)","Low Lunge Hip Stretch (45 sec)","Butterfly Pose (1 min)","Reclined Pigeon (1 min each)","Happy Baby (1 min)"]
-      },
-      {
-        day:"Saturday", theme:"theme-indigo", focus:"Full Body Strength + Stamina",
-        tags:["Full Body","Stamina","Strength"],
-        yoga:false,
-        warmup:["Full body shake-out — 30 sec","High Knees — 30 sec","Hip + Shoulder Circles","Light Jump Rope (or mimic) — 45 sec"],
-        sections:[
-          { title:"Full Body Power Circuit", icon:"⚡", iconClass:"icon-strength", exes:[
-            {name:"Squat to Overhead Press (bottles)", note:"Squat down, press up as you stand", sets:"3 × 12"},
-            {name:"Push-up to T Rotation", note:"Plank, push up, rotate to side plank", sets:"3 × 6 each"},
-            {name:"Reverse Lunge + Knee Drive", note:"Lunge back, drive knee forward", sets:"3 × 10 each"},
-            {name:"Renegade Rows (bottles)", note:"In plank, row one arm at a time", sets:"3 × 8 each"},
-          ]},
-          { title:"Stamina Finisher", icon:"🏁", iconClass:"icon-cardio", exes:[
-            {name:"Burpee Modified (no jump)", note:"Squat, plank, return, stand", sets:"2 × 8"},
-            {name:"Jump Squats", note:"Land softly, knees track toes", sets:"3 × 10"},
-            {name:"High Knees Sprint", note:"Maximum effort", sets:"3 × 20 sec"},
-            {name:"Plank + Knee to Chest", note:"Alternating, controlled", sets:"3 × 10 each"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Deep Squat Hold (Assisted)", note:"Pelvic floor mobility", sets:"30 sec × 2"},
-        ],
-        yogaPoses:[]
-      }
-    ]
-  },
-  2: {
-    label: "Week 3–4 — Progressive Overload",
-    info: "Add +2 reps to each exercise. Increase plank holds by +10 sec. High knees +10 sec per set. Still modified push-ups — focus on perfect form.",
-    days: [
-      {
-        day:"Monday", theme:"theme-rose", focus:"Upper Body Strength + Core",
-        tags:["Strength","Core","Yoga"],
-        yoga:true,
-        warmup:["Arm Circles — 40 sec","Shoulder Rolls — 30 sec","Standing Twists — 30 sec","High Knees — 40 sec"],
-        sections:[
-          { title:"Upper Body Strength (+2 reps)", icon:"💪", iconClass:"icon-strength", exes:[
-            {name:"Incline Push-ups (hands on chair)", note:"Lower than wall — more challenge", sets:"3 × 12"},
-            {name:"Shoulder Taps", note:"Slow, zero hip sway", sets:"3 × 12 each"},
-            {name:"Tricep Dips + Pause at Bottom", note:"2 sec pause at 90°", sets:"3 × 14"},
-            {name:"Superman + Hold", note:"Hold 4 sec at top", sets:"3 × 12"},
-          ]},
-          { title:"Core Progression", icon:"🔥", iconClass:"icon-core", exes:[
-            {name:"Dead Bug + Extended Reach", note:"Reach arm + leg simultaneously", sets:"3 × 10 each"},
-            {name:"Plank Hold", note:"+10 sec from week 1", sets:"3 × 30 sec"},
-            {name:"Leg Raises + Hip Lift", note:"Add hip lift at top", sets:"3 × 12"},
-            {name:"Bicycle Crunches", note:"+2 reps, slow cadence", sets:"2 × 17"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Pelvic Tilts", note:"Increased reps — building pelvic floor strength", sets:"3 × 15"},
-        ],
-        yogaPoses:["Child's Pose (1 min)","Cat-Cow Flow (1 min)","Seated Spinal Twist (1 min each)","Supine Twist (1 min each)","Savasana (2 min)"]
-      },
-      {
-        day:"Tuesday", theme:"theme-violet", focus:"Legs — Added Intensity",
-        tags:["Legs","Thighs","Strength"],
-        yoga:false,
-        warmup:["Jumping Jacks — 50 sec","Leg Swings — 25 each","Hip Circles — 25","Deep Squat Hold — 20 sec"],
-        sections:[
-          { title:"Leg Strength +2 Reps", icon:"🦵", iconClass:"icon-strength", exes:[
-            {name:"Squats — Slower Tempo (3-1-1)", note:"3 sec down, 1 hold, 1 up", sets:"3 × 17"},
-            {name:"Walking Lunges", note:"Step forward, alternate legs", sets:"3 × 12 each"},
-            {name:"Wall Sit", note:"+10 sec from last week", sets:"3 × 40 sec"},
-            {name:"Single-Leg Step-ups", note:"Control the lowering — 3 sec down", sets:"3 × 12 each"},
-          ]},
-          { title:"Thigh Toning +2 Reps", icon:"✨", iconClass:"icon-cardio", exes:[
-            {name:"Sumo Squat + Calf Raise Combo", note:"Rise on toes at top of sumo squat", sets:"3 × 17"},
-            {name:"Side-lying Leg Lift + Circle", note:"Lift then make 5 small circles", sets:"3 × 12 each"},
-            {name:"Inner Thigh Lift (elevated foot)", note:"Foot on cushion, lift other leg", sets:"3 × 17"},
-            {name:"Seated Calf Raises", note:"Towel over knees for resistance", sets:"3 × 22"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Butterfly Stretch", note:"Opens hip & pelvic muscles — longer hold", sets:"90 sec"},
-        ],
-        yogaPoses:[]
-      },
-      {
-        day:"Wednesday", theme:"theme-teal", focus:"Core + Conditioning — Level Up",
-        tags:["Core","Cardio","Yoga"],
-        yoga:true,
-        warmup:["High Knees — 40 sec","Jumping Jacks — 30 sec","Hip Flexor Stretch 20 sec each","Torso Twists — 30 sec"],
-        sections:[
-          { title:"Core +2 Reps", icon:"⚡", iconClass:"icon-core", exes:[
-            {name:"Mountain Climbers", note:"+10 sec per set", sets:"3 × 30 sec"},
-            {name:"Hollow Body Hold", note:"+5 sec per set", sets:"3 × 20 sec"},
-            {name:"Russian Twists + Weight (bottle)", note:"Hold water bottle for resistance", sets:"3 × 18 each"},
-            {name:"Reverse Crunch + Toe Touch", note:"After reverse crunch, reach fingers to toes", sets:"3 × 14"},
-          ]},
-          { title:"Conditioning", icon:"🏃", iconClass:"icon-cardio", exes:[
-            {name:"High Knees", note:"+10 sec from week 1", sets:"3 × 40 sec"},
-            {name:"Jumping Jacks", note:"Faster tempo", sets:"3 × 40 sec"},
-            {name:"Box Shuffles (side to side)", note:"Wide stance, stay low", sets:"2 × 25 sec"},
-            {name:"Speed Bag Arms (punch up fast)", note:"Cardio for upper body", sets:"3 × 30 sec"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Glute Bridge Hold", note:"Held for time — improves pelvic strength + circulation", sets:"3 × 20 sec"},
-        ],
-        yogaPoses:["Downward Dog Hold (1 min)","Warrior II (1 min each)","Chair Pose (45 sec)","Bridge + Hip Circles (1 min)","Supine Butterfly (2 min)"]
-      },
-      {
-        day:"Thursday", theme:"theme-amber", focus:"Chest + Posture + Arms — Progressive",
-        tags:["Chest","Posture","Arms"],
-        yoga:false,
-        warmup:["Chest Opener 40 sec","Arm Swings 40 sec","Pike Push-up Prep 10 sec hold","Spinal Waves — 30 sec"],
-        sections:[
-          { title:"Chest & Posture (+2 reps)", icon:"🎯", iconClass:"icon-strength", exes:[
-            {name:"Incline Push-ups (lower surface)", note:"Hands on low stool/bench", sets:"3 × 12"},
-            {name:"Wall Angels", note:"Back and arms against wall, slide up/down", sets:"3 × 12"},
-            {name:"Band Pull-Apart (wider grip)", note:"More range of motion", sets:"3 × 17"},
-            {name:"Prone Y-T-W with Hold", note:"1 sec hold at each position", sets:"3 × 10 each"},
-          ]},
-          { title:"Arms Toning +2 Reps", icon:"💎", iconClass:"icon-strength", exes:[
-            {name:"Tricep Kickbacks (heavier bottle)", note:"Slow 3 sec lowering", sets:"3 × 14"},
-            {name:"Hammer Curls (bottles)", note:"Alternate arms, squeeze at top", sets:"3 × 14"},
-            {name:"Skull Crushers (lying, bottles)", note:"Keep elbows still", sets:"3 × 12"},
-            {name:"Plank Shoulder Taps + Reach Forward", note:"Tap + extend arm out front", sets:"3 × 10 each"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Cat-Cow Flow", note:"Reduces lower back stiffness — longer flow", sets:"60 sec"},
-        ],
-        yogaPoses:[]
-      },
-      {
-        day:"Friday", theme:"theme-pink", focus:"Hip Shape + Glute Stability",
-        tags:["Hips","Stability","Yoga"],
-        yoga:true,
-        warmup:["Hip Circles — 25 each","Lateral Leg Swings 20 each","Single-Leg Balance 20 sec each","Glute Bridge Pulse — 20 pulses"],
-        sections:[
-          { title:"Hip Shaping (Focus: Symmetry)", icon:"🌸", iconClass:"icon-strength", exes:[
-            {name:"Single-Leg Glute Bridge — Weaker Side First", note:"Do weaker hip 1 extra set", sets:"4 × 12 weak / 3 × 12 strong"},
-            {name:"Fire Hydrants + Hold", note:"Hold at top for 2 sec", sets:"3 × 17 each"},
-            {name:"Side-lying Hip Abduction + Circles", note:"5 forward circles at top of each rep", sets:"3 × 17 each"},
-            {name:"Clamshells + Resistance", note:"Tie a loop of cloth for resistance", sets:"3 × 17 each"},
-          ]},
-          { title:"Stability & Balance", icon:"⚖️", iconClass:"icon-core", exes:[
-            {name:"Single-Leg RDL (Romanian Deadlift)", note:"Hinge at hip, back straight", sets:"3 × 10 each"},
-            {name:"Hip Thrusts — 2 sec hold", note:"Squeeze hard at top", sets:"3 × 14"},
-            {name:"Curtsy Lunge", note:"Cross foot behind, deeply tones hip", sets:"3 × 12 each"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Frog Stretch", note:"Deeper pelvic opening", sets:"60 sec"},
-          {name:"Happy Baby Pose", note:"Releases hip flexors + pelvic tension", sets:"45 sec"},
-        ],
-        yogaPoses:["Pigeon Pose Deep Hold (90 sec each)","Low Lunge + Twist (1 min each)","Bound Angle (1 min)","Fire Log Pose (1 min each)","Supine Hip Stretch (1 min each)"]
-      },
-      {
-        day:"Saturday", theme:"theme-indigo", focus:"Full Body — Power Circuit",
-        tags:["Full Body","Stamina","Power"],
-        yoga:false,
-        warmup:["Dynamic full body — 45 sec","Jumping Jacks — 40 sec","Hip Circles + Shoulder Rolls","Inchworm Walk-outs — 5 reps"],
-        sections:[
-          { title:"Full Body Circuit +2 Reps", icon:"⚡", iconClass:"icon-strength", exes:[
-            {name:"Squat + Press + Twist (bottles)", note:"Twist at top of press", sets:"3 × 14"},
-            {name:"Push-up to T (slower)", note:"3 sec down, hold T 2 sec", sets:"3 × 8 each"},
-            {name:"Lunge + Knee Drive + Hop", note:"Add small hop at knee drive", sets:"3 × 12 each"},
-            {name:"Renegade Row + Push-up Combo", note:"Row both sides, then 1 push-up", sets:"3 × 10 each"},
-          ]},
-          { title:"Stamina Finisher — Elevated", icon:"🏁", iconClass:"icon-cardio", exes:[
-            {name:"Burpee + Jump Squat", note:"Full burpee into jump squat", sets:"2 × 10"},
-            {name:"Squat Jumps — deeper", note:"Deeper squat, higher jump", sets:"3 × 12"},
-            {name:"High Knees Sprint", note:"+10 sec from week 1", sets:"3 × 30 sec"},
-            {name:"Plank Knee-to-Chest + Oblique", note:"Alternate: center, left, right", sets:"3 × 12 each"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Deep Squat Hold", note:"Pelvic floor mobility — increased hold", sets:"45 sec × 2"},
-        ],
-        yogaPoses:[]
-      }
-    ]
-  },
-  3: {
-    label: "Week 5+ — Strength Phase (Full Push-ups Begin)",
-    info: "Start proper push-ups gradually. Begin with 2–3 full push-ups, fill rest with modified. Increase by 1 full push-up every 3 days. All reps and times elevated from Week 3–4.",
-    days: [
-      {
-        day:"Monday", theme:"theme-rose", focus:"Upper Body Power + Core",
-        tags:["Power","Core","Yoga"],
-        yoga:true,
-        warmup:["Dynamic warm-up — 60 sec","High Knees — 45 sec","Shoulder mobility — 30 sec","Jumping Jacks — 30 sec"],
-        sections:[
-          { title:"Push-up Progression + Upper Body", icon:"💪", iconClass:"icon-strength", exes:[
-            {name:"Full Push-ups (2-3) + Modified (rest)", note:"Increase by 1 full push-up every 3 days", sets:"4 × 12 total"},
-            {name:"Pike Push-ups", note:"Downward dog position, lower head to floor", sets:"3 × 10"},
-            {name:"Tricep Dips + Leg Raised", note:"Extend one leg out for added challenge", sets:"3 × 15"},
-            {name:"Superman Swimmer", note:"Alternate opposite arm + leg raises", sets:"3 × 12 each"},
-          ]},
-          { title:"Advanced Core", icon:"🔥", iconClass:"icon-core", exes:[
-            {name:"Dead Bug + Resistance (bottle on chest)", note:"Full extension each side", sets:"3 × 12 each"},
-            {name:"Long Plank Hold", note:"Build toward 60 sec", sets:"3 × 45 sec"},
-            {name:"Dragon Fly Prep (slow leg raise + hold)", note:"Hold at 45° for 2 sec", sets:"3 × 10"},
-            {name:"Bicycle Crunches — Fast", note:"Increase speed, maintain form", sets:"3 × 20"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Pelvic Tilts + March", note:"Dynamic version — builds pelvic floor + lower ab endurance", sets:"3 × 15"},
-        ],
-        yogaPoses:["Sun Salutation A — 3 rounds","Warrior I + II Flow (1 min each)","Extended Triangle (45 sec each)","Camel Pose (30 sec)","Savasana (3 min)"]
-      },
-      {
-        day:"Tuesday", theme:"theme-violet", focus:"Legs — Full Strength",
-        tags:["Legs","Power","Strength"],
-        yoga:false,
-        warmup:["Jump Rope mimic — 60 sec","Leg swings — 30 each","Deep Hip Circles — 30","Squat pulse — 20"],
-        sections:[
-          { title:"Leg Power", icon:"🦵", iconClass:"icon-strength", exes:[
-            {name:"Jump Squats", note:"Deep squat, explosive jump", sets:"4 × 15"},
-            {name:"Bulgarian Split Squat (rear foot on chair)", note:"Front leg does the work", sets:"3 × 12 each"},
-            {name:"Wall Sit + Leg Extension", note:"Extend one leg, alternate", sets:"3 × 45 sec"},
-            {name:"Plyometric Lunges (Jump Lunges)", note:"Switch legs in air", sets:"3 × 10 each"},
-          ]},
-          { title:"Thigh & Inner Leg", icon:"✨", iconClass:"icon-cardio", exes:[
-            {name:"Sumo Jump Squat", note:"Wide stance, jump at top", sets:"3 × 15"},
-            {name:"Side Lunge + Pulse", note:"3 pulses in side lunge", sets:"3 × 12 each"},
-            {name:"Inner Thigh Press (pillow between knees)", note:"Squeeze and hold 3 sec", sets:"4 × 20"},
-            {name:"Single-Leg Calf Raise", note:"Balance — no support if possible", sets:"3 × 20 each"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Butterfly Pulse Stretch", note:"Active version — gentle bouncing pulses for hip mobility", sets:"90 sec"},
-        ],
-        yogaPoses:[]
-      },
-      {
-        day:"Wednesday", theme:"theme-teal", focus:"Core Mastery + HIIT",
-        tags:["Core","HIIT","Yoga"],
-        yoga:true,
-        warmup:["High Knees — 50 sec","Arm + Hip Combo — 30 sec","Jumping Jacks — 40 sec","Inchworm — 5 reps"],
-        sections:[
-          { title:"Core Mastery", icon:"⚡", iconClass:"icon-core", exes:[
-            {name:"V-Sit Hold", note:"Balance on tailbone, legs and torso in V", sets:"3 × 20 sec"},
-            {name:"Mountain Climbers — Fast", note:"Sprint tempo, tight core", sets:"3 × 40 sec"},
-            {name:"Russian Twists + Legs Raised", note:"Both feet off ground throughout", sets:"3 × 20 each"},
-            {name:"Hollow Body Rocks", note:"Rock forward and back in hollow hold", sets:"3 × 15 rocks"},
-          ]},
-          { title:"HIIT Circuit", icon:"🏃", iconClass:"icon-cardio", exes:[
-            {name:"High Knees 40 sec / Rest 15 sec", note:"3 rounds — maximum effort", sets:"3 rounds"},
-            {name:"Skater Jumps", note:"Wide lateral jumps, touch floor", sets:"3 × 30 sec"},
-            {name:"Speed Squats", note:"Fast squats, barely straighten between reps", sets:"3 × 20 sec"},
-            {name:"Plank + Jump Feet In/Out", note:"In plank, jump feet wide + narrow", sets:"3 × 20 sec"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Single-Leg Glute Bridge", note:"Unilateral pelvic stability — targets each side independently", sets:"3 × 12"},
-        ],
-        yogaPoses:["Sun Salutation B — 2 rounds","Warrior III Balance (1 min each)","Twisted Chair Pose (30 sec each)","Seated Forward Fold + Twist","Legs-Up-Wall (3 min)"]
-      },
-      {
-        day:"Thursday", theme:"theme-amber", focus:"Chest + Posture + Arms Strength",
-        tags:["Chest","Arms","Posture"],
-        yoga:false,
-        warmup:["Chest Opener — 45 sec","Arm circles — 40 sec","Pike push-up prep 5 reps","Spinal flow — 45 sec"],
-        sections:[
-          { title:"Chest + Push-up Mastery", icon:"🎯", iconClass:"icon-strength", exes:[
-            {name:"Full Push-ups (max) + Modified (rest)", note:"Track full push-up count weekly", sets:"4 × 12 total"},
-            {name:"Wide Push-ups", note:"Hands wider than shoulder, targets chest", sets:"3 × 10"},
-            {name:"Diamond Push-ups (Modified OK)", note:"Hands form diamond, targets tricep + chest", sets:"3 × 8"},
-            {name:"Band Pull-Apart (faster tempo)", note:"Control and squeeze shoulder blades", sets:"3 × 20"},
-          ]},
-          { title:"Arms Strength", icon:"💎", iconClass:"icon-strength", exes:[
-            {name:"Tricep Push-up (narrow hands)", note:"Elbows brush sides going down", sets:"3 × 12"},
-            {name:"Bicep Curl 21s (bottles)", note:"7 low, 7 high, 7 full range", sets:"3 × 21"},
-            {name:"Overhead Press (both arms)", note:"Full extension overhead", sets:"3 × 15"},
-            {name:"Plank to Push-up (down-up-down-up)", note:"One full rep from elbow to hand plank", sets:"3 × 8 each"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Cat-Cow + Thread the Needle", note:"Spinal mobility + thoracic rotation — reduces back tension", sets:"60 sec"},
-        ],
-        yogaPoses:[]
-      },
-      {
-        day:"Friday", theme:"theme-pink", focus:"Hip Shape + Glute Sculpt",
-        tags:["Hips","Sculpt","Yoga"],
-        yoga:true,
-        warmup:["Hip Circles — 30 each","Lateral step + knee lift","Single-Leg Balance 30 sec each","Deep Glute Stretch — 30 sec"],
-        sections:[
-          { title:"Hip Sculpting", icon:"🌸", iconClass:"icon-strength", exes:[
-            {name:"Single-Leg Glute Bridge — Elevated (foot on chair)", note:"Elevated version = more range, more shape", sets:"4 × 15 each"},
-            {name:"Fire Hydrant + Full Circle + Extension", note:"Circle + extend straight back each rep", sets:"3 × 15 each"},
-            {name:"Standing Hip Abduction (pulsed)", note:"Lift, pulse 3x, return", sets:"3 × 15 each"},
-            {name:"Curtsy Lunge + Side Kick", note:"Deep curtsy + kick to side at top", sets:"3 × 12 each"},
-          ]},
-          { title:"Balance & Symmetry", icon:"⚖️", iconClass:"icon-core", exes:[
-            {name:"Single-Leg RDL + Row (bottle)", note:"Hinge + row at bottom", sets:"3 × 12 each"},
-            {name:"Hip Thrust — Elevated (shoulders on chair)", note:"Full hip extension — controlled squeeze", sets:"3 × 15"},
-            {name:"Lateral Band Walk — Lower Squat", note:"Stay lower throughout walk", sets:"3 × 20 each"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Butterfly Pose", note:"Hip + pelvic opening", sets:"1 min"},
-          {name:"Frog Stretch", note:"Deep pelvic floor stretch", sets:"1 min"},
-          {name:"Happy Baby Pose", note:"Releases hip flexors & pelvic tension", sets:"1 min"},
-        ],
-        yogaPoses:["Pigeon Pose Advanced (2 min each)","King Pigeon Prep (1 min each)","Lizard Pose (1 min each)","Frog Pose (1 min)","Supine Spinal Twist (2 min each)"]
-      },
-      {
-        day:"Saturday", theme:"theme-indigo", focus:"Full Body Beast Mode",
-        tags:["Full Body","Power","Stamina"],
-        yoga:false,
-        warmup:["Full dynamic flow — 60 sec","Jump Rope mimic — 45 sec","Arm + leg combo circles","Inchworm to push-up — 5 reps"],
-        sections:[
-          { title:"Full Body Power", icon:"⚡", iconClass:"icon-strength", exes:[
-            {name:"Squat + Jump + Press (bottles)", note:"Squat, jump, land, press overhead", sets:"4 × 12"},
-            {name:"Full Push-up to T Rotation", note:"Full push-up then rotate to side plank", sets:"4 × 8 each"},
-            {name:"Jump Lunge + Overhead Reach", note:"Lunge, jump switch, reach up at top", sets:"3 × 10 each"},
-            {name:"Renegade Row + Push-up + Jack Feet", note:"Row x2, push-up, jump feet wide + close", sets:"3 × 8 each"},
-          ]},
-          { title:"Power Finisher", icon:"🏁", iconClass:"icon-cardio", exes:[
-            {name:"Full Burpee + Jump", note:"Plank, push-up, jump squat", sets:"3 × 10"},
-            {name:"Plyometric Box Jump (onto low step/stair)", note:"Land softly, step down", sets:"3 × 10"},
-            {name:"Sprint-in-Place 40 sec / Rest 15 sec", note:"Maximum effort sprint", sets:"4 rounds"},
-            {name:"Plank Complex (forward + side + down dog)", note:"10 sec each position, cycle through", sets:"3 cycles"},
-          ]},
-        ],
-        pelvicExes:[
-          {name:"Deep Squat Mobility Hold", note:"Full pelvic floor release — hold longer for maximum benefit", sets:"60 sec"},
-        ],
-        yogaPoses:[]
-      }
-    ]
-  }
+function toggle(){run?pause():play();}
+
+function play(){
+  if(run)return;run=true;
+  t0=Date.now()-el;iv=setInterval(tick,10);
+  // icon → pause
+  document.getElementById('pIcon').innerHTML='<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+  const pb=document.getElementById('playBtn');
+  pb.classList.add('glow','bounce');
+  setTimeout(()=>pb.classList.remove('bounce'),400);
+  document.getElementById('playWrap').classList.add('running');
+  document.getElementById('orb').classList.add('active');
+  document.getElementById('sDot').classList.add('on');
+  document.getElementById('sLabel').textContent='Clocked On';
+  document.getElementById('swTime').classList.add('lit');
+  document.getElementById('swSub').textContent=laps>0?`Lap ${laps}`:'Running…';
+}
+
+function pause(){
+  if(!run)return;run=false;clearInterval(iv);
+  document.getElementById('pIcon').innerHTML='<path d="M8 5v14l11-7z"/>';
+  const pb=document.getElementById('playBtn');
+  pb.classList.remove('glow');pb.classList.add('bounce');
+  setTimeout(()=>pb.classList.remove('bounce'),400);
+  document.getElementById('playWrap').classList.remove('running');
+  document.getElementById('orb').classList.remove('active');
+  document.getElementById('sDot').classList.remove('on');
+  document.getElementById('sLabel').textContent='Paused';
+  document.getElementById('swTime').classList.remove('lit');
+  document.getElementById('swSub').textContent='Paused — tap to resume';
+}
+
+function resetSW(){
+  pause();el=0;laps=0;lastLap=0;
+  renderT(0);
+  document.getElementById('sLabel').textContent='Clocked Off';
+  document.getElementById('swSub').textContent='Ready to start';
+  // Spin reset btn
+  const rb=document.getElementById('resetBtn');
+  rb.classList.remove('spin');void rb.offsetWidth;rb.classList.add('spin');
+  setTimeout(()=>rb.classList.remove('spin'),600);
+  // Flash overlay
+  const f=document.createElement('div');f.className='rflash';
+  document.body.appendChild(f);setTimeout(()=>f.remove(),700);
+}
+
+function lap(){
+  if(!run)return;laps++;
+  const lt=el-lastLap;lastLap=el;
+  document.getElementById('swSub').textContent=`Lap ${laps} — ${fmt(lt)}`;
+}
+
+function tick(){el=Date.now()-t0;renderT(el);}
+
+function renderT(ms){
+  const cs=Math.floor((ms%1000)/10),s=Math.floor((ms/1000)%60),m=Math.floor(ms/60000)%60;
+  document.getElementById('swTime').textContent=`${p2(m)}:${p2(s)}.${p2(cs)}`;
+}
+function fmt(ms){const cs=Math.floor((ms%1000)/10),s=Math.floor((ms/1000)%60),m=Math.floor(ms/60000)%60;return`${p2(m)}:${p2(s)}.${p2(cs)}`;}
+function p2(n){return n.toString().padStart(2,'0');}
+
+/* ── THEME ── */
+function toggleMoon(){
+  const m=document.body.classList.toggle('moonlight');
+  document.getElementById('themeBtn').textContent=m?'☀️':'🌙';
+  localStorage.setItem('ff_m',m?'1':'0');
+}
+if(localStorage.getItem('ff_m')==='1'){document.body.classList.add('moonlight');document.getElementById('themeBtn').textContent='☀️';}
+
+/* ── DATA ── */
+const W={
+  1:{label:"Week 1–2 — Foundation Phase",info:"Focus on form over speed. Rest 45–60 sec between sets. Modified push-ups allowed.",
+    days:[
+      {d:"Monday",c:"c-rose",f:"Upper Body Strength + Core",tags:["Strength","Core","Yoga"],yoga:true,
+       wu:["Arm Circles — 30 sec","Shoulder Rolls — 30 sec","Standing Twists — 30 sec","High Knees — 30 sec"],
+       secs:[
+         {t:"Upper Body Strength",ic:"💪",cl:"i-str",ex:[{n:"Wall Push-ups",no:"Back straight, chest toward wall",s:"3 × 10"},{n:"Shoulder Taps (Plank)",no:"Slow and controlled",s:"3 × 10 each"},{n:"Tricep Dips (Chair)",no:"Hands behind on chair edge",s:"3 × 12"},{n:"Superman Hold",no:"Hold 3 sec at top",s:"3 × 10"}]},
+         {t:"Core & Belly Focus",ic:"🔥",cl:"i-core",ex:[{n:"Dead Bug",no:"Lower back flat on floor",s:"3 × 8 each"},{n:"Plank Hold",no:"Build up each set",s:"3 × 20 sec"},{n:"Leg Raises",no:"Lower back pressed down",s:"3 × 10"},{n:"Bicycle Crunches",no:"Slow, elbow to opposite knee",s:"2 × 15"}]}
+       ],
+       pelv:[{n:"Pelvic Tilts",no:"Strengthens lower abs, reduces cramps",s:"2 × 12"}],
+       yp:["Child's Pose (1 min)","Cat-Cow Stretch (1 min)","Seated Forward Fold (1 min)","Supine Twist (1 min each)","Savasana (2 min)"]},
+      {d:"Tuesday",c:"c-violet",f:"Legs Strength + Thigh Toning",tags:["Legs","Thighs","Strength"],yoga:false,
+       wu:["Jumping Jacks — 45 sec","Leg Swings — 20 each","Hip Circles — 20 each direction","March in Place — 30 sec"],
+       secs:[
+         {t:"Leg Strength",ic:"🦵",cl:"i-str",ex:[{n:"Bodyweight Squats",no:"Feet shoulder-width, sit back",s:"3 × 15"},{n:"Reverse Lunges",no:"Knee doesn't go past toe",s:"3 × 10 each"},{n:"Wall Sit",no:"90° angle hold",s:"3 × 30 sec"},{n:"Step-ups (Chair/Staircase)",no:"Drive through heel",s:"3 × 10 each"}]},
+         {t:"Inner Thigh Toning",ic:"✨",cl:"i-cardio",ex:[{n:"Sumo Squat Pulse",no:"Feet wide, toes out",s:"3 × 20 pulses"},{n:"Side-lying Leg Lift",no:"Slow and controlled",s:"3 × 12 each"},{n:"Inner Thigh Squeeze (pillow)",no:"2 sec hold",s:"3 × 15"},{n:"Calf Raises",no:"Hold chair for balance",s:"3 × 20"}]}
+       ],
+       pelv:[{n:"Butterfly Stretch",no:"Opens hips & pelvic muscles",s:"60 sec"}],yp:[]},
+      {d:"Wednesday",c:"c-teal",f:"Core + Belly Reduction + Conditioning",tags:["Core","Cardio","Yoga"],yoga:true,
+       wu:["High Knees — 30 sec","Standing Windmill Stretch","Hip Flexor Stretch — 20 sec each","Neck Rolls — 30 sec"],
+       secs:[
+         {t:"Core Blast",ic:"⚡",cl:"i-core",ex:[{n:"Mountain Climbers",no:"Hips level, core tight",s:"3 × 20 sec"},{n:"Hollow Body Hold",no:"Lower back flat",s:"3 × 15 sec"},{n:"Russian Twists",no:"Feet raised if possible",s:"3 × 16"},{n:"Reverse Crunch",no:"Lift hips, not neck",s:"3 × 12"}]},
+         {t:"Conditioning",ic:"🏃",cl:"i-cardio",ex:[{n:"High Knees",no:"Drive knees up, arms pumping",s:"3 × 30 sec"},{n:"Jumping Jacks",no:"Full range, land softly",s:"3 × 30 sec"},{n:"Skater Jumps",no:"Side to side, touch floor",s:"2 × 20 sec"},{n:"Oblique Crunches",no:"Elbow to knee, side to side",s:"3 × 12 each"}]}
+       ],
+       pelv:[{n:"Glute Bridge",no:"Improves pelvic blood flow + lower back",s:"2 × 12"}],
+       yp:["Downward Dog (1 min)","Warrior I (45 sec each)","Boat Pose (30 sec)","Bridge Pose (45 sec)","Legs Up the Wall (2 min)"]},
+      {d:"Thursday",c:"c-amber",f:"Chest + Posture + Arms",tags:["Chest","Posture","Arms"],yoga:false,
+       wu:["Chest Opener Stretch — 30 sec","Arm Swings — 30 sec","Wrist Rotations — 20 sec","Spinal Rotation — 30 sec"],
+       secs:[
+         {t:"Chest & Posture",ic:"🎯",cl:"i-str",ex:[{n:"Incline Push-ups (wall/chair)",no:"ONLY chest exercise this week",s:"3 × 10"},{n:"Doorway Chest Stretch",no:"Hold 20 sec each arm",s:"2 × 20 sec"},{n:"Band Pull-Apart (or towel)",no:"Arms straight, pull apart",s:"3 × 15"},{n:"Prone Y-T-W Raises",no:"Face down, lift arms Y → T → W",s:"2 × 8 each"}]},
+         {t:"Arms Toning",ic:"💎",cl:"i-str",ex:[{n:"Tricep Kickbacks (bottles)",no:"Elbow pinned, extend fully",s:"3 × 12"},{n:"Bicep Curls (bottles)",no:"Control the lowering phase",s:"3 × 12"},{n:"Overhead Tricep Extension",no:"Elbows close to head",s:"3 × 10"},{n:"Plank Shoulder Taps",no:"Hips square, no rocking",s:"3 × 8 each"}]}
+       ],
+       pelv:[{n:"Cat-Cow Stretch",no:"Reduces lower back stiffness",s:"45 sec"}],yp:[]},
+      {d:"Friday",c:"c-pink",f:"Hip Shape + Glute Stability",tags:["Hips","Stability","Yoga"],yoga:true,
+       wu:["Hip Circles — 20 each direction","Glute Bridge Hold — 20 sec","Hip Flexor Stretch — 20 sec each","Lateral Leg Swings — 15 each"],
+       secs:[
+         {t:"Hip Shaping & Symmetry",ic:"🌸",cl:"i-str",ex:[{n:"Single-Leg Glute Bridge",no:"Focus uneven side",s:"3 × 10 each"},{n:"Fire Hydrants",no:"Slow circles, feel outer hip",s:"3 × 15 each"},{n:"Side-lying Hip Abduction",no:"Top leg lifts straight up",s:"3 × 15 each"},{n:"Clamshells (band optional)",no:"Keep feet together",s:"3 × 15 each"}]},
+         {t:"Hip Stability & Balance",ic:"⚖️",cl:"i-core",ex:[{n:"Single-Leg Balance Hold",no:"30 sec each side",s:"3 × 30 sec each"},{n:"Hip Thrusts (floor)",no:"Squeeze at top, slow release",s:"3 × 12"},{n:"Lateral Band Walk",no:"Keep resistance taut",s:"3 × 15 each"}]}
+       ],
+       pelv:[{n:"Frog Stretch",no:"Pelvic opening + hip flexibility",s:"45 sec"}],
+       yp:["Pigeon Pose (1 min each)","Low Lunge Hip Stretch (45 sec)","Butterfly Pose (1 min)","Reclined Pigeon (1 min each)","Happy Baby (1 min)"]},
+      {d:"Saturday",c:"c-indigo",f:"Full Body Strength + Stamina",tags:["Full Body","Stamina","Strength"],yoga:false,
+       wu:["Full body shake-out — 30 sec","High Knees — 30 sec","Hip + Shoulder Circles","Jump Rope mimic — 45 sec"],
+       secs:[
+         {t:"Full Body Power Circuit",ic:"⚡",cl:"i-str",ex:[{n:"Squat to Overhead Press (bottles)",no:"Squat down, press as you stand",s:"3 × 12"},{n:"Push-up to T Rotation",no:"Plank, push up, rotate to side plank",s:"3 × 6 each"},{n:"Reverse Lunge + Knee Drive",no:"Lunge back, drive knee forward",s:"3 × 10 each"},{n:"Renegade Rows (bottles)",no:"Row one arm at a time in plank",s:"3 × 8 each"}]},
+         {t:"Stamina Finisher",ic:"🏁",cl:"i-cardio",ex:[{n:"Burpee Modified (no jump)",no:"Squat, plank, return, stand",s:"2 × 8"},{n:"Jump Squats",no:"Land softly, knees track toes",s:"3 × 10"},{n:"High Knees Sprint",no:"Maximum effort",s:"3 × 20 sec"},{n:"Plank + Knee to Chest",no:"Alternating, controlled",s:"3 × 10 each"}]}
+       ],
+       pelv:[{n:"Deep Squat Hold (Assisted)",no:"Pelvic floor mobility",s:"30 sec × 2"}],yp:[]}
+    ]},
+  2:{label:"Week 3–4 — Progressive Overload",info:"Add +2 reps each exercise. Plank holds +10 sec. High knees +10 sec per set.",
+    days:[
+      {d:"Monday",c:"c-rose",f:"Upper Body Strength + Core",tags:["Strength","Core","Yoga"],yoga:true,
+       wu:["Arm Circles — 40 sec","Shoulder Rolls — 30 sec","Standing Twists — 30 sec","High Knees — 40 sec"],
+       secs:[
+         {t:"Upper Body Strength (+2 reps)",ic:"💪",cl:"i-str",ex:[{n:"Incline Push-ups (chair)",no:"Lower than wall — more challenge",s:"3 × 12"},{n:"Shoulder Taps",no:"Slow, zero hip sway",s:"3 × 12 each"},{n:"Tricep Dips + Pause",no:"2 sec pause at 90°",s:"3 × 14"},{n:"Superman + Hold",no:"Hold 4 sec at top",s:"3 × 12"}]},
+         {t:"Core Progression",ic:"🔥",cl:"i-core",ex:[{n:"Dead Bug + Extended Reach",no:"Reach arm + leg simultaneously",s:"3 × 10 each"},{n:"Plank Hold",no:"+10 sec from week 1",s:"3 × 30 sec"},{n:"Leg Raises + Hip Lift",no:"Add hip lift at top",s:"3 × 12"},{n:"Bicycle Crunches",no:"+2 reps, slow cadence",s:"2 × 17"}]}
+       ],
+       pelv:[{n:"Pelvic Tilts",no:"Building pelvic floor strength",s:"3 × 15"}],
+       yp:["Child's Pose (1 min)","Cat-Cow Flow (1 min)","Seated Spinal Twist (1 min each)","Supine Twist (1 min each)","Savasana (2 min)"]},
+      {d:"Tuesday",c:"c-violet",f:"Legs — Added Intensity",tags:["Legs","Thighs","Strength"],yoga:false,
+       wu:["Jumping Jacks — 50 sec","Leg Swings — 25 each","Hip Circles — 25","Deep Squat Hold — 20 sec"],
+       secs:[
+         {t:"Leg Strength +2 Reps",ic:"🦵",cl:"i-str",ex:[{n:"Squats Slower Tempo (3-1-1)",no:"3 sec down, 1 hold, 1 up",s:"3 × 17"},{n:"Walking Lunges",no:"Step forward, alternate",s:"3 × 12 each"},{n:"Wall Sit",no:"+10 sec from last week",s:"3 × 40 sec"},{n:"Single-Leg Step-ups",no:"3 sec lowering phase",s:"3 × 12 each"}]},
+         {t:"Thigh Toning +2 Reps",ic:"✨",cl:"i-cardio",ex:[{n:"Sumo Squat + Calf Raise Combo",no:"Rise on toes at top",s:"3 × 17"},{n:"Side-lying Leg Lift + Circle",no:"5 small circles at top",s:"3 × 12 each"},{n:"Inner Thigh Lift (elevated foot)",no:"Foot on cushion, lift other leg",s:"3 × 17"},{n:"Seated Calf Raises",no:"Towel over knees for resistance",s:"3 × 22"}]}
+       ],
+       pelv:[{n:"Butterfly Stretch",no:"Longer hold — hip & pelvic opening",s:"90 sec"}],yp:[]},
+      {d:"Wednesday",c:"c-teal",f:"Core + Conditioning — Level Up",tags:["Core","Cardio","Yoga"],yoga:true,
+       wu:["High Knees — 40 sec","Jumping Jacks — 30 sec","Hip Flexor Stretch 20 sec each","Torso Twists — 30 sec"],
+       secs:[
+         {t:"Core +2 Reps",ic:"⚡",cl:"i-core",ex:[{n:"Mountain Climbers",no:"+10 sec per set",s:"3 × 30 sec"},{n:"Hollow Body Hold",no:"+5 sec per set",s:"3 × 20 sec"},{n:"Russian Twists + Bottle",no:"Water bottle for resistance",s:"3 × 18 each"},{n:"Reverse Crunch + Toe Touch",no:"Reach fingers to toes after crunch",s:"3 × 14"}]},
+         {t:"Conditioning",ic:"🏃",cl:"i-cardio",ex:[{n:"High Knees",no:"+10 sec from week 1",s:"3 × 40 sec"},{n:"Jumping Jacks",no:"Faster tempo",s:"3 × 40 sec"},{n:"Box Shuffles",no:"Wide stance, stay low",s:"2 × 25 sec"},{n:"Speed Bag Arms",no:"Cardio for upper body",s:"3 × 30 sec"}]}
+       ],
+       pelv:[{n:"Glute Bridge Hold",no:"Held for time — pelvic strength & circulation",s:"3 × 20 sec"}],
+       yp:["Downward Dog Hold (1 min)","Warrior II (1 min each)","Chair Pose (45 sec)","Bridge + Hip Circles (1 min)","Supine Butterfly (2 min)"]},
+      {d:"Thursday",c:"c-amber",f:"Chest + Posture + Arms — Progressive",tags:["Chest","Posture","Arms"],yoga:false,
+       wu:["Chest Opener 40 sec","Arm Swings 40 sec","Pike Push-up Prep 10 sec hold","Spinal Waves — 30 sec"],
+       secs:[
+         {t:"Chest & Posture (+2 reps)",ic:"🎯",cl:"i-str",ex:[{n:"Incline Push-ups (lower surface)",no:"Hands on low stool/bench",s:"3 × 12"},{n:"Wall Angels",no:"Back against wall, slide up/down",s:"3 × 12"},{n:"Band Pull-Apart (wider grip)",no:"More range of motion",s:"3 × 17"},{n:"Prone Y-T-W with Hold",no:"1 sec hold at each position",s:"3 × 10 each"}]},
+         {t:"Arms Toning +2 Reps",ic:"💎",cl:"i-str",ex:[{n:"Tricep Kickbacks (heavier bottle)",no:"3 sec lowering",s:"3 × 14"},{n:"Hammer Curls (bottles)",no:"Alternate, squeeze at top",s:"3 × 14"},{n:"Skull Crushers (lying, bottles)",no:"Keep elbows still",s:"3 × 12"},{n:"Plank Taps + Reach Forward",no:"Tap + extend arm front",s:"3 × 10 each"}]}
+       ],
+       pelv:[{n:"Cat-Cow Flow",no:"Longer flow — lower back stiffness relief",s:"60 sec"}],yp:[]},
+      {d:"Friday",c:"c-pink",f:"Hip Shape + Glute Stability",tags:["Hips","Stability","Yoga"],yoga:true,
+       wu:["Hip Circles — 25 each","Lateral Leg Swings 20 each","Single-Leg Balance 20 sec each","Glute Bridge Pulse — 20 pulses"],
+       secs:[
+         {t:"Hip Shaping (Symmetry Focus)",ic:"🌸",cl:"i-str",ex:[{n:"Single-Leg Glute Bridge — Weaker First",no:"Weaker side 1 extra set",s:"4×12 weak / 3×12 strong"},{n:"Fire Hydrants + Hold",no:"Hold at top 2 sec",s:"3 × 17 each"},{n:"Side-lying Abduction + Circles",no:"5 circles at top each rep",s:"3 × 17 each"},{n:"Clamshells + Resistance",no:"Cloth loop for resistance",s:"3 × 17 each"}]},
+         {t:"Stability & Balance",ic:"⚖️",cl:"i-core",ex:[{n:"Single-Leg RDL",no:"Hinge at hip, back straight",s:"3 × 10 each"},{n:"Hip Thrusts — 2 sec hold",no:"Squeeze hard at top",s:"3 × 14"},{n:"Curtsy Lunge",no:"Cross foot behind, deeply tones hip",s:"3 × 12 each"}]}
+       ],
+       pelv:[{n:"Frog Stretch",no:"Deeper pelvic opening",s:"60 sec"},{n:"Happy Baby Pose",no:"Releases hip flexors + pelvic tension",s:"45 sec"}],
+       yp:["Pigeon Pose Deep (90 sec each)","Low Lunge + Twist (1 min each)","Bound Angle (1 min)","Fire Log Pose (1 min each)","Supine Hip Stretch (1 min each)"]},
+      {d:"Saturday",c:"c-indigo",f:"Full Body — Power Circuit",tags:["Full Body","Stamina","Power"],yoga:false,
+       wu:["Dynamic full body — 45 sec","Jumping Jacks — 40 sec","Hip Circles + Shoulder Rolls","Inchworm Walk-outs — 5 reps"],
+       secs:[
+         {t:"Full Body Circuit +2 Reps",ic:"⚡",cl:"i-str",ex:[{n:"Squat + Press + Twist (bottles)",no:"Twist at top of press",s:"3 × 14"},{n:"Push-up to T (slower)",no:"3 sec down, hold T 2 sec",s:"3 × 8 each"},{n:"Lunge + Knee Drive + Hop",no:"Small hop at knee drive",s:"3 × 12 each"},{n:"Renegade Row + Push-up Combo",no:"Row both sides, then 1 push-up",s:"3 × 10 each"}]},
+         {t:"Stamina Finisher",ic:"🏁",cl:"i-cardio",ex:[{n:"Burpee + Jump Squat",no:"Full burpee into jump squat",s:"2 × 10"},{n:"Squat Jumps — deeper",no:"Deeper squat, higher jump",s:"3 × 12"},{n:"High Knees Sprint",no:"+10 sec from week 1",s:"3 × 30 sec"},{n:"Plank Knee-to-Chest + Oblique",no:"Alternate: center, left, right",s:"3 × 12 each"}]}
+       ],
+       pelv:[{n:"Deep Squat Hold",no:"Pelvic floor mobility — increased hold",s:"45 sec × 2"}],yp:[]}
+    ]},
+  3:{label:"Week 5+ — Strength Phase (Full Push-ups Begin)",info:"Begin 2–3 full push-ups, fill rest with modified. Increase by 1 every 3 days.",
+    days:[
+      {d:"Monday",c:"c-rose",f:"Upper Body Power + Core",tags:["Power","Core","Yoga"],yoga:true,
+       wu:["Dynamic warm-up — 60 sec","High Knees — 45 sec","Shoulder mobility — 30 sec","Jumping Jacks — 30 sec"],
+       secs:[
+         {t:"Push-up Progression + Upper Body",ic:"💪",cl:"i-str",ex:[{n:"Full Push-ups (2–3) + Modified",no:"Increase 1 full push-up every 3 days",s:"4 × 12 total"},{n:"Pike Push-ups",no:"Lower head to floor in down-dog",s:"3 × 10"},{n:"Tricep Dips + Leg Raised",no:"Extend one leg for challenge",s:"3 × 15"},{n:"Superman Swimmer",no:"Alternate opposite arm + leg",s:"3 × 12 each"}]},
+         {t:"Advanced Core",ic:"🔥",cl:"i-core",ex:[{n:"Dead Bug + Bottle Resistance",no:"Full extension each side",s:"3 × 12 each"},{n:"Long Plank Hold",no:"Build toward 60 sec",s:"3 × 45 sec"},{n:"Dragon Fly Prep",no:"Hold at 45° for 2 sec",s:"3 × 10"},{n:"Bicycle Crunches — Fast",no:"Increase speed, maintain form",s:"3 × 20"}]}
+       ],
+       pelv:[{n:"Pelvic Tilts + March",no:"Dynamic — pelvic floor + lower ab endurance",s:"3 × 15"}],
+       yp:["Sun Salutation A — 3 rounds","Warrior I + II Flow (1 min each)","Extended Triangle (45 sec each)","Camel Pose (30 sec)","Savasana (3 min)"]},
+      {d:"Tuesday",c:"c-violet",f:"Legs — Full Strength",tags:["Legs","Power","Strength"],yoga:false,
+       wu:["Jump Rope mimic — 60 sec","Leg swings — 30 each","Deep Hip Circles — 30","Squat pulse — 20"],
+       secs:[
+         {t:"Leg Power",ic:"🦵",cl:"i-str",ex:[{n:"Jump Squats",no:"Deep squat, explosive jump",s:"4 × 15"},{n:"Bulgarian Split Squat (chair)",no:"Front leg does the work",s:"3 × 12 each"},{n:"Wall Sit + Leg Extension",no:"Extend one leg, alternate",s:"3 × 45 sec"},{n:"Plyometric Lunges",no:"Switch legs in air",s:"3 × 10 each"}]},
+         {t:"Thigh & Inner Leg",ic:"✨",cl:"i-cardio",ex:[{n:"Sumo Jump Squat",no:"Wide stance, jump at top",s:"3 × 15"},{n:"Side Lunge + Pulse",no:"3 pulses in side lunge",s:"3 × 12 each"},{n:"Inner Thigh Press (pillow)",no:"Squeeze and hold 3 sec",s:"4 × 20"},{n:"Single-Leg Calf Raise",no:"No support if possible",s:"3 × 20 each"}]}
+       ],
+       pelv:[{n:"Butterfly Pulse Stretch",no:"Active — gentle pulses for hip mobility",s:"90 sec"}],yp:[]},
+      {d:"Wednesday",c:"c-teal",f:"Core Mastery + HIIT",tags:["Core","HIIT","Yoga"],yoga:true,
+       wu:["High Knees — 50 sec","Arm + Hip Combo — 30 sec","Jumping Jacks — 40 sec","Inchworm — 5 reps"],
+       secs:[
+         {t:"Core Mastery",ic:"⚡",cl:"i-core",ex:[{n:"V-Sit Hold",no:"Balance on tailbone, V shape",s:"3 × 20 sec"},{n:"Mountain Climbers — Fast",no:"Sprint tempo, tight core",s:"3 × 40 sec"},{n:"Russian Twists + Legs Raised",no:"Both feet off ground throughout",s:"3 × 20 each"},{n:"Hollow Body Rocks",no:"Rock forward and back",s:"3 × 15 rocks"}]},
+         {t:"HIIT Circuit",ic:"🏃",cl:"i-cardio",ex:[{n:"High Knees 40 sec / Rest 15 sec",no:"3 rounds — maximum effort",s:"3 rounds"},{n:"Skater Jumps",no:"Wide lateral jumps, touch floor",s:"3 × 30 sec"},{n:"Speed Squats",no:"Fast, barely straighten between reps",s:"3 × 20 sec"},{n:"Plank + Jump Feet In/Out",no:"Jump feet wide + narrow in plank",s:"3 × 20 sec"}]}
+       ],
+       pelv:[{n:"Single-Leg Glute Bridge",no:"Unilateral pelvic stability",s:"3 × 12"}],
+       yp:["Sun Salutation B — 2 rounds","Warrior III (1 min each)","Twisted Chair (30 sec each)","Seated Forward Fold + Twist","Legs-Up-Wall (3 min)"]},
+      {d:"Thursday",c:"c-amber",f:"Chest + Posture + Arms Strength",tags:["Chest","Arms","Posture"],yoga:false,
+       wu:["Chest Opener — 45 sec","Arm circles — 40 sec","Pike push-up prep 5 reps","Spinal flow — 45 sec"],
+       secs:[
+         {t:"Chest + Push-up Mastery",ic:"🎯",cl:"i-str",ex:[{n:"Full Push-ups (max) + Modified",no:"Track full push-up count weekly",s:"4 × 12 total"},{n:"Wide Push-ups",no:"Hands wider, targets chest",s:"3 × 10"},{n:"Diamond Push-ups (Modified OK)",no:"Diamond hand shape",s:"3 × 8"},{n:"Band Pull-Apart (faster)",no:"Control, squeeze shoulder blades",s:"3 × 20"}]},
+         {t:"Arms Strength",ic:"💎",cl:"i-str",ex:[{n:"Tricep Push-up (narrow hands)",no:"Elbows brush sides going down",s:"3 × 12"},{n:"Bicep Curl 21s (bottles)",no:"7 low, 7 high, 7 full range",s:"3 × 21"},{n:"Overhead Press",no:"Full extension overhead",s:"3 × 15"},{n:"Plank to Push-up",no:"Down-up-down-up cycle",s:"3 × 8 each"}]}
+       ],
+       pelv:[{n:"Cat-Cow + Thread the Needle",no:"Spinal mobility + thoracic rotation",s:"60 sec"}],yp:[]},
+      {d:"Friday",c:"c-pink",f:"Hip Shape + Glute Sculpt",tags:["Hips","Sculpt","Yoga"],yoga:true,
+       wu:["Hip Circles — 30 each","Lateral step + knee lift","Single-Leg Balance 30 sec each","Deep Glute Stretch — 30 sec"],
+       secs:[
+         {t:"Hip Sculpting",ic:"🌸",cl:"i-str",ex:[{n:"Single-Leg Glute Bridge — Elevated",no:"Elevated = more range + shape",s:"4 × 15 each"},{n:"Fire Hydrant + Circle + Extension",no:"Circle then extend straight back",s:"3 × 15 each"},{n:"Standing Hip Abduction (pulsed)",no:"Lift, pulse 3×, return",s:"3 × 15 each"},{n:"Curtsy Lunge + Side Kick",no:"Deep curtsy + kick to side",s:"3 × 12 each"}]},
+         {t:"Balance & Symmetry",ic:"⚖️",cl:"i-core",ex:[{n:"Single-Leg RDL + Row (bottle)",no:"Hinge + row at bottom",s:"3 × 12 each"},{n:"Hip Thrust — Elevated (chair)",no:"Full extension, controlled squeeze",s:"3 × 15"},{n:"Lateral Band Walk — Lower Squat",no:"Stay lower throughout",s:"3 × 20 each"}]}
+       ],
+       pelv:[{n:"Butterfly Pose",no:"Hip + pelvic opening",s:"1 min"},{n:"Frog Stretch",no:"Deep pelvic floor stretch",s:"1 min"},{n:"Happy Baby Pose",no:"Hip flexor & pelvic tension release",s:"1 min"}],
+       yp:["Pigeon Pose Advanced (2 min each)","King Pigeon Prep (1 min each)","Lizard Pose (1 min each)","Frog Pose (1 min)","Supine Spinal Twist (2 min each)"]},
+      {d:"Saturday",c:"c-indigo",f:"Full Body Beast Mode",tags:["Full Body","Power","Stamina"],yoga:false,
+       wu:["Full dynamic flow — 60 sec","Jump Rope mimic — 45 sec","Arm + leg combo circles","Inchworm to push-up — 5 reps"],
+       secs:[
+         {t:"Full Body Power",ic:"⚡",cl:"i-str",ex:[{n:"Squat + Jump + Press (bottles)",no:"Squat, jump, land, press overhead",s:"4 × 12"},{n:"Full Push-up to T Rotation",no:"Full push-up then side plank",s:"4 × 8 each"},{n:"Jump Lunge + Overhead Reach",no:"Jump switch, reach up at top",s:"3 × 10 each"},{n:"Renegade Row + Push-up + Jacks",no:"Row×2, push-up, feet wide+close",s:"3 × 8 each"}]},
+         {t:"Power Finisher",ic:"🏁",cl:"i-cardio",ex:[{n:"Full Burpee + Jump",no:"Plank, push-up, jump squat",s:"3 × 10"},{n:"Plyometric Box Jump",no:"Onto low step, land softly",s:"3 × 10"},{n:"Sprint-in-Place 40 sec / Rest 15 sec",no:"Maximum effort",s:"4 rounds"},{n:"Plank Complex (forward+side+down-dog)",no:"10 sec each, cycle through",s:"3 cycles"}]}
+       ],
+       pelv:[{n:"Deep Squat Mobility Hold",no:"Full pelvic floor release",s:"60 sec"}],yp:[]}
+    ]}
 };
 
-const PERIOD_DAYS = [
-  {
-    dayNum:"1", label:"Day 1", focus:"Low Energy / Cramp Relief Day", time:"15–20 min",
-    tags:["Gentle","Yoga","Recovery"],
-    goal:"Relax body and reduce stiffness.",
-    exercises:[
-      {name:"Slow walking inside house or light marching", sets:"5 min", icon:"🚶", effort: "low"},
-      {name:"Shoulder Rolls (forward + backward)", sets:"10 reps", icon:"🔄", effort: "low"},
-      {name:"Neck Stretch", sets:"30 sec", icon:"🧘", effort: "low"},
-      {name:"Cat-Cow Stretch", sets:"8 reps", icon:"🐱", effort: "low"},
-      {name:"Child's Pose", sets:"1 min", icon:"🌿", effort: "low"},
-      {name:"Butterfly Stretch", sets:"1 min", icon:"🦋", effort: "low"},
-      {name:"Deep Breathing", sets:"3 min", icon:"🌬️", effort: "low"},
-    ]
-  },
-  {
-    dayNum:"2", label:"Day 2", focus:"Gentle Full Body", time:"20 min",
-    tags:["Gentle","Strength","Slow Pace"],
-    goal:"Keep pace slow.",
-    exercises:[
-      {name:"Warm-up: slow march", sets:"3 min", icon:"🚶", effort: "low"},
-      {name:"Wall Push-ups", sets:"2 × 8 reps", icon:"💪", effort: "high"},
-      {name:"Chair Squats", sets:"2 × 10 reps", icon:"🪑", effort: "high"},
-      {name:"Standing Side Leg Raise", sets:"2 × 10 each leg", icon:"🦵", effort: "high"},
-      {name:"Glute Bridge", sets:"2 × 10 reps", icon:"🌸", effort: "high"},
-      {name:"Light Stretching", sets:"5 min", icon:"🧘", effort: "low"},
-    ]
-  },
-  {
-    dayNum:"3", label:"Day 3", focus:"Yoga + Mobility Day", time:"20–25 min",
-    tags:["Yoga","Mobility","Recovery"],
-    goal:"Reduce bloating and body tightness.",
-    exercises:[
-      {name:"Cat-Cow", sets:"10 reps", icon:"🐱", effort: "low"},
-      {name:"Cobra Stretch", sets:"20 sec × 2", icon:"🐍", effort: "low"},
-      {name:"Child's Pose", sets:"1 min", icon:"🌿", effort: "low"},
-      {name:"Butterfly Pose", sets:"1 min", icon:"🦋", effort: "low"},
-      {name:"Seated Forward Stretch", sets:"30 sec", icon:"🧘", effort: "low"},
-      {name:"Hip Circles", sets:"10 each side", icon:"🔄", effort: "low"},
-      {name:"Deep Breathing / Meditation", sets:"5 min", icon:"🌬️", effort: "low"},
-    ]
-  },
-  {
-    dayNum:"4", label:"Day 4", focus:"Easy Strength Day", time:"20 min",
-    tags:["Strength","Gentle","No Heavy Intensity"],
-    goal:"No heavy intensity.",
-    exercises:[
-      {name:"Marching in Place", sets:"3 min", icon:"🚶", effort: "low"},
-      {name:"Wall Push-ups", sets:"2 × 10", icon:"💪", effort: "high"},
-      {name:"Sit-to-Stand from Chair", sets:"2 × 12", icon:"🪑", effort: "high"},
-      {name:"Standing Calf Raises", sets:"2 × 15", icon:"🦵", effort: "high"},
-      {name:"Standing Arm Circles", sets:"2 × 20 sec", icon:"🔄", effort: "low"},
-      {name:"Light Stretching", sets:"5 min", icon:"🧘", effort: "low"},
-    ]
-  },
-  {
-    dayNum:"5", label:"Day 5", focus:"Active Recovery", time:"15 min",
-    tags:["Recovery","Cardio","Gentle"],
-    goal:"Helps circulation and mood.",
-    exercises:[
-      {name:"Slow Walking", sets:"10 min", icon:"🚶", effort: "low"},
-      {name:"Gentle Stretching", sets:"5 min", icon:"🧘", effort: "low"},
-    ]
-  },
-  {
-    dayNum:"6", label:"Day 6", focus:"Light Full Body", time:"20 min",
-    tags:["Gentle","Strength","Full Body"],
-    goal:"Keep intensity light and controlled.",
-    exercises:[
-      {name:"Warm-up March", sets:"3 min", icon:"🚶", effort: "low"},
-      {name:"Chair Squats", sets:"2 × 10", icon:"🪑", effort: "high"},
-      {name:"Standing Knee Raises", sets:"2 × 12", icon:"🦵", effort: "high"},
-      {name:"Wall Push-ups", sets:"2 × 8", icon:"💪", effort: "high"},
-      {name:"Glute Bridge", sets:"2 × 12", icon:"🌸", effort: "high"},
-      {name:"Butterfly Stretch", sets:"1 min", icon:"🦋", effort: "low"},
-    ]
-  },
-  {
-    dayNum:"7", label:"Day 7", focus:"Relax & Recover", time:"15–20 min",
-    tags:["Yoga","Recovery","Rest"],
-    goal:"Full rest — let your body recover.",
-    exercises:[
-      {name:"Light Yoga Flow", sets:"5 min", icon:"🧘", effort: "low"},
-      {name:"Child's Pose", sets:"1–2 min", icon:"🌿", effort: "low"},
-      {name:"Deep Breathing", sets:"5 min", icon:"🌬️", effort: "low"},
-      {name:"Gentle Walking", sets:"5–10 min", icon:"🚶", effort: "low"},
-    ]
-  }
+const PD=[
+  {num:"1",l:"Day 1",f:"Low Energy / Cramp Relief Day",t:"15–20 min",tags:["Gentle","Yoga","Recovery"],g:"Relax body and reduce stiffness.",
+   ex:[{n:"Slow walking or light marching",s:"5 min",ic:"🚶",e:"lo"},{n:"Shoulder Rolls (forward + backward)",s:"10 reps",ic:"🔄",e:"lo"},{n:"Neck Stretch",s:"30 sec",ic:"🧘",e:"lo"},{n:"Cat-Cow Stretch",s:"8 reps",ic:"🐱",e:"lo"},{n:"Child's Pose",s:"1 min",ic:"🌿",e:"lo"},{n:"Butterfly Stretch",s:"1 min",ic:"🦋",e:"lo"},{n:"Deep Breathing",s:"3 min",ic:"🌬️",e:"lo"}]},
+  {num:"2",l:"Day 2",f:"Gentle Full Body",t:"20 min",tags:["Gentle","Strength","Slow Pace"],g:"Keep pace slow.",
+   ex:[{n:"Warm-up: slow march",s:"3 min",ic:"🚶",e:"lo"},{n:"Wall Push-ups",s:"2 × 8 reps",ic:"💪",e:"hi"},{n:"Chair Squats",s:"2 × 10 reps",ic:"🪑",e:"hi"},{n:"Standing Side Leg Raise",s:"2 × 10 each",ic:"🦵",e:"hi"},{n:"Glute Bridge",s:"2 × 10 reps",ic:"🌸",e:"hi"},{n:"Light Stretching",s:"5 min",ic:"🧘",e:"lo"}]},
+  {num:"3",l:"Day 3",f:"Yoga + Mobility Day",t:"20–25 min",tags:["Yoga","Mobility","Recovery"],g:"Reduce bloating and body tightness.",
+   ex:[{n:"Cat-Cow",s:"10 reps",ic:"🐱",e:"lo"},{n:"Cobra Stretch",s:"20 sec × 2",ic:"🐍",e:"lo"},{n:"Child's Pose",s:"1 min",ic:"🌿",e:"lo"},{n:"Butterfly Pose",s:"1 min",ic:"🦋",e:"lo"},{n:"Seated Forward Stretch",s:"30 sec",ic:"🧘",e:"lo"},{n:"Hip Circles",s:"10 each side",ic:"🔄",e:"lo"},{n:"Deep Breathing / Meditation",s:"5 min",ic:"🌬️",e:"lo"}]},
+  {num:"4",l:"Day 4",f:"Easy Strength Day",t:"20 min",tags:["Strength","Gentle","No Heavy Intensity"],g:"No heavy intensity.",
+   ex:[{n:"Marching in Place",s:"3 min",ic:"🚶",e:"lo"},{n:"Wall Push-ups",s:"2 × 10",ic:"💪",e:"hi"},{n:"Sit-to-Stand from Chair",s:"2 × 12",ic:"🪑",e:"hi"},{n:"Standing Calf Raises",s:"2 × 15",ic:"🦵",e:"hi"},{n:"Standing Arm Circles",s:"2 × 20 sec",ic:"🔄",e:"lo"},{n:"Light Stretching",s:"5 min",ic:"🧘",e:"lo"}]},
+  {num:"5",l:"Day 5",f:"Active Recovery",t:"15 min",tags:["Recovery","Cardio","Gentle"],g:"Helps circulation and mood.",
+   ex:[{n:"Slow Walking",s:"10 min",ic:"🚶",e:"lo"},{n:"Gentle Stretching",s:"5 min",ic:"🧘",e:"lo"}]},
+  {num:"6",l:"Day 6",f:"Light Full Body",t:"20 min",tags:["Gentle","Strength","Full Body"],g:"Light and controlled.",
+   ex:[{n:"Warm-up March",s:"3 min",ic:"🚶",e:"lo"},{n:"Chair Squats",s:"2 × 10",ic:"🪑",e:"hi"},{n:"Standing Knee Raises",s:"2 × 12",ic:"🦵",e:"hi"},{n:"Wall Push-ups",s:"2 × 8",ic:"💪",e:"hi"},{n:"Glute Bridge",s:"2 × 12",ic:"🌸",e:"hi"},{n:"Butterfly Stretch",s:"1 min",ic:"🦋",e:"lo"}]},
+  {num:"7",l:"Day 7",f:"Relax & Recover",t:"15–20 min",tags:["Yoga","Recovery","Rest"],g:"Full rest — let your body recover.",
+   ex:[{n:"Light Yoga Flow",s:"5 min",ic:"🧘",e:"lo"},{n:"Child's Pose",s:"1–2 min",ic:"🌿",e:"lo"},{n:"Deep Breathing",s:"5 min",ic:"🌬️",e:"lo"},{n:"Gentle Walking",s:"5–10 min",ic:"🚶",e:"lo"}]}
 ];
 
-function toggleMoonlight() {
-  const isMoonlight = document.body.classList.toggle('moonlight');
-  const btn = document.getElementById('themeToggleBtn');
-  btn.innerHTML = isMoonlight ? "☀️" : "🌙";
-  localStorage.setItem('fitflow_moonlight', isMoonlight ? 'true' : 'false');
+let nrg='moderate';
+
+function tc(t){
+  if(t==='Yoga'||t==='Mobility')return't-yoga';
+  if(t==='Recovery'||t==='Rest')return't-recovery';
+  if(t==='Gentle'||t==='No Heavy Intensity'||t==='Slow Pace')return't-gentle';
+  if(t==='Core')return't-core';
+  if(t.includes('Leg')||t.includes('Thigh'))return't-legs';
+  if(t==='Cardio'||t==='HIIT')return't-cardio';
+  return't-str';
 }
 
-if (localStorage.getItem('fitflow_moonlight') === 'true') {
-  document.body.classList.add('moonlight');
-  document.getElementById('themeToggleBtn').innerHTML = "☀️";
-}
-
-function selectEnergy(level) {
-  currentEnergy = level;
-  document.querySelectorAll('.tuner-btn').forEach(btn => btn.classList.remove('active'));
-  
-  const activeBtn = document.getElementById(`energy-${level}`);
-  if (activeBtn) activeBtn.classList.add('active');
-  
-  const notes = {
-    low: "🧘 Low Energy Mode: We highlighted relaxing yoga / deep breathing & collapsed heavy wall workouts.",
-    moderate: "🌸 Balanced Mode: Standard 7-day routine. Moderate stretching, core, and posture works.",
-    active: "⚡ Active Mode: All routines unlocked! Wall push-ups & light strength holds are fully responsive."
-  };
-  document.getElementById('energyNote').innerText = notes[level];
-  renderPeriodWeek(true);
-}
-
-function switchWeek(w, btn){
-  currentWeek = w;
+function sw(w,btn){
   document.querySelectorAll('.week-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  if(w === 'period'){
-    renderPeriodWeek();
-  } else {
-    renderWeek(w);
-  }
-  window.scrollTo({top: document.getElementById('mainContent').offsetTop - 100, behavior: 'smooth'});
+  const sh=document.getElementById('sheet');
+  sh.classList.remove('animate');void sh.offsetWidth;sh.classList.add('animate');
+  w==='p'?renderP():renderW(w);
 }
 
-function renderPeriodWeek(keepEnergy = false){
-  const cont = document.getElementById('mainContent');
-  
-  let html = `
-    <div class="period-intro-banner">
-      <h2>Period Days — <em>Gentle Movement Plan</em></h2>
-      <p>A 7-day low-intensity program designed specifically for your menstrual cycle. Listen to your body — move gently, breathe deeply, and prioritize recovery.</p>
-    </div>
-    
-    <div class="tuner-container">
-      <div class="tuner-title">🌸 Auto-Tuner: How are you feeling today?</div>
-      <div class="tuner-selector">
-        <button class="tuner-btn ${currentEnergy === 'low' ? 'active' : ''}" id="energy-low" onclick="selectEnergy('low')">🛌 Low Energy</button>
-        <button class="tuner-btn ${currentEnergy === 'moderate' ? 'active' : ''}" id="energy-moderate" onclick="selectEnergy('moderate')">🌸 Moderate</button>
-        <button class="tuner-btn ${currentEnergy === 'active' ? 'active' : ''}" id="energy-active" onclick="selectEnergy('active')">⚡ Active</button>
-      </div>
-      <div class="energy-info-note" id="energyNote">
-        ${
-          currentEnergy === 'low' 
-          ? "🧘 Low Energy Mode: We highlighted relaxing yoga / deep breathing & collapsed heavy wall workouts." 
-          : currentEnergy === 'active' 
-          ? "⚡ Active Mode: All routines unlocked! Wall push-ups & light strength holds are fully responsive." 
-          : "🌸 Balanced Mode: Standard 7-day routine. Moderate stretching, core, and posture works."
-        }
-      </div>
-    </div>
-  `;
+function renderW(w){
+  const D=W[w];let h=`<div class="wbanner"><div class="badge">${D.label}</div><p>${D.info}</p></div>`;
+  const L=['M','T','W','T','F','S'];
+  D.days.forEach((day,i)=>{
+    const dtags=day.tags.map(t=>`<span class="mtag ${tc(t)}">${t}</span>`).join('');
+    const wuH=day.wu.map(x=>`<div class="exrow"><div class="eicon i-warm">🌅</div><div class="edet"><div class="en">${x.split('—')[0].trim()}</div><div class="enote">${(x.split('—')[1]||'').trim()}</div></div></div>`).join('');
+    const dc=day.secs[0]?.cl.includes('str')?'#8b5cf6':day.secs[0]?.cl.includes('core')?'#f43f5e':'#f59e0b';
+    const secH=day.secs.map(s=>{
+      const sc=s.cl.includes('str')?'#8b5cf6':s.cl.includes('core')?'#f43f5e':s.cl.includes('cardio')?'#ec4899':'#f59e0b';
+      const rows=s.ex.map(x=>`<div class="exrow"><div class="eicon ${s.cl}">${s.ic}</div><div class="edet"><div class="en">${x.n}</div><div class="enote">${x.no}</div></div><div class="es">${x.s}</div></div>`).join('');
+      return`<div class="exsec"><div class="sectitle"><span class="sdot" style="background:${sc}"></span>${s.t}</div>${rows}</div>`;
+    }).join('');
+    const yH=day.yoga?`<div class="yogasec"><div class="yogatitle">🧘 10–15 Min Yoga</div><div class="yogaposes">${day.yp.map(p=>`<span class="ypose">${p}</span>`).join('')}</div></div>`:'';
+    const pH=day.pelv?.length?`<div class="pelvsec"><div class="pelvtitle">🌸 Pelvic Health Add-On</div>${day.pelv.map(x=>`<div class="pelvrow"><div class="eicon i-period">🌺</div><div class="edet"><div class="en">${x.n}</div><div class="enote">${x.no}</div></div><div class="ps">${x.s}</div></div>`).join('')}</div>`:'';
+    h+=`<div class="dcard" id="dc${i}"><div class="dhead" onclick="tog('dc${i}')"><div class="dnum ${day.c}">${L[i]}</div><div class="dinfo"><div class="dlabel">${day.d}</div><div class="dtitle">${day.f}</div><div class="dmeta">${dtags}${day.yoga?'<span class="mtag t-yoga">🧘 Yoga</span>':''}<span class="mtag t-period">🌸 Pelvic</span></div></div><div class="chev">⌄</div></div><div class="dbody"><div class="dbinner"><div class="exsec"><div class="sectitle"><span class="sdot" style="background:#f59e0b"></span>Warm-Up (5 min)</div>${wuH}</div>${secH}${yH}${pH}</div></div></div>`;
+  });
+  h+=`<div class="restcard"><div style="font-size:36px;margin-bottom:6px">🌿</div><h3>Sunday — Rest & Recovery</h3><p>Light 20–30 min walk · Hydrate well · Sleep 7–8 hrs</p></div>
+  <div class="progsec"><div class="progtitle">Expected Results</div><div class="proggrid">
+    <div class="progcard"><div class="pwk" style="color:var(--rose)">4–6 Weeks</div><ul><li>Stronger body</li><li>Better posture</li><li>Flatter belly</li><li>Improved hip symmetry</li><li>Better stamina</li></ul></div>
+    <div class="progcard"><div class="pwk" style="color:var(--violet)">8–12 Weeks</div><ul><li>Lean toned body</li><li>Flat abdomen</li><li>Shaped hips</li><li>Full push-ups achieved</li><li>Real endurance</li></ul></div>
+    <div class="progcard"><div class="pwk" style="color:var(--teal)">Nutrition</div><ul><li>High protein: eggs, paneer, dal</li><li>Reduce sugar & maida</li><li>Eat within 1hr post-workout</li><li>3–4 litres water daily</li><li>Don't skip meals</li></ul></div>
+    <div class="progcard"><div class="pwk" style="color:#f472b6">Pelvic Health</div><ul><li>Reduced period cramps</li><li>Better hip flexibility</li><li>Stronger pelvic floor</li><li>Less bloating</li><li>Improved blood flow</li></ul></div>
+  </div></div>`;
+  document.getElementById('mc').innerHTML=h;
+  // Kept completely closed by default - no auto-opening as per user requirement.
+}
 
-  PERIOD_DAYS.forEach((day, i) => {
-    let adaptedExercises = [];
-    let highlightStretch = false;
+function renderP(keep=false){
+  let h=`<div class="pintro"><h2>Period Days — <em>Gentle Movement</em></h2><p>A 7-day low-intensity program for your menstrual cycle. Listen to your body, move gently, breathe deeply.</p></div>
+  <div class="tuner"><div class="tunertitle">🌸 How are you feeling today?</div><div class="tunerpills">
+    <button class="tbtn ${nrg==='lo'?'active':''}" id="eb-lo" onclick="setNrg('lo')">🛌 Low</button>
+    <button class="tbtn ${nrg==='mo'?'active':''}" id="eb-mo" onclick="setNrg('mo')">🌸 Moderate</button>
+    <button class="tbtn ${nrg==='hi'?'active':''}" id="eb-hi" onclick="setNrg('hi')">⚡ Active</button>
+  </div><div class="enote" id="en">${nrg==='lo'?'🧘 Low: Only gentle stretching shown.':nrg==='hi'?'⚡ Active: All exercises with boosted sets.':'🌸 Moderate: Standard 7-day routine.'}</div></div>`;
 
-    day.exercises.forEach(ex => {
-      if (currentEnergy === 'low') {
-        if (ex.effort === 'high') {
-          // Exclude high effort items
-        } else {
-          adaptedExercises.push({
-            ...ex,
-            sets: ex.name.includes("Breathing") || ex.name.includes("Pose") || ex.name.includes("Stretch") ? "Deep Hold — " + ex.sets : ex.sets
-          });
-          highlightStretch = true;
-        }
-      } else if (currentEnergy === 'active') {
-        adaptedExercises.push({
-          ...ex,
-          sets: ex.effort === 'high' ? ex.sets.replace("2 ×", "3 ×") + " (⚡ active bonus)" : ex.sets
-        });
-      } else {
-        adaptedExercises.push(ex);
-      }
+  PD.forEach((day,i)=>{
+    let adapted=[];
+    day.ex.forEach(x=>{
+      if(nrg==='lo'){if(x.e==='lo')adapted.push(x);}
+      else if(nrg==='hi'){adapted.push({...x,s:x.e==='hi'?x.s.replace('2 ×','3 ×'):x.s});}
+      else adapted.push(x);
     });
-
-    if (adaptedExercises.length === 0) {
-      adaptedExercises.push({name: "Savasana Rest / Meditation", sets: "5 mins", icon: "🧘", effort: "low"});
-    }
-
-    const tags = day.tags.map(t => {
-      const cls = t==='Yoga'||t==='Mobility'?'tag-yoga':t==='Recovery'||t==='Rest'?'tag-recovery':t==='Gentle'||t==='No Heavy Intensity'||t==='Slow Pace'?'tag-gentle':t==='Strength'?'tag-strength':'tag-cardio';
-      return `<span class="meta-tag ${cls}">${t}</span>`;
-    }).join('');
-
-    const exRows = adaptedExercises.map(ex => `
-      <div class="period-ex-row">
-        <div class="period-ex-icon">${ex.icon}</div>
-        <div class="ex-details">
-          <div class="ex-name">${ex.name}</div>
-        </div>
-        <div class="period-time-badge">${ex.sets}</div>
-      </div>
-    `).join('');
-
-    const cardHighlightClass = highlightStretch && currentEnergy === 'low' ? 'highlighted-stretch' : '';
-
-    html += `
-      <div class="period-day-card ${cardHighlightClass}" id="pcard-${i}">
-        <div class="day-header" onclick="togglePeriodCard(${i})">
-          <div class="period-day-number">D${day.dayNum}</div>
-          <div class="day-info">
-            <div class="day-name">${day.label} · ${day.time}</div>
-            <div class="day-title">${day.focus}</div>
-            <div class="day-meta">${tags}</div>
-          </div>
-          <div class="chevron">⌄</div>
-        </div>
-        <div class="day-body">
-          <div class="day-body-inner">
-            <div class="ex-section">
-              <div class="ex-section-title"><span style="background:#f472b6"></span>Exercises</div>
-              ${exRows}
-            </div>
-            <div class="period-goal-note">💡 Goal: ${day.goal}</div>
-          </div>
-        </div>
-      </div>
-    `;
+    if(!adapted.length)adapted=[{n:"Savasana / Meditation",s:"5 min",ic:"🧘",e:"lo"}];
+    const tags=day.tags.map(t=>`<span class="mtag ${tc(t)}">${t}</span>`).join('');
+    const rows=adapted.map(x=>`<div class="pexrow"><div class="peicon i-period">${x.ic}</div><div class="edet"><div class="en">${x.n}</div></div><div class="ptbadge">${x.s}</div></div>`).join('');
+    h+=`<div class="pdcard" id="pd${i}"><div class="dhead" onclick="tog('pd${i}')"><div class="pdnum">D${day.num}</div><div class="dinfo"><div class="dlabel">${day.l} · ${day.t}</div><div class="dtitle">${day.f}</div><div class="dmeta">${tags}</div></div><div class="chev">⌄</div></div><div class="dbody"><div class="dbinner"><div class="exsec"><div class="sectitle"><span class="sdot" style="background:#f472b6"></span>Exercises</div>${rows}</div><div class="pgoal">💡 Goal: ${day.g}</div></div></div></div>`;
   });
-
-  html += `
-    <div class="period-tips">
-      <h3>🌸 Important Tips During Periods</h3>
-      <ul>
-        <li>If cramps are strong → do stretching or walking only.</li>
-        <li>Avoid very intense HIIT, heavy abs, or lots of jumping if energy is low.</li>
-        <li>Stay hydrated and eat enough iron/protein-rich food (dal, eggs, paneer, leafy greens).</li>
-        <li>If dizziness or severe pain happens → stop exercise immediately.</li>
-        <li>These workouts support circulation, reduce bloating, and improve mood — not for weight loss.</li>
-      </ul>
-    </div>
-  `;
-
-  cont.innerHTML = html;
+  h+=`<div class="ptips"><h3>🌸 Important Tips</h3><ul><li>Strong cramps → do stretching or walking only.</li><li>Avoid intense HIIT, heavy abs, or lots of jumping when energy is low.</li><li>Stay hydrated; eat iron/protein-rich foods (dal, eggs, paneer, greens).</li><li>Dizziness or severe pain → stop immediately.</li><li>These workouts support circulation and mood, not weight loss.</li></ul></div>`;
+  document.getElementById('mc').innerHTML=h;
+  // Kept completely closed by default - no auto-opening as per user requirement.
 }
 
-function renderWeek(w){
-  const data = WEEKS[w];
-  const cont = document.getElementById('mainContent');
-  
-  let html = `
-    <div class="week-banner">
-      <div class="badge">${data.label}</div>
-      <p>${data.info}</p>
-    </div>
-  `;
-
-  data.days.forEach((day, i) => {
-    const tags = day.tags.map(t => {
-      const cls = t==='Yoga'?'tag-yoga':t==='Core'?'tag-core':t.includes('Leg')||t.includes('Thigh')?'tag-legs':t==='Cardio'||t==='HIIT'?'tag-cardio':'tag-strength';
-      return `<span class="meta-tag ${cls}">${t}</span>`;
-    }).join('');
-
-    const warmupRows = day.warmup.map(ex => `
-      <div class="ex-row">
-        <div class="ex-icon icon-warmup">🌅</div>
-        <div class="ex-details">
-          <div class="ex-name">${ex.split('—')[0].trim()}</div>
-          <div class="ex-note">${ex.split('—')[1]?.trim() || ''}</div>
-        </div>
-      </div>
-    `).join('');
-
-    const sectionsHtml = day.sections.map(sec => {
-      const rows = sec.exes.map(ex => `
-        <div class="ex-row">
-          <div class="ex-icon ${sec.iconClass}">${sec.icon}</div>
-          <div class="ex-details">
-            <div class="ex-name">${ex.name}</div>
-            <div class="ex-note">${ex.note}</div>
-          </div>
-          <div class="ex-sets">${ex.sets}</div>
-        </div>
-      `).join('');
-      return `
-        <div class="ex-section">
-          <div class="ex-section-title"><span style="background:${sec.iconClass.includes('strength')?'#8b5cf6':sec.iconClass.includes('core')?'#f43f5e':sec.iconClass.includes('cardio')?'#ec4899':'#f59e0b'}"></span>${sec.title}</div>
-          ${rows}
-        </div>
-      `;
-    }).join('');
-
-    const yogaHtml = day.yoga ? `
-      <div class="yoga-section">
-        <div class="yoga-title">🧘 10–15 Min Yoga</div>
-        <div class="yoga-poses">${day.yogaPoses.map(p=>`<span class="yoga-pose">${p}</span>`).join('')}</div>
-      </div>
-    ` : '';
-
-    const pelvicHtml = day.pelvicExes && day.pelvicExes.length ? `
-      <div class="pelvic-section">
-        <div class="pelvic-section-title">🌸 Pelvic Health Add-On</div>
-        ${day.pelvicExes.map(ex => `
-          <div class="pelvic-ex-row">
-            <div class="ex-icon icon-period">🌺</div>
-            <div class="ex-details">
-              <div class="ex-name">${ex.name}</div>
-              <div class="ex-note">${ex.note}</div>
-            </div>
-            <div class="pelvic-sets">${ex.sets}</div>
-          </div>
-        `).join('')}
-      </div>
-    ` : '';
-
-    html += `
-      <div class="day-card" id="card-${i}">
-        <div class="day-header" onclick="toggleCard(${i})">
-          <div class="day-number ${day.theme}">${['M','T','W','T','F','S'][i]}</div>
-          <div class="day-info">
-            <div class="day-name">${day.day}</div>
-            <div class="day-title">${day.focus}</div>
-            <div class="day-meta">${tags}${day.yoga?'<span class="meta-tag tag-yoga">🧘 Yoga</span>':''}<span class="meta-tag tag-period">🌸 Pelvic</span></div>
-          </div>
-          <div class="chevron">⌄</div>
-        </div>
-        <div class="day-body">
-          <div class="day-body-inner">
-            <div class="ex-section">
-              <div class="ex-section-title"><span style="background:#f59e0b"></span>Warm-Up (5 min)</div>
-              ${warmupRows}
-            </div>
-            ${sectionsHtml}
-            ${yogaHtml}
-            ${pelvicHtml}
-          </div>
-        </div>
-      </div>
-    `;
-  });
-
-  html += `
-    <div class="rest-card">
-      <div class="rest-emoji">🌿</div>
-      <h3>Sunday — Rest & Recovery</h3>
-      <p style="font-size:13px; margin-top:6px;">Light 20–30 min walk · Hydrate well · Foam roll if available · Sleep 7–8 hrs</p>
-    </div>
-  `;
-
-  html += `
-    <div class="progress-section">
-      <div class="progress-title">Expected Results</div>
-      <div class="progress-grid">
-        <div class="progress-card">
-          <div class="progress-weeks" style="color:var(--rose)">4–6 Weeks</div>
-          <ul>
-            <li>Stronger body</li>
-            <li>Better posture</li>
-            <li>Slightly flatter belly</li>
-            <li>Improved hip symmetry</li>
-            <li>Better push-ups & stamina</li>
-          </ul>
-        </div>
-        <div class="progress-card">
-          <div class="progress-weeks" style="color:var(--violet)">8–12 Weeks</div>
-          <ul>
-            <li>Lean toned body</li>
-            <li>Noticeable flat abdomen</li>
-            <li>Shaped, symmetric hips</li>
-            <li>Full push-ups achieved</li>
-            <li>Real strength & endurance</li>
-          </ul>
-        </div>
-        <div class="progress-card">
-          <div class="progress-weeks" style="color:var(--teal)">Nutrition Tips</div>
-          <ul>
-            <li>High protein: eggs, paneer, dal</li>
-            <li>Reduce sugar & maida</li>
-            <li>Eat within 1 hr after workout</li>
-            <li>3–4 litres water daily</li>
-            <li>Don't skip meals</li>
-          </ul>
-        </div>
-        <div class="progress-card">
-          <div class="progress-weeks" style="color:#f472b6">Pelvic Health</div>
-          <ul>
-            <li>Reduced period cramps</li>
-            <li>Better hip flexibility</li>
-            <li>Stronger pelvic floor</li>
-            <li>Less bloating</li>
-            <li>Improved blood flow</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  `;
-
-  cont.innerHTML = html;
+function setNrg(v){
+  nrg=v;
+  ['lo','mo','hi'].forEach(k=>{const b=document.getElementById('eb-'+k);if(b)b.classList.toggle('active',k===v);});
+  const notes={lo:'🧘 Low: Only gentle stretching shown.',mo:'🌸 Moderate: Standard 7-day routine.',hi:'⚡ Active: All exercises with boosted sets.'};
+  const el=document.getElementById('en');if(el)el.textContent=notes[v];
+  renderP(true);
 }
 
-/* COOPERATIVE ACCURATE MANUAL STOPWATCH */
-let stopwatchStartTime = 0;
-let stopwatchElapsedTime = 0;
-let stopwatchInterval = null;
-let stopwatchRunning = false;
+function tog(id){document.getElementById(id).classList.toggle('open');}
 
-function toggleTimer() {
-  if (stopwatchRunning) {
-    stopTimer();
-  } else {
-    startTimer();
-  }
-}
-
-function startTimer() {
-  if (!stopwatchRunning) {
-    stopwatchRunning = true;
-    stopwatchStartTime = Date.now() - stopwatchElapsedTime;
-    stopwatchInterval = setInterval(updateStopwatch, 10);
-    
-    // Morph Play SVG into Pause SVG
-    document.getElementById('playIcon').innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
-    document.getElementById('playBtnContainer').classList.add('running');
-    
-    // Update status indicators mirroring image_2222f8.png
-    document.getElementById('statusDot').classList.add('active');
-    document.getElementById('statusLabel').innerText = "Clocked On";
-  }
-}
-
-function stopTimer() {
-  if (stopwatchRunning) {
-    stopwatchRunning = false;
-    clearInterval(stopwatchInterval);
-    stopwatchInterval = null;
-    
-    // Morph Pause SVG back to Play SVG
-    document.getElementById('playIcon').innerHTML = `<path d="M8 5v14l11-7z"/>`;
-    document.getElementById('playBtnContainer').classList.remove('running');
-    
-    // Update status indicators mirroring image_2222f8.png
-    document.getElementById('statusDot').classList.remove('active');
-    document.getElementById('statusLabel').innerText = "Clocked Off";
-  }
-}
-
-function resetTimer() {
-  stopTimer();
-  stopwatchElapsedTime = 0;
-  renderStopwatchTime(0);
-}
-
-function updateStopwatch() {
-  stopwatchElapsedTime = Date.now() - stopwatchStartTime;
-  renderStopwatchTime(stopwatchElapsedTime);
-}
-
-function renderStopwatchTime(time) {
-  let centiseconds = Math.floor((time % 1000) / 10);
-  let seconds = Math.floor((time / 1000) % 60);
-  let minutes = Math.floor((time / 60000) % 60);
-
-  let formattedCentiseconds = centiseconds.toString().padStart(2, '0');
-  let formattedSeconds = seconds.toString().padStart(2, '0');
-  let formattedMinutes = minutes.toString().padStart(2, '0');
-
-  // Unified visual format
-  document.getElementById('stopwatchTime').innerText = `${formattedMinutes}:${formattedSeconds}.${formattedCentiseconds}`;
-}
-
-// Initial Bootstrapping
-renderWeek(1);
+renderW(1);
 </script>
-
-<footer>
-  <div style="max-width: 600px; margin: 0 auto 16px; opacity: 0.85; line-height: 1.6;">
-    <p style="font-size: 14px; font-weight: 500; margin-bottom: 6px;">FitFlow — Shape. Strengthen. Transform.</p>
-    <p style="font-size: 13px; color: #9ca3af;">A structured 6-day home workout designed for a lean, toned body — flat belly, shaped hips, and real strength. No gym required.</p>
-  </div>
-  <p style="opacity: 0.5; font-size: 11px;">FitFlow — 6-Day Home Workout Plan · Stay consistent. Stay strong. ✦</p>
-</footer>
-
 </body>
 </html>
