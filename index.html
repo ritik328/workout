@@ -40,6 +40,7 @@
   --rest-border: rgba(139,92,246,0.18);
   --progress-card: rgba(255,255,255,0.5);
   --handle: rgba(139,92,246,0.18);
+  --glass-shadow: rgba(139,92,246,0.12);
 }
 body.moonlight {
   --bg: linear-gradient(160deg, #090514 0%, #110925 40%, #0d1e21 70%, #170719 100%);
@@ -66,6 +67,7 @@ body.moonlight {
   --rest-border: rgba(139,92,246,0.12);
   --progress-card: rgba(255,255,255,0.03);
   --handle: rgba(255,255,255,0.12);
+  --glass-shadow: rgba(0, 0, 0, 0.4);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;color:var(--text-primary);overflow-x:hidden;transition:background 0.5s;}
@@ -74,11 +76,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
 .page{position:relative;min-height:100vh;}
 
 /* ── NAV ── */
-/* Fixed navbar so the compact stopwatch is always anchored */
 nav{
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 24px;
+  padding: 16px 24px;
   background: rgba(255,255,255,0.1);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255,255,255,0.2);
@@ -100,51 +101,70 @@ body.moonlight nav {
 }
 .theme-btn:hover{transform:scale(1.1);}
 
-/* ── COMPACT FLOATING STOPWATCH IN NAV ── */
-.compact-sw {
+/* ── FIXED FLOATING STOPWATCH PILL (BOTTOM CENTER) ── */
+.bottom-sw-pill {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  z-index: 1100;
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(139, 92, 246, 0.1);
-  border: 1px solid rgba(139, 92, 246, 0.18);
-  padding: 6px 14px;
-  border-radius: 30px;
+  gap: 12px;
+  background: var(--sheet-bg);
+  border: 1px solid var(--sheet-border);
+  padding: 10px 20px;
+  border-radius: 40px;
+  box-shadow: 0 10px 30px var(--glass-shadow);
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-10px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
-body.moonlight .compact-sw {
-  background: rgba(255, 255, 255, 0.05);
+body.moonlight .bottom-sw-pill {
+  background: rgba(18, 11, 37, 0.95);
   border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
-body.scrolled .compact-sw {
+body.scrolled .bottom-sw-pill {
+  transform: translateX(-50%) translateY(0);
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
 }
-.c-time {
+.b-pill-icon {
+  font-size: 16px;
+}
+.b-pill-time {
   font-family: monospace;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--timer-text);
+  letter-spacing: -0.5px;
 }
-.c-btn {
-  background: transparent;
+.b-pill-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   border: none;
+  background: rgba(139, 92, 246, 0.10);
   color: var(--rose);
-  font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  transition: background 0.2s;
+  font-size: 12px;
+  transition: background 0.2s, transform 0.1s;
 }
-.c-btn:hover {
-  background: rgba(244, 63, 94, 0.1);
+body.moonlight .b-pill-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+.b-pill-btn:hover {
+  background: rgba(244, 63, 94, 0.2);
+}
+.b-pill-btn:active {
+  transform: scale(0.9);
 }
 
 /* ── HERO ── */
@@ -153,7 +173,7 @@ body.scrolled .compact-sw {
   min-height:450px;
   display:flex;flex-direction:column;align-items:center;
   overflow:visible;z-index:1;
-  padding-top: 80px; /* Offset the fixed nav */
+  padding-top: 80px; /* Offset fixed nav */
   padding-bottom:60px;
 }
 
@@ -252,7 +272,7 @@ body.scrolled .compact-sw {
 @keyframes dotBeat{0%,100%{box-shadow:0 0 4px var(--teal);}50%{box-shadow:0 0 16px var(--teal),0 0 28px rgba(20,184,166,0.28);}}
 .s-label{font-size:13px;font-weight:500;color:var(--text-secondary);opacity:0.85;}
 
-/* ── WEEK NAV — floats above sheet ── */
+/* ── WEEK NAV ── */
 .nav-float{position:relative;z-index:20;display:flex;justify-content:center;margin-bottom:-26px;}
 .week-nav{
   display:flex;gap:4px;
@@ -277,7 +297,7 @@ body.scrolled .compact-sw {
 .week-btn.pd-btn{color:var(--period-pink);}
 .week-btn.pd-btn.active{background:linear-gradient(135deg,#f472b6,#fb7185);box-shadow:0 4px 16px rgba(244,114,182,0.38);}
 
-/* ── CONTENT SHEET ── seamless overlap, no hard line */
+/* ── CONTENT SHEET ── */
 .sheet {
   position:relative;z-index:10;
   background:var(--sheet-bg);
@@ -303,9 +323,6 @@ body.scrolled .compact-sw {
 @keyframes flashOut{0%{opacity:1;}100%{opacity:0;}}
 
 .content{max-width:860px;margin:0 auto;}
-
-/* ── WEEK BANNER (DEPRECATED - REMOVED PER REQ TO SOLVE SCREENSHOT CLIPPING) ── */
-.wbanner{ display:none; }
 
 /* ── DAY CARDS ── */
 .dcard,.pdcard{
@@ -504,14 +521,6 @@ footer{text-align:center;padding:20px;font-size:11px;color:var(--text-muted);bor
 
   <nav>
     <div class="logo">FitFlow <span>✦</span></div>
-    
-    <!-- COMPACT INLINE STOPWATCH IN NAV BAR -->
-    <div class="compact-sw" id="compactSw">
-      <span class="c-time" id="cTime">00:00.00</span>
-      <button class="c-btn" onclick="toggle()" id="cPlayBtn" title="Play / Pause">▶</button>
-      <button class="c-btn" onclick="resetSW()" title="Reset">🔁</button>
-    </div>
-    
     <button class="theme-btn" id="themeBtn" onclick="toggleMoon()">🌙</button>
   </nav>
 
@@ -554,6 +563,14 @@ footer{text-align:center;padding:20px;font-size:11px;color:var(--text-muted);bor
   <div class="content" id="mc"></div>
 </section>
 
+<!-- FLOATING PILL STOPWATCH (BOTTOM CENTER) — TRIGGERS ON SCROLL -->
+<div class="bottom-sw-pill" id="bottomSwPill">
+  <span class="b-pill-icon">⏱️</span>
+  <span class="b-pill-time" id="bPillTime">00:00.00</span>
+  <button class="b-pill-btn" onclick="toggle()" id="bPillPlayBtn" title="Play / Pause">▶</button>
+  <button class="b-pill-btn" onclick="resetSW()" title="Reset">🔁</button>
+</div>
+
 </div>
 <footer>FitFlow — 6-Day Home Workout Plan · Stay consistent. Stay strong. ✦</footer>
 
@@ -567,7 +584,7 @@ function play(){
   if(run)return;run=true;
   t0=Date.now()-el;iv=setInterval(tick,10);
   
-  // Update Large Button UI
+  // Update main large play button
   document.getElementById('pIcon').innerHTML='<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
   const pb=document.getElementById('playBtn');
   pb.classList.add('glow','bounce');
@@ -579,14 +596,14 @@ function play(){
   document.getElementById('swTime').classList.add('lit');
   document.getElementById('swSub').textContent=laps>0?`Lap ${laps}`:'Running…';
   
-  // Update Compact Nav Button UI
-  document.getElementById('cPlayBtn').textContent = '⏸';
+  // Update compact bottom pill play button
+  document.getElementById('bPillPlayBtn').textContent = '⏸';
 }
 
 function pause(){
   if(!run)return;run=false;clearInterval(iv);
   
-  // Update Large Button UI
+  // Update main large play button
   document.getElementById('pIcon').innerHTML='<path d="M8 5v14l11-7z"/>';
   const pb=document.getElementById('playBtn');
   pb.classList.remove('glow');pb.classList.add('bounce');
@@ -598,8 +615,8 @@ function pause(){
   document.getElementById('swTime').classList.remove('lit');
   document.getElementById('swSub').textContent='Paused — tap to resume';
   
-  // Update Compact Nav Button UI
-  document.getElementById('cPlayBtn').textContent = '▶';
+  // Update compact bottom pill play button
+  document.getElementById('bPillPlayBtn').textContent = '▶';
 }
 
 function resetSW(){
@@ -630,13 +647,14 @@ function renderT(ms){
   const cs=Math.floor((ms%1000)/10),s=Math.floor((ms/1000)%60),m=Math.floor(ms/60000)%60;
   const timeStr = `${p2(m)}:${p2(s)}.${p2(cs)}`;
   document.getElementById('swTime').textContent=timeStr;
-  document.getElementById('cTime').textContent=timeStr;
+  document.getElementById('bPillTime').textContent=timeStr;
 }
 function fmt(ms){const cs=Math.floor((ms%1000)/10),s=Math.floor((ms/1000)%60),m=Math.floor(ms/60000)%60;return`${p2(m)}:${p2(s)}.${p2(cs)}`;}
 function p2(n){return n.toString().padStart(2,'0');}
 
 /* ── INTERACTIVE MORPHING DETECTOR (SCROLL HANDLER) ── */
 window.addEventListener('scroll', () => {
+  // Triggers the bottom-center fixed pill to appear when scrolled past 220px
   if (window.scrollY > 220) {
     document.body.classList.add('scrolled');
   } else {
@@ -683,7 +701,7 @@ const W={
        wu:["Chest Opener Stretch — 30 sec","Arm Swings — 30 sec","Wrist Rotations — 20 sec","Spinal Rotation — 30 sec"],
        secs:[
          {t:"Chest & Posture",ic:"🎯",cl:"i-str",ex:[{n:"Incline Push-ups (wall/chair)",no:"ONLY chest exercise this week",s:"3 × 10"},{n:"Doorway Chest Stretch",no:"Hold 20 sec each arm",s:"2 × 20 sec"},{n:"Band Pull-Apart (or towel)",no:"Arms straight, pull apart",s:"3 × 15"},{n:"Prone Y-T-W Raises",no:"Face down, lift arms Y → T → W",s:"2 × 8 each"}]},
-         {t:"Arms Toning",ic:"💎",cl:"i-str",ex:[{n:"Tricep Kickbacks (bottles)",no:"Elbow pinned, extend fully",s:"3 × 12"},{n:"Bicep Curls (bottles)",no:"Control the lowering phase",s:"3 × 12"},{n:"Overhead Tricep Extension",no:"Keep elbows close to head",s:"3 × 10"},{n:"Plank Shoulder Taps",no:"Hips square, no rocking",s:"3 × 8 each"}]}
+         {t:"Arms Toning",ic:"💎",cl:"i-str",ex:[{n:"Tricep Kickbacks (bottles)",no:"Elbow pinned, extend fully",s:"3 × 12"},{n:"Bicep Curls (bottles)",no:"Control the lowering phase",s:"3 × 12"},{n:"Overhead Tricep Extension",no:"Elbows close to head",s:"3 × 10"},{n:"Plank Shoulder Taps",no:"Hips square, no rocking",s:"3 × 8 each"}]}
        ],
        pelv:[{n:"Cat-Cow Stretch",no:"Reduces lower back stiffness",s:"45 sec"}],yp:[]},
       {d:"Friday",c:"c-pink",f:"Hip Shape + Glute Stability",tags:["Hips","Stability","Yoga"],yoga:true,
@@ -697,7 +715,7 @@ const W={
       {d:"Saturday",c:"c-indigo",f:"Full Body Strength + Stamina",tags:["Full Body","Stamina","Strength"],yoga:false,
        wu:["Full body shake-out — 30 sec","High Knees — 30 sec","Hip + Shoulder Circles","Jump Rope mimic — 45 sec"],
        secs:[
-         {t:"Full Body Power Circuit",ic:"⚡",cl:"i-str",ex:[{n:"Squat to Overhead Press (bottles)",no:"Squat down, press as you stand",s:"3 × 12"},{n:"Push-up to T Rotation",no:"Plank, push up, rotate to side plank",s:"3 × 6 each"},{n:"Reverse Lunge + Knee Drive",no:"Lunge back, drive knee forward",s:"3 × 10 each"},{n:"Renegade Rows (bottles)",no:"Row one arm at a time in plank",s:"3 × 8 each"}]},
+         {t:"Full Body Power Circuit",ic:"⚡",cl:"i-str",ex:[{n:"Squat to Overhead Press (bottles)",no:"Squat down, press as you stand",s:"3 × 12"},{n:"Push-up to T Rotation",no:"Plank, push up, rotate to side plank",s:"3 × 6 each"},{n:"Reverse Lunge + Knee Drive",no:"Lunge back, drive knee forward",s:"3 × 10 each"},{n:"Renegade Rows (bottles)",no:"In plank, row one arm at a time in plank",s:"3 × 8 each"}]},
          {t:"Stamina Finisher",ic:"🏁",cl:"i-cardio",ex:[{n:"Burpee Modified (no jump)",no:"Squat, plank, return, stand",s:"2 × 8"},{n:"Jump Squats",no:"Land softly, knees track toes",s:"3 × 10"},{n:"High Knees Sprint",no:"Maximum effort",s:"3 × 20 sec"},{n:"Plank + Knee to Chest",no:"Alternating, controlled",s:"3 × 10 each"}]}
        ],
        pelv:[{n:"Deep Squat Hold (Assisted)",no:"Pelvic floor mobility",s:"30 sec × 2"}],yp:[]}
@@ -734,7 +752,7 @@ const W={
          {t:"Arms Toning +2 Reps",ic:"💎",cl:"i-str",ex:[{n:"Tricep Kickbacks (heavier bottle)",no:"Slow 3 sec lowering",s:"3 × 14"},{n:"Hammer Curls (bottles)",no:"Alternate, squeeze at top",s:"3 × 14"},{n:"Skull Crushers (lying, bottles)",no:"Keep elbows still",s:"3 × 12"},{n:"Plank Taps + Reach Forward",no:"Tap + extend arm front",s:"3 × 10 each"}]}
        ],
        pelv:[{n:"Cat-Cow Flow",no:"Longer flow — lower back stiffness relief",s:"60 sec"}],yp:[]},
-      {d:"Friday",c:"c-pink",f:"Hip Shape + Symmetry Focus",tags:["Hips","Stability","Yoga"],yoga:true,
+      {d:"Friday",c:"c-pink",f:"Hip Shape + Glute Stability",tags:["Hips","Stability","Yoga"],yoga:true,
        wu:["Hip Circles — 25 each","Lateral Leg Swings 20 each","Single-Leg Balance 20 sec each","Glute Bridge Pulse — 20 pulses"],
        secs:[
          {t:"Hip Shaping (Symmetry Focus)",ic:"🌸",cl:"i-str",ex:[{n:"Single-Leg Glute Bridge — Weaker First",no:"Weaker side 1 extra set",s:"4×12 weak / 3×12 strong"},{n:"Fire Hydrants + Hold",no:"Hold at top 2 sec",s:"3 × 17 each"},{n:"Side-lying Abduction + Circles",no:"5 circles at top each rep",s:"3 × 17 each"},{n:"Clamshells + Resistance",no:"Cloth loop for resistance",s:"3 × 17 each"}]},
@@ -785,7 +803,7 @@ const W={
       {d:"Friday",c:"c-pink",f:"Hip Shape + Glute Sculpt",tags:["Hips","Sculpt","Yoga"],yoga:true,
        wu:["Hip Circles — 30 each","Lateral step + knee lift","Single-Leg Balance 30 sec each","Deep Glute Stretch — 30 sec"],
        secs:[
-         {t:"Hip Sculpting",ic:"🌸",cl:"i-str",ex:[{n:"Single-Leg Glute Bridge — Elevated",no:"Elevated = more range + shape",s:"4 × 15 each"},{n:"Fire Hydrant + Full Circle + Extension",no:"Circle then extend straight back",s:"3 × 15 each"},{n:"Standing Hip Abduction (pulsed)",no:"Lift, pulse 3×, return",s:"3 × 15 each"},{n:"Curtsy Lunge + Side Kick",no:"Deep curtsy + kick to side",s:"3 × 12 each"}]},
+         {t:"Hip Sculpting",ic:"🌸",cl:"i-str",ex:[{n:"Single-Leg Glute Bridge — Elevated",no:"Elevated = more range + shape",s:"4 × 15 each"},{n:"Fire Hydrant + Circle + Extension",no:"Circle then extend straight back",s:"3 × 15 each"},{n:"Standing Hip Abduction (pulsed)",no:"Lift, pulse 3×, return",s:"3 × 15 each"},{n:"Curtsy Lunge + Side Kick",no:"Deep curtsy + kick to side",s:"3 × 12 each"}]},
          {t:"Balance & Symmetry",ic:"⚖️",cl:"i-core",ex:[{n:"Single-Leg RDL + Row (bottle)",no:"Hinge + row at bottom",s:"3 × 12 each"},{n:"Hip Thrust — Elevated (chair)",no:"Full extension, controlled squeeze",s:"3 × 15"},{n:"Lateral Band Walk — Lower Squat",no:"Stay lower throughout",s:"3 × 20 each"}]}
        ],
        pelv:[{n:"Butterfly Pose",no:"Hip + pelvic opening",s:"1 min"},{n:"Frog Stretch",no:"Deep pelvic floor stretch",s:"1 min"},{n:"Happy Baby Pose",no:"Hip flexor & pelvic tension release",s:"1 min"}],
@@ -819,7 +837,7 @@ const PD=[
 
 let nrg='moderate';
 
-function tc(t){
+function tc(t) {
   if(t==='Yoga'||t==='Mobility')return't-yoga';
   if(t==='Recovery'||t==='Rest')return't-recovery';
   if(t==='Gentle'||t==='No Heavy Intensity'||t==='Slow Pace')return't-gentle';
@@ -838,7 +856,7 @@ function sw(w,btn){
 }
 
 function renderW(w){
-  const D=W[w];let h=`<div class="wbanner"><div class="badge">${D.label}</div><p>${D.info}</p></div>`;
+  const D=W[w];let h=``; // Stripped down block completely per user's styling request (No wbanner)
   const L=['M','T','W','T','F','S'];
   D.days.forEach((day,i)=>{
     const dtags=day.tags.map(t=>`<span class="mtag ${tc(t)}">${t}</span>`).join('');
